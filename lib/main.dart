@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -32,12 +34,12 @@ class MyApp extends StatelessWidget {
         ),
 
         // Default text style
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.black87, fontSize: 16),
-          bodyMedium: TextStyle(color: Colors.black54, fontSize: 14),
-          headlineSmall: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-
+        // textTheme: const TextTheme(
+          // bodyLarge: TextStyle(color: Colors.black87, fontSize: 16),
+          // bodyMedium: TextStyle(color: Colors.black54, fontSize: 14),
+          // headlineSmall: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+        // ),
+        textTheme: GoogleFonts.montserratTextTheme(),
         // Default card style
         cardTheme: CardTheme(
           elevation: 4,
