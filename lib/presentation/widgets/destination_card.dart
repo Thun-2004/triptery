@@ -23,7 +23,7 @@ class DestinationCard extends StatelessWidget {
       margin: const EdgeInsets.only(right: 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
+        color: const Color(0xff1c1c27),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -33,52 +33,74 @@ class DestinationCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: Image.network(
-              imageUrl,
-              height: 120,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+          // 🖼 Image with review count overlay
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                child: Image.network(
+                  imageUrl,
+                  height: 120,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                bottom: 8,
+                right: 8,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
+                  child: Text(
+                    '$reviews Reviews',
+                    style: const TextStyle(fontSize: 10, color: Colors.white),
+                  ),
                 ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Text(
-                      distance,
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              ),
+            ],
+          ),
+
+          // 📦 Content spaced out (title in middle, rating row at bottom)
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 📝 Title
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                    const SizedBox(width: 8),
-                    Icon(Icons.star, size: 14, color: Colors.amber[700]),
-                    Text(
-                      '$rating',
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '($reviews)',
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                    ),
-                  ],
-                ),
-              ],
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+
+                  // ⭐ Distance + Rating
+                  Row(
+                    children: [
+                      Text(
+                        distance,
+                        style: const TextStyle(fontSize: 12, color: Colors.white),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(Icons.star, size: 14, color: Colors.amber[700]),
+                      Text(
+                        '$rating',
+                        style: const TextStyle(fontSize: 12, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
