@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:triptery/presentation/pages/login_page.dart'; 
 
 
 void main() {
@@ -49,9 +50,7 @@ class MyApp extends StatelessWidget {
           margin: const EdgeInsets.all(8),
         ),
       ),
-      home: const HomePage(),
+      home: const LoginPage(),
     );
   }
 }
-
-
