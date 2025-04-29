@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 // import your auth and pages
 // import 'package:your_app/login_page.dart';
-// import 'package:your_app/home_page.dart';
+import 'presentation/pages/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: isAuthenticated() ? const HomePage() : const LoginPage(),
+      home:const HomePage(),
     );
   }
 }
