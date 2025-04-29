@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:triptery/presentation/pages/home_page.dart';
 // import your auth and pages
 // import 'package:your_app/login_page.dart';
 // import 'package:your_app/home_page.dart';
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'triptery',
+
       theme: const CupertinoThemeData(
         primaryColor: CupertinoColors.activeBlue,
         scaffoldBackgroundColor: CupertinoColors.white,
@@ -34,7 +36,8 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: isAuthenticated() ? const HomePage() : const LoginPage(),
+      home: const HomePage()
+      // home: isAuthenticated() ? const HomePage() : const LoginPage(),
     );
   }
 }
