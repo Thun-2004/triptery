@@ -1,4 +1,5 @@
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
@@ -107,15 +108,33 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 24),
 
                     // Footer Text
-                    const Center(
-                      child: Text(
-                        "Have an account? Sign in",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.white,
-                        ),
-                      ),
+                    Center(
+                      child: RichText(
+                        text: TextSpan(
+                          text: "Have an account?",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            
+                            color: Colors.white,
+                          ), 
+                          children: [
+                            TextSpan(
+                              text: " Sign in",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  // Handle sign in action
+                                  print("Sign in tapped");
+                                },
+                            ),
+                          ]
+                        ), 
+                      )
                     ),
                   ],
                 ),
