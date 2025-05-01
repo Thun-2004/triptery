@@ -237,7 +237,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
             const SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // ElevatedButton(
                 //   onPressed: () {
@@ -257,58 +257,76 @@ class _AuthScreenState extends State<AuthScreen> {
                 // ),
                 FlutterSocialButton(
                   onTap: () {},
-                  buttonType: ButtonType.yahoo,
+                  buttonType: ButtonType.google,
                   mini: true,
-                  title: 'Yahoo!',
+                  title: 'Google!',
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle Google login action
-                  },
-                  child: const Text("Facebook"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 14,
-                      horizontal: 14,
-                    ),
-                  ),
+                FlutterSocialButton(
+                  onTap: () {},
+                  buttonType: ButtonType.facebook,
+                  mini: true,
+                  title: 'Facebook!',
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle Google login action
-                  },
-                  child: const Text("Apple"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 14,
-                      horizontal: 14,
-                    ),
-                  ),
+                FlutterSocialButton(
+                  onTap: () {},
+                  buttonType: ButtonType.apple,
+                  mini: true,
+                  title: 'Apple!',
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle Google login action
-                  },
-                  child: const Text("Instagram"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 14,
-                      horizontal: 14,
-                    ),
-                  ),
+                FlutterSocialButton(
+                  onTap: () {},
+                  buttonType: ButtonType.instagram,
+                  mini: true,
+                  title: 'Instagram!',
                 ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     // Handle Google login action
+                //   },
+                //   child: const Text("Facebook"),
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.white,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(15),
+                //     ),
+                //     padding: const EdgeInsets.symmetric(
+                //       vertical: 14,
+                //       horizontal: 14,
+                //     ),
+                //   ),
+                // ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     // Handle Google login action
+                //   },
+                //   child: const Text("Apple"),
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.white,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(15),
+                //     ),
+                //     padding: const EdgeInsets.symmetric(
+                //       vertical: 14,
+                //       horizontal: 14,
+                //     ),
+                //   ),
+                // ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     // Handle Google login action
+                //   },
+                //   child: const Text("Instagram"),
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.white,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(15),
+                //     ),
+                //     padding: const EdgeInsets.symmetric(
+                //       vertical: 14,
+                //       horizontal: 14,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             Spacer(),
