@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:triptery/presentation/widgets/auth_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key}); 
@@ -12,6 +13,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  void _openBottomModal(){
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => AuthScreen()
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
-                            
+
                             color: Colors.white,
                           ), 
                           children: [
@@ -129,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                   // Handle sign in action
-                                  print("Sign in tapped");
+                                  _openBottomModal(); 
                                 },
                             ),
                           ]
@@ -145,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+  
 }
 
 class CustomSvgLogo extends StatelessWidget {
@@ -179,5 +191,6 @@ class BrandColorMapper extends ColorMapper {
     return color;
   }
 }
+
 
 
