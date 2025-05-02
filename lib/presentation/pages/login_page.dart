@@ -18,8 +18,9 @@ class _LoginPageState extends State<LoginPage> {
   void _openBottomModal(){
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (ctx) => AuthScreen()
+      builder: (context) => AuthScreen()
     );
   }
 

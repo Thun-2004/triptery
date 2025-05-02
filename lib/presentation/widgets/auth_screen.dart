@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
 
-
 class AuthScreen extends StatefulWidget {
   @override
   _AuthScreenState createState() => _AuthScreenState();
@@ -14,10 +13,8 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // ignore: deprecated_member_use
-      // color: Colors.transparent,
-      height: double.infinity,
-      // width: MediaQuery.of(context).size.width,
+ 
+      // height: mode == "signup" ? 1000 : 500,
       decoration: BoxDecoration(
         color: Color(0xFF3A373C).withOpacity(0.9),
         borderRadius: BorderRadius.only(
@@ -27,12 +24,10 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
 
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 30,
-          horizontal: 20,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               decoration: BoxDecoration(
@@ -40,17 +35,13 @@ class _AuthScreenState extends State<AuthScreen> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 2,
-                  horizontal: 2,
-                ),
+                padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
                 child: Row(
                   children: [
                     Expanded(
                       child: GestureDetector(
                         onTap:
                             () => setState(() {
-                      
                               mode = "login";
                             }),
                         child: Container(
@@ -100,7 +91,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color:
-                                  mode == "signup" ? Colors.white : Colors.black,
+                                  mode == "signup"
+                                      ? Colors.white
+                                      : Colors.black,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -112,32 +105,34 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
             ),
 
-            mode == "signup" ?
-            Column (
-              crossAxisAlignment: CrossAxisAlignment.start, 
-              children: [
-                Text("Full Name", style: TextStyle(color: Colors.white)),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                        15,
-                      ), // Add border radius here
-                      // Optional: white input background
+            mode == "signup"
+                ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20), 
+                    Text("Full Name", style: TextStyle(color: Colors.white)),
+                    TextField(
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(
+                            15,
+                          ), // Add border radius here
+                          // Optional: white input background
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: 'Full Name',
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 10,
+                        ),
+                      ),
                     ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: 'Full Name',
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 10,
-                    ),
-                  ),
-                ),
-              ]
-            ) : SizedBox.shrink(), 
+                  ],
+                )
+                : SizedBox.shrink(),
 
-            Spacer(),
+            const SizedBox(height: 20),
             Text("Email", style: TextStyle(color: Colors.white)),
             TextField(
               decoration: InputDecoration(
@@ -157,7 +152,7 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
             ),
 
-            Spacer(),
+            const SizedBox(height: 20),
             Text("Password", style: TextStyle(color: Colors.white)),
             TextField(
               obscureText: true,
@@ -171,11 +166,10 @@ class _AuthScreenState extends State<AuthScreen> {
                 contentPadding: const EdgeInsets.symmetric(
                   vertical: 10,
                   horizontal: 10,
-                ), 
+                ),
               ),
-              
             ),
-            
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -207,22 +201,21 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ],
             ),
-          
+
             Row(
               children: [
                 //tickbox
               ],
             ),
-            Spacer(),
+            const SizedBox(height: 20),
             Container(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   // Handle login action
-
                 },
+
                 //q: sizebox vs container
-                
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFF55548),
                   shape: RoundedRectangleBorder(
@@ -238,13 +231,13 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                 ),
                 child: Text(
-                  mode == "signup" ? "Sign Up" : "Login", 
+                  mode == "signup" ? "Sign Up" : "Login",
                   style: const TextStyle(
                     fontSize: 16,
                     fontFamily: 'Montserrat',
-                    color: Colors.white
+                    color: Colors.white,
                   ),
-                )
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -306,7 +299,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 //     ),
                 //   ),
                 // ),
-                
+
                 // ElevatedButton(
                 //   onPressed: () {
                 //     // Handle Google login action
@@ -357,11 +350,10 @@ class _AuthScreenState extends State<AuthScreen> {
                 // ),
               ],
             ),
-            Spacer(),
+            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
 }
-
