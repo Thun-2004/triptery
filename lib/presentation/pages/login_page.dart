@@ -13,6 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey _targetKey = GlobalKey();
 
   void _openBottomModal(){
     showModalBottomSheet(
@@ -21,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
       builder: (ctx) => AuthScreen()
     );
   }
-
 
   @override
   Widget build(BuildContext context) {

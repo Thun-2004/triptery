@@ -9,14 +9,15 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  List<bool> isSelected = [true, false];
+  String mode = "signup";
+
   @override
   Widget build(BuildContext context) {
     return Container(
       // ignore: deprecated_member_use
       // color: Colors.transparent,
-      
-      width: double.infinity,
+      height: double.infinity,
+      // width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: Color(0xFF3A373C).withOpacity(0.9),
         borderRadius: BorderRadius.only(
@@ -49,8 +50,8 @@ class _AuthScreenState extends State<AuthScreen> {
                       child: GestureDetector(
                         onTap:
                             () => setState(() {
-                              isSelected[0] = true;
-                              isSelected[1] = false;
+                      
+                              mode = "login";
                             }),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -59,7 +60,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                           decoration: BoxDecoration(
                             color:
-                                isSelected[0]
+                                mode == "login"
                                     ? const Color(0xFFF55548)
                                     : Colors.white,
                             borderRadius: BorderRadius.circular(15),
@@ -69,7 +70,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color:
-                                  isSelected[0] ? Colors.white : Colors.black,
+                                  mode == "login" ? Colors.white : Colors.black,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -80,8 +81,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       child: GestureDetector(
                         onTap:
                             () => setState(() {
-                              isSelected[0] = false;
-                              isSelected[1] = true;
+                              mode = "signup";
                             }),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -90,7 +90,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                           decoration: BoxDecoration(
                             color:
-                                isSelected[1]
+                                mode == "signup"
                                     ? const Color(0xFFF55548)
                                     : Colors.white,
                             borderRadius: BorderRadius.circular(15),
@@ -100,7 +100,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color:
-                                  isSelected[1] ? Colors.white : Colors.black,
+                                  mode == "signup" ? Colors.white : Colors.black,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
@@ -111,6 +111,31 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
               ),
             ),
+
+            mode == "signup" ?
+            Column (
+              crossAxisAlignment: CrossAxisAlignment.start, 
+              children: [
+                Text("Full Name", style: TextStyle(color: Colors.white)),
+                TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                        15,
+                      ), // Add border radius here
+                      // Optional: white input background
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    hintText: 'Full Name',
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 10,
+                    ),
+                  ),
+                ),
+              ]
+            ) : SizedBox.shrink(), 
 
             Spacer(),
             Text("Email", style: TextStyle(color: Colors.white)),
@@ -150,6 +175,7 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
               
             ),
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -193,6 +219,7 @@ class _AuthScreenState extends State<AuthScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   // Handle login action
+
                 },
                 //q: sizebox vs container
                 
@@ -210,9 +237,9 @@ class _AuthScreenState extends State<AuthScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                child: const Text(
-                  "Login", 
-                  style: TextStyle(
+                child: Text(
+                  mode == "signup" ? "Sign Up" : "Login", 
+                  style: const TextStyle(
                     fontSize: 16,
                     fontFamily: 'Montserrat',
                     color: Colors.white
@@ -239,22 +266,6 @@ class _AuthScreenState extends State<AuthScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // ElevatedButton(
-                //   onPressed: () {
-                //     // Handle Google login action
-                //   },
-                //   child: const Text("Google"),
-                //   style: ElevatedButton.styleFrom(
-                //     backgroundColor: Colors.white,
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(15),
-                //     ),
-                //     padding: const EdgeInsets.symmetric(
-                //       vertical: 14,
-                //       horizontal: 14,
-                //     ),
-                //   ),
-                // ),
                 FlutterSocialButton(
                   onTap: () {},
                   buttonType: ButtonType.google,
@@ -279,6 +290,23 @@ class _AuthScreenState extends State<AuthScreen> {
                   mini: true,
                   title: 'Instagram!',
                 ),
+                // ElevatedButton(
+                //   onPressed: () {
+                //     // Handle Google login action
+                //   },
+                //   child: const Text("Google"),
+                //   style: ElevatedButton.styleFrom(
+                //     backgroundColor: Colors.white,
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(15),
+                //     ),
+                //     padding: const EdgeInsets.symmetric(
+                //       vertical: 14,
+                //       horizontal: 14,
+                //     ),
+                //   ),
+                // ),
+                
                 // ElevatedButton(
                 //   onPressed: () {
                 //     // Handle Google login action
@@ -336,3 +364,4 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 }
+
