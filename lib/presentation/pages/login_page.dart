@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:triptery/presentation/widgets/auth_screen.dart';
 
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key}); 
 

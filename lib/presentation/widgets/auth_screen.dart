@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
+import 'package:google_sign_in/google_sign_in.dart'; 
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:triptery/presentation/pages/home_page.dart'; 
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -8,7 +10,54 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  String mode = "signup";
+  String mode = "login";
+  final supabase = Supabase.instance.client; 
+
+  @override
+  void initState() {
+    _setupAuthListener(); 
+    super.initState(); 
+  }
+
+  void _setupAuthListener() {
+    supabase.auth.onAuthStateChange.listen((data) {
+      final event = data.event; 
+      if (event == AuthChangeEvent.signedIn) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const HomePage(), 
+          )
+        ); 
+      }
+        
+    }); 
+  }
+
+  Future<AuthResponse> _googleSignIn() async {
+    const iosClientId = 'my-ios.apps.googleusercontent.com';
+
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      clientId: iosClientId,
+    );
+    final googleUser = await googleSignIn.signIn();
+    final googleAuth = await googleUser!.authentication;
+    final accessToken = googleAuth.accessToken;
+    final idToken = googleAuth.idToken;
+
+    if (accessToken == null) {
+      throw 'No Access Token found.';
+    }
+    if (idToken == null) {
+      throw 'No ID Token found.';
+    }
+
+    return supabase.auth.signInWithIdToken(
+      provider: OAuthProvider.google,
+      idToken: idToken,
+      accessToken: accessToken,
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -260,7 +309,7 @@ class _AuthScreenState extends State<AuthScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 FlutterSocialButton(
-                  onTap: () {},
+                  onTap: _googleSignIn,
                   buttonType: ButtonType.google,
                   mini: true,
                   title: 'Google!',
