@@ -3,20 +3,22 @@ import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:google_sign_in/google_sign_in.dart'; 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:triptery/presentation/pages/home_page.dart'; 
+import 'package:triptery/data/datasources/supabase_client.dart'; 
 
 class AuthScreen extends StatefulWidget {
+
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
   String mode = "login";
-  final supabase = Supabase.instance.client; 
+  // final supabase = Supabase.instance.client;
 
   @override
   void initState() {
-    _setupAuthListener(); 
-    super.initState(); 
+    _setupAuthListener();
+    super.initState();
   }
 
   void _setupAuthListener() {
@@ -34,11 +36,16 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Future<AuthResponse> _googleSignIn() async {
-    const iosClientId = 'my-ios.apps.googleusercontent.com';
+    const webClientId = '984517736433-88ufon0a877n7nq8ia8kdf1au450hr34.apps.googleusercontent.com';
+    const iosClientId = '984517736433-7mfdksmgse5omhgmi3gb5vk9bpt6oa1i.apps.googleusercontent.com';
+
+    // const androidClientId = '984517736433-g6mlh65c40idp50e3photdu9dt9h16na.apps.googleusercontent.com'; 
 
     final GoogleSignIn googleSignIn = GoogleSignIn(
       clientId: iosClientId,
+      serverClientId: webClientId,
     );
+
     final googleUser = await googleSignIn.signIn();
     final googleAuth = await googleUser!.authentication;
     final accessToken = googleAuth.accessToken;
@@ -309,7 +316,7 @@ class _AuthScreenState extends State<AuthScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 FlutterSocialButton(
-                  onTap: _googleSignIn,
+                  onTap: () => _googleSignIn(), 
                   buttonType: ButtonType.google,
                   mini: true,
                   title: 'Google!',

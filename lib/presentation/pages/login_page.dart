@@ -14,7 +14,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final GlobalKey _targetKey = GlobalKey();
 
   void _openBottomModal(){
     showModalBottomSheet(
@@ -167,7 +166,7 @@ class CustomSvgLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SvgPicture.asset(
-      'assets/images/logo.svg',
+      'assets/icons/logo.svg',
       width: 224,
       height: 48,
       colorMapper: const BrandColorMapper(),
