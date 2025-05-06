@@ -13,12 +13,20 @@ class AuthScreen extends StatefulWidget {
 
 class _AuthScreenState extends State<AuthScreen> {
   String mode = "login";
+  String? _userId; 
   // final supabase = Supabase.instance.client;
 
   @override
   void initState() {
     _setupAuthListener();
     super.initState();
+
+    supabase.auth.onAuthStateChange.listen((data) {
+      setState(() {
+        _userId = data.session?.user.id;
+        print("User ID: $_userId");
+      }); 
+    });
   }
 
   void _setupAuthListener() {
@@ -29,10 +37,9 @@ class _AuthScreenState extends State<AuthScreen> {
           MaterialPageRoute(
             builder: (context) => const HomePage(), 
           )
-        ); 
+        );
       }
-        
-    }); 
+    });
   }
 
   Future<AuthResponse> _googleSignIn() async {
@@ -40,7 +47,6 @@ class _AuthScreenState extends State<AuthScreen> {
     const iosClientId = '984517736433-7mfdksmgse5omhgmi3gb5vk9bpt6oa1i.apps.googleusercontent.com';
 
     // const androidClientId = '984517736433-g6mlh65c40idp50e3photdu9dt9h16na.apps.googleusercontent.com'; 
-
     final GoogleSignIn googleSignIn = GoogleSignIn(
       clientId: iosClientId,
       serverClientId: webClientId,
@@ -65,6 +71,7 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
+  final GoogleSignIn _googleSignInInstance = GoogleSignIn();
 
   @override
   Widget build(BuildContext context) {
