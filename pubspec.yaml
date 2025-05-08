@@ -40,6 +40,7 @@ dependencies:
   flutter_social_button: ^1.1.6+1
   google_sign_in: ^6.3.0
   supabase_flutter: ^2.9.0
+  twitter_login: ^4.4.2
 
 dev_dependencies:
   flutter_test:
