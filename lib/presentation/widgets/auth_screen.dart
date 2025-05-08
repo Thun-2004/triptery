@@ -354,7 +354,7 @@ class _AuthScreenState extends State<AuthScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 FlutterSocialButton(
-                  onTap: () => _googleSignIn2(), 
+                  onTap: () => _googleSignIn(), 
                   buttonType: ButtonType.google,
                   mini: true,
                   title: 'Google!',
