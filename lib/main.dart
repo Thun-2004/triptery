@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:triptery/presentation/pages/login_page.dart'; 
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://rscgnezldffdhjyhincy.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJzY2duZXpsZGZmZGhqeWhpbmN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0NzE3MjQsImV4cCI6MjA2MTA0NzcyNH0.gLDBGjcjwiBvg-t-3OsHunjdSL97UhvySQb31QDV8ws',
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -50,9 +57,8 @@ class MyApp extends StatelessWidget {
           margin: const EdgeInsets.all(8),
         ),
       ),
-      home: const HomePage(),
+      home: const LoginPage(),
     );
   }
 }
-
 
