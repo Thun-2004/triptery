@@ -74,6 +74,14 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
+  Future<void> _googleSignIn2() async {
+    await supabase.auth.signInWithOAuth(
+      OAuthProvider.google,
+      redirectTo: 'io.supabase.travelapp://login-callback/', // Optionally set the redirect link to bring back the user via deeplink.
+      authScreenLaunchMode: LaunchMode.externalApplication, // Launch the auth screen in a new webview on mobile.
+    );
+  }
+
   Future<void> _facebookSignIn() async {
     await supabase.auth.signInWithOAuth(
       OAuthProvider.facebook,
@@ -83,55 +91,12 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Future<void> _twitterSignin() async {
-    // final String apiKey = 'S9GzajUq5r5V4VIvT0V0M1HrP';
-    // final String apiSecretKey = 'U6NhHZxqRahi2StQYLz6mVhMZEow1HsaZ6igkNgJa47dfQ4fhI';
-
-    // final twitterLogin = TwitterLogin(
-    //   /// Consumer API keys
-    //   apiKey: apiKey,
-
-    //   /// Consumer API Secret keys
-    //   apiSecretKey: apiSecretKey,
-
-    //   /// Registered Callback URLs in TwitterApp
-    //   /// Android is a deeplink
-    //   /// iOS is a URLScheme
-    //   redirectURI: 'https://rscgnezldffdhjyhincy.supabase.co/auth/v1/callback',
-    // );
-
-    // /// Forces the user to enter their credentials
-    // /// to ensure the correct users account is authorized.
-    // /// If you want to implement Twitter account switching, set [force_login] to true
-    // /// login(forceLogin: true);
-    // final authResult = await twitterLogin.loginV2();
-    // switch (authResult.status) {
-    //   case TwitterLoginStatus.loggedIn:
-    //     // success
-    //     print('====== Login success ======');
-    //     break;
-    //   case TwitterLoginStatus.cancelledByUser:
-    //     // cancel
-    //     print('====== Login cancel ======');
-    //     break;
-    //   case TwitterLoginStatus.error:
-    //   case null:
-    //     // error
-    //     print('====== Login error ======');
-    //     break;
-    // }
-
     await supabase.auth.signInWithOAuth(
       OAuthProvider.twitter,
       redirectTo: kIsWeb ? null : 'io.supabase.travelapp://login-callback/', // Optionally set the redirect link to bring back the user via deeplink.
       authScreenLaunchMode:
           kIsWeb ? LaunchMode.platformDefault : LaunchMode.externalApplication, // Launch the auth screen in a new webview on mobile.
     );
-    // await supabase.auth.signInWithOAuth(
-    //   OAuthProvider.twitter,
-    //   redirectTo: 'com.example.triptery://login-callback',
-    //   authScreenLaunchMode: LaunchMode.externalApplication,
-    // );
-
   }
 
   Future<void> signOut() async {
@@ -389,7 +354,7 @@ class _AuthScreenState extends State<AuthScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 FlutterSocialButton(
-                  onTap: () => _googleSignIn(), 
+                  onTap: () => _googleSignIn2(), 
                   buttonType: ButtonType.google,
                   mini: true,
                   title: 'Google!',
