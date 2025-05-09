@@ -1,3 +1,5 @@
+import '../../domain/entities/place_review.dart';
+
 class Place {
   final String id;
   final String googlePlaceId;
@@ -19,9 +21,10 @@ class Place {
   final bool deleted;
   final DateTime? deletedAt;
   final String? deletedBy;
-  final String? imageUrl;
+  final String imageUrl;
+  final List<PlaceReview> reviews;
 
-  const Place({
+  Place({
     required this.id,
     required this.googlePlaceId,
     required this.name,
@@ -40,8 +43,9 @@ class Place {
     required this.updatedAt,
     required this.updatedBy,
     required this.deleted,
-    this.deletedAt,
-    this.deletedBy,
-    this.imageUrl,
+    required this.deletedAt,
+    required this.deletedBy,
+    required this.imageUrl,
+    required this.reviews,
   });
 }
