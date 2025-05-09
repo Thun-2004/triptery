@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/place.dart';
+import '../../domain/entities/place/place.dart';
 import '../pages/place_detail.dart';
 
 class DestinationCard extends StatelessWidget {

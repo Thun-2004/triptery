@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/place.dart';
+import '../../domain/entities/place/place.dart';
+import '../widgets/place_detail_page/place_review_section.dart';
+import '../widgets/dash_divider.dart';
 
 class PlaceDetailPage extends StatelessWidget {
   final Place place;
@@ -84,50 +86,12 @@ class PlaceDetailPage extends StatelessWidget {
                     'Review',
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'Roboto'),
                   ),
-                  const Divider(),
 
-                  // 🌐 Google Reviews section
-                  Row(
-                    children: [
-                      Image.asset('assets/images/google_icon.png', width: 30),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'Google Reviews',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
+                  DashedDivider(),
 
-                  // Render each review
-                  ...place.reviews.map(
-                    (review) => ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          review.profilePhotoUrl ?? 'https://via.placeholder.com/100',
-                        ),
-                      ),
-                      title: Text(review.authorName),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.star, color: Colors.amber[700], size: 16),
-                              const SizedBox(width: 4),
-                              Text('${review.rating}'),
-                              const SizedBox(width: 6),
-                              Text('• ${review.relativeTime}'),
-                            ],
-                          ),
-                          const SizedBox(height: 4),
-                          Text(review.text),
-                        ],
-                      ),
-                      isThreeLine: true,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 8),
-                    ),
-                  ),
+                  // 🔄 Multiple review groups
+                  PlaceReviewSection(reviewGroups: place.reviewGroups),
                 ],
               ),
             ),

@@ -1,4 +1,4 @@
-import '../../domain/entities/place_review.dart';
+import 'place_review_group.dart';
 
 class Place {
   final String id;
@@ -9,7 +9,7 @@ class Place {
   final String closingTime;
   final double latitude;
   final double longitude;
-  final int rating;
+  final double rating;
   final int totalUserRatings;
   final String address;
   final String city;
@@ -22,7 +22,7 @@ class Place {
   final DateTime? deletedAt;
   final String? deletedBy;
   final String imageUrl;
-  final List<PlaceReview> reviews;
+  final List<PlaceReviewGroup> reviewGroups;
 
   Place({
     required this.id,
@@ -46,6 +46,6 @@ class Place {
     required this.deletedAt,
     required this.deletedBy,
     required this.imageUrl,
-    required this.reviews,
+    required this.reviewGroups,
   });
 }

@@ -62,6 +62,7 @@ flutter:
   assets:
     - assets/images/header_image.png
     - assets/images/google_icon.png
+    - assets/images/tripadvisor_icon.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
