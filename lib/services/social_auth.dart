@@ -10,11 +10,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SocialAuthService {
 
-  static var redirectUri = dotenv.env['REDIRECT_URI'];
+  static var redirectUri = 'io.supabase.travelapp://login-callback/';
 
   static Future<AuthResponse> googleSignIn() async {
-    var webClientId = dotenv.env['GOOGLE_WEB_CLIENT_ID'] ;
-    var iosClientId = dotenv.env['GOOGLE_IOS_CLIENT_ID'] ;
+    var webClientId = '984517736433-88ufon0a877n7nq8ia8kdf1au450hr34.apps.googleusercontent.com' ;
+    var iosClientId = '984517736433-7mfdksmgse5omhgmi3gb5vk9bpt6oa1i.apps.googleusercontent.com' ;
 
     final GoogleSignIn googleSignIn = GoogleSignIn(
       clientId: iosClientId,

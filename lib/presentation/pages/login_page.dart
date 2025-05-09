@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:triptery/presentation/widgets/auth_screen.dart';
 import 'package:triptery/services/social_auth.dart';
 
@@ -78,7 +79,22 @@ class _LoginPageState extends State<LoginPage> {
 
                     // Email Button
                     ElevatedButton(
-                      onPressed: () => SocialAuthService.googleSignIn(),
+                      onPressed: () async {
+                        try {
+                          final res = await SocialAuthService.googleSignIn(); 
+                          if (res.user != null) {
+                            // Handle successful sign-in
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const HomePage(),
+                              ),
+                            ); 
+                          } 
+                        } catch (e) {
+                          // Handle error
+                          print("Error signing in: $e");
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFFF55548),
                         foregroundColor: Colors.white,
