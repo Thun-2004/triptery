@@ -45,7 +45,6 @@ class _AuthScreenState extends State<AuthScreen> {
           emailRedirectTo: 'io.supabase.travelapp://login-callback/',
         );
         // Handle successful login
-        // displayText = "Login successful";
         print("Login successful");
         return "Login link send via email";
       } catch (e) {
@@ -68,7 +67,6 @@ class _AuthScreenState extends State<AuthScreen> {
           email: email,
           password: password,
         );
-        // displayText = "Sign-up successful";
         print("Sign-up successful");
 
         setState(() {
@@ -79,8 +77,6 @@ class _AuthScreenState extends State<AuthScreen> {
 
         return "Sign-up successful";
       } catch (e) {
-        // Handle error
-        // displayText = "Sign-up error: $e";
         print("Sign-up error: $e");
         return "Sign-up error: $e";
 
@@ -155,7 +151,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     emailController.text = "";
                                     passwordController.text = "";
                                     fullNameController.text = "";
-                                  
+                                    _formKey.currentState!.reset();
                                   }),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -191,6 +187,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     emailController.text = "";
                                     passwordController.text = "";
                                     fullNameController.text = "";
+                                    _formKey.currentState!.reset();
                                    
                               }),
                               child: Container(
@@ -310,7 +307,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           !RegExp(
                             r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^(){}[\]\\/+<>=~_|])[A-Za-z\d@$!%*?&#^(){}[\]\\/+<>=~_|]{8,}$',
                           ).hasMatch(value)) {
-                        return 'Password must be at least 8 characters and include upper, lower, number, and symbol';
+                        return 'at least 8 characters, upper, lower, number, symbol';
                       }
                       return null;
                     },
@@ -447,12 +444,13 @@ class _AuthScreenState extends State<AuthScreen> {
                         title: 'Apple!',
                       ),
 
-                      FlutterSocialButton(
-                        onTap: () => SocialAuthService.twitterSignin(),
-                        buttonType: ButtonType.twitter,
-                        mini: true,
-                        title: 'Twitter!',
-                      ),
+                      // FlutterSocialButton(
+                      //   onTap: () => SocialAuthService.twitterSignin(),
+                      //   buttonType: ButtonType.twitter,
+                      //   mini: true,
+                      //   title: 'Twitter!',
+                      // ),
+
                       // ElevatedButton(
                       //   onPressed: () {
                       //     // Handle Google login action
