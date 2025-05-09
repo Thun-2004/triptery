@@ -10,6 +10,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SocialAuthService {
 
+  static var redirectUri = dotenv.env['REDIRECT_URI'];
+
   static Future<AuthResponse> googleSignIn() async {
     var webClientId = dotenv.env['GOOGLE_WEB_CLIENT_ID'] ;
     var iosClientId = dotenv.env['GOOGLE_IOS_CLIENT_ID'] ;
@@ -41,7 +43,7 @@ class SocialAuthService {
   static Future<void> googleSignIn2() async {
     await supabase.auth.signInWithOAuth(
       OAuthProvider.google,
-      redirectTo: dotenv.env['REDIRECT_URI'], // Optionally set the redirect link to bring back the user via deeplink.
+      redirectTo: redirectUri, // Optionally set the redirect link to bring back the user via deeplink.
       authScreenLaunchMode: LaunchMode.externalApplication, // Launch the auth screen in a new webview on mobile.
     );
   }
@@ -49,7 +51,7 @@ class SocialAuthService {
   static Future<void> facebookSignIn() async {
     await supabase.auth.signInWithOAuth(
       OAuthProvider.facebook,
-      redirectTo: dotenv.env['REDIRECT_URI'], // Optionally set the redirect link to bring back the user via deeplink.
+      redirectTo: redirectUri, // Optionally set the redirect link to bring back the user via deeplink.
       authScreenLaunchMode: LaunchMode.externalApplication, // Launch the auth screen in a new webview on mobile.
     );
   }
@@ -57,7 +59,7 @@ class SocialAuthService {
   static Future<void> twitterSignin() async {
     await supabase.auth.signInWithOAuth(
       OAuthProvider.twitter,
-      redirectTo: kIsWeb ? null : dotenv.env['REDIRECT_URI'], // Optionally set the redirect link to bring back the user via deeplink.
+      redirectTo: kIsWeb ? null : redirectUri, // Optionally set the redirect link to bring back the user via deeplink.
       authScreenLaunchMode:
           kIsWeb ? LaunchMode.platformDefault : LaunchMode.externalApplication, // Launch the auth screen in a new webview on mobile.
     );
