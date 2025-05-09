@@ -1,4 +1,3 @@
-import '../../domain/entities/place/place.dart';
 import '../../presentation/widgets/destination_card.dart';
 import 'mock_places.dart';
 
