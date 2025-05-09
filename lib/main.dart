@@ -3,13 +3,14 @@ import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:triptery/presentation/pages/login_page.dart'; 
 import 'package:supabase_flutter/supabase_flutter.dart';
-
+import 'package:triptery/services/social_auth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Supabase.initialize(
-    url: 'https://rscgnezldffdhjyhincy.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJzY2duZXpsZGZmZGhqeWhpbmN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0NzE3MjQsImV4cCI6MjA2MTA0NzcyNH0.gLDBGjcjwiBvg-t-3OsHunjdSL97UhvySQb31QDV8ws',
+    url: dotenv.env['SUPABASE_URL'] ?? (throw Exception('SUPABASE_URL is not set in the environment variables')),
+    anonKey: dotenv.env['SUPABASE_ANON_KEY'] ?? (throw Exception('SUPABASE_ANON_KEY is not set in the environment variables')),
   );
   runApp(MyApp());
 }
