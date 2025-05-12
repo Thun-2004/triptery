@@ -5,6 +5,8 @@ import 'package:triptery/presentation/pages/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:triptery/services/social_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +15,7 @@ Future<void> main() async {
     url: 'https://rscgnezldffdhjyhincy.supabase.co',
     anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJzY2duZXpsZGZmZGhqeWhpbmN5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0NzE3MjQsImV4cCI6MjA2MTA0NzcyNH0.gLDBGjcjwiBvg-t-3OsHunjdSL97UhvySQb31QDV8ws',
   );
+  
   runApp(MyApp());
 }
 
@@ -21,8 +24,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return 
+    
+    MaterialApp(
       title: 'Global Design Example',
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en', ''),
+        Locale('th', ''),
+      ],
+      locale: const Locale('en', ''), // Set default locale
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
@@ -62,4 +78,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
 
