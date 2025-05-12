@@ -3,20 +3,18 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:triptery/presentation/widgets/auth_screen.dart';
-import 'package:triptery/services/social_auth.dart';
 
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key}); 
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState(); 
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
+
   void _openBottomModal(){
     showModalBottomSheet(
       context: context,
@@ -30,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        fit: StackFit.expand,
+        fit: StackFit.expand, 
         children: [
           Image.asset(
             'assets/images/login_wallpaper.png', 
@@ -79,22 +77,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     // Email Button
                     ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          final res = await SocialAuthService.googleSignIn(); 
-                          if (res.user != null) {
-                            // Handle successful sign-in
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const HomePage(),
-                              ),
-                            ); 
-                          } 
-                        } catch (e) {
-                          // Handle error
-                          print("Error signing in: $e");
-                        }
-                      },
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFFF55548),
                         foregroundColor: Colors.white,
@@ -116,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     // Facebook Button
                     ElevatedButton(
-                      onPressed: () => SocialAuthService.facebookSignIn(),
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF324987),
                         foregroundColor: Colors.white,
