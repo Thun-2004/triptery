@@ -1,0 +1,18 @@
+{
+  "@@locale": "en",
+  "hello": "Hello",
+  "signIn": "Sign in", 
+  "logIn": "Log in", 
+  "signUp" : "Sign up",
+  "signInText" : "Sign in to access your plan from any device", 
+  "loginQuery" : "Have and account?", 
+  "email" : "Email", 
+  "password" : "Password", 
+  "forgotPassword" : "Forgot Password?", 
+  "orLoginWith" : "OrLoginWithr Login with",
+  "fullName" : "Full Name", 
+  "emailError" : "Please enter a valid email",
+  "passwordError": "at least 8 characters, upper, lower, number, symbol", 
+  "loginLinkSend" : "Login link send via email", 
+  "signUpSuccessful" : "Sign-up successful"
+}
