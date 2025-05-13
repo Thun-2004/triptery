@@ -7,8 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:triptery/presentation/widgets/auth_screen.dart';
 import 'package:triptery/services/social_auth.dart';
-import 'package:triptery/provider/locale_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:triptery/presentation/controllers/language_controller.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key}); 
@@ -18,6 +19,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final languageController = Get.find<LanguageController>();
   var localeTH = const Locale("th");
 
   void _openBottomModal() {
@@ -141,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
 
                     ElevatedButton(
                       onPressed: () {
-                        context.read<LocaleProvider>().setLocale(localeTH);
+                        languageController.setLocale(localeTH);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF324987),
