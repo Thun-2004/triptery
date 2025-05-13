@@ -60,18 +60,17 @@ class _LoginPageState extends State<LoginPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          AppLocalizations.of(context)!.hello,
+                          AppLocalizations.of(context)!.signIn,
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
-                        // Text(AppLocalizations.of(context)!.hello),
 
                         SizedBox(height: 8),
                         Text(
-                          "Login up to access your plan from any device",
+                          AppLocalizations.of(context)!.signInText,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 14,
@@ -167,8 +166,9 @@ class _LoginPageState extends State<LoginPage> {
                     // Footer Text
                     Center(
                       child: RichText(
-                        text: TextSpan(
-                          text: "Have an account?",
+                        text: 
+                        TextSpan(
+                          text: AppLocalizations.of(context)!.loginQuery,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
@@ -176,8 +176,9 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.white,
                           ), 
                           children: [
+                        
                             TextSpan(
-                              text: " Sign in",
+                              text: AppLocalizations.of(context)!.logIn,
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.bold,
