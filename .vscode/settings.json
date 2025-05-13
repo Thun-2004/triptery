@@ -6,5 +6,6 @@
         "scminput": false,
         "prisma": true,
         "dart": true
-    }
+    },
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
