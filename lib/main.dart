@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final languageController = Get.find<LanguageController>();
 
+
     return 
         GetMaterialApp(
           //like MaterialApp but with GetX features
