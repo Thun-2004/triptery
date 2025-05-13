@@ -1,0 +1,263 @@
+import '../../domain/entities/place/place.dart';
+import '../../domain/entities/place/place_review.dart';
+import '../../domain/entities/place/place_review_group.dart';
+
+const String placeholderDescription = '''
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla non suscipit massa. Integer convallis consequat justo, eget auctor sem bibendum ut. Curabitur et est bibendum tellus ultricies scelerisque. Vestibulum vitae lectus nec nisl tincidunt convallis. Suspendisse posuere orci sit amet risus volutpat mollis. Sed vel facilisis lorem. Morbi ac nisl quis sapien dapibus posuere. Phasellus rhoncus nunc nec nisi vestibulum, vel euismod augue bibendum. Etiam gravida fermentum nunc, vitae pulvinar odio. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu odio id risus vestibulum porttitor nec sed eros. Cras porta nisi nec sagittis imperdiet. Suspendisse id felis lorem. Aliquam erat volutpat. Aenean convallis, nisi non posuere tristique, risus eros finibus elit, et pharetra ex sapien vel turpis.
+''';
+
+final List<Place> mockPlaces = [
+  Place(
+    id: '1',
+    googlePlaceId: 'mock_google_place_id_1',
+    name: 'Place 1 in Phuket',
+    description: placeholderDescription,
+    openingTime: '08:00',
+    closingTime: '18:00',
+    latitude: 7.8804,
+    longitude: 98.3923,
+    rating: 4,
+    totalUserRatings: 713,
+    address: '1 Main Street, Phuket, Thailand',
+    city: 'Phuket',
+    countryCode: 'TH',
+    createdAt: DateTime.parse('2024-01-01T09:00:00'),
+    createdBy: 'admin_1',
+    updatedAt: DateTime.parse('2024-02-01T09:00:00'),
+    updatedBy: 'admin_1',
+    deleted: false,
+    deletedAt: null,
+    deletedBy: null,
+    imageUrl: 'https://res.cloudinary.com/thetripguru/image/upload/f_auto,c_limit,w_1080,q_auto/02-tours/oe3fc0rqeqm8antub1m1',
+    reviewGroups: [
+      PlaceReviewGroup(
+        sourceName: 'Google Reviews',
+        sourceLogo: 'assets/images/google_icon.png',
+        reviews: [
+          PlaceReview(authorName: 'Alice', rating: 4.0, relativeTime: '2 days ago', text: 'Nice place to visit!'),
+          PlaceReview(authorName: 'Bob', rating: 5.0, relativeTime: '1 week ago', text: 'Absolutely stunning.'),
+        ],
+      ),
+      PlaceReviewGroup(
+        sourceName: 'Tripadvisor',
+        sourceLogo: 'assets/images/tripadvisor_icon.png',
+        reviews: [
+          PlaceReview(authorName: 'Celine', rating: 4.2, relativeTime: '3 days ago', text: 'Lovely views and peaceful area.'),
+        ],
+      ),
+    ],
+  ),
+
+  Place(
+    id: '2',
+    googlePlaceId: 'mock_google_place_id_2',
+    name: 'Chiang Mai Old Town',
+    description: placeholderDescription,
+    openingTime: '09:00',
+    closingTime: '17:00',
+    latitude: 18.7883,
+    longitude: 98.9853,
+    rating: 4.5,
+    totalUserRatings: 502,
+    address: 'Old Town, Chiang Mai, Thailand',
+    city: 'Chiang Mai',
+    countryCode: 'TH',
+    createdAt: DateTime.parse('2024-01-05T10:00:00'),
+    createdBy: 'admin_2',
+    updatedAt: DateTime.parse('2024-02-03T10:00:00'),
+    updatedBy: 'admin_2',
+    deleted: false,
+    deletedAt: null,
+    deletedBy: null,
+    imageUrl: 'https://res.cloudinary.com/thetripguru/image/upload/f_auto,c_limit,w_1080,q_auto/02-tours/oe3fc0rqeqm8antub1m1',
+    reviewGroups: [
+      PlaceReviewGroup(
+        sourceName: 'Google Reviews',
+        sourceLogo: 'assets/images/google_icon.png',
+        reviews: [
+          PlaceReview(authorName: 'Daniel', rating: 5.0, relativeTime: '1 month ago', text: 'Beautiful temples and culture.'),
+        ],
+      ),
+    ],
+  ),
+
+  Place(
+    id: '3',
+    googlePlaceId: 'mock_google_place_id_3',
+    name: 'Ayutthaya Historical Park',
+    description: placeholderDescription,
+    openingTime: '07:00',
+    closingTime: '19:00',
+    latitude: 14.3556,
+    longitude: 100.5684,
+    rating: 4.6,
+    totalUserRatings: 800,
+    address: 'Ayutthaya, Thailand',
+    city: 'Ayutthaya',
+    countryCode: 'TH',
+    createdAt: DateTime.parse('2024-01-10T08:30:00'),
+    createdBy: 'admin_3',
+    updatedAt: DateTime.parse('2024-02-10T08:30:00'),
+    updatedBy: 'admin_3',
+    deleted: false,
+    deletedAt: null,
+    deletedBy: null,
+    imageUrl: 'https://res.cloudinary.com/thetripguru/image/upload/f_auto,c_limit,w_1080,q_auto/02-tours/oe3fc0rqeqm8antub1m1',
+    reviewGroups: [
+      PlaceReviewGroup(
+        sourceName: 'Tripadvisor',
+        sourceLogo: 'assets/images/tripadvisor_icon.png',
+        reviews: [
+          PlaceReview(authorName: 'Eve', rating: 4.5, relativeTime: '2 weeks ago', text: 'A must-visit for history lovers.'),
+        ],
+      ),
+    ],
+  ),
+
+  Place(
+    id: '4',
+    googlePlaceId: 'mock_google_place_id_4',
+    name: 'Wat Arun',
+    description: placeholderDescription,
+    openingTime: '08:30',
+    closingTime: '17:30',
+    latitude: 13.7437,
+    longitude: 100.4889,
+    rating: 4.7,
+    totalUserRatings: 950,
+    address: 'Bangkok Yai, Bangkok, Thailand',
+    city: 'Bangkok',
+    countryCode: 'TH',
+    createdAt: DateTime.parse('2024-01-12T09:45:00'),
+    createdBy: 'admin_4',
+    updatedAt: DateTime.parse('2024-02-12T09:45:00'),
+    updatedBy: 'admin_4',
+    deleted: false,
+    deletedAt: null,
+    deletedBy: null,
+    imageUrl: 'https://res.cloudinary.com/thetripguru/image/upload/f_auto,c_limit,w_1080,q_auto/02-tours/oe3fc0rqeqm8antub1m1',
+    reviewGroups: [
+      PlaceReviewGroup(
+        sourceName: 'Tripadvisor',
+        sourceLogo: 'assets/images/tripadvisor_icon.png',
+        reviews: [
+          PlaceReview(authorName: 'Frank', rating: 4.8, relativeTime: '3 days ago', text: 'Breathtaking view and spiritual vibe.'),
+        ],
+      ),
+      PlaceReviewGroup(
+        sourceName: 'Google Reviews',
+        sourceLogo: 'assets/images/google_icon.png',
+        reviews: [
+          PlaceReview(authorName: 'Joan', rating: 4.5, relativeTime: '5 days ago', text: 'Stunning architecture.'),
+        ],
+      ),
+    ],
+  ),
+
+  Place(
+    id: '5',
+    googlePlaceId: 'mock_google_place_id_5',
+    name: 'Railay Beach',
+    description: placeholderDescription,
+    openingTime: '06:00',
+    closingTime: '20:00',
+    latitude: 8.0106,
+    longitude: 98.8398,
+    rating: 4.9,
+    totalUserRatings: 1200,
+    address: 'Krabi, Thailand',
+    city: 'Krabi',
+    countryCode: 'TH',
+    createdAt: DateTime.parse('2024-01-15T07:00:00'),
+    createdBy: 'admin_5',
+    updatedAt: DateTime.parse('2024-02-15T07:00:00'),
+    updatedBy: 'admin_5',
+    deleted: false,
+    deletedAt: null,
+    deletedBy: null,
+    imageUrl: 'https://res.cloudinary.com/thetripguru/image/upload/f_auto,c_limit,w_1080,q_auto/02-tours/oe3fc0rqeqm8antub1m1',
+    reviewGroups: [
+      PlaceReviewGroup(
+        sourceName: 'Google Reviews',
+        sourceLogo: 'assets/images/google_icon.png',
+        reviews: [
+          PlaceReview(authorName: 'Grace', rating: 5.0, relativeTime: '4 days ago', text: 'Amazing scenery and peaceful vibes.'),
+        ],
+      ),
+    ],
+  ),
+
+  Place(
+    id: '6',
+    googlePlaceId: 'mock_google_place_id_6',
+    name: 'Doi Inthanon National Park',
+    description: placeholderDescription,
+    openingTime: '06:00',
+    closingTime: '18:00',
+    latitude: 18.5881,
+    longitude: 98.4814,
+    rating: 4.8,
+    totalUserRatings: 670,
+    address: 'Chiang Mai, Thailand',
+    city: 'Chiang Mai',
+    countryCode: 'TH',
+    createdAt: DateTime.parse('2024-01-20T06:00:00'),
+    createdBy: 'admin_6',
+    updatedAt: DateTime.parse('2024-02-20T06:00:00'),
+    updatedBy: 'admin_6',
+    deleted: false,
+    deletedAt: null,
+    deletedBy: null,
+    imageUrl: 'https://res.cloudinary.com/thetripguru/image/upload/f_auto,c_limit,w_1080,q_auto/02-tours/oe3fc0rqeqm8antub1m1',
+    reviewGroups: [
+      PlaceReviewGroup(
+        sourceName: 'Tripadvisor',
+        sourceLogo: 'assets/images/tripadvisor_icon.png',
+        reviews: [
+          PlaceReview(authorName: 'Henry', rating: 4.6, relativeTime: '5 days ago', text: 'Cool weather and great for hiking.'),
+        ],
+      ),
+    ],
+  ),
+
+  Place(
+    id: '7',
+    googlePlaceId: 'mock_google_place_id_7',
+    name: 'Damnoen Saduak Floating Market',
+    description: placeholderDescription,
+    openingTime: '07:00',
+    closingTime: '14:00',
+    latitude: 13.5186,
+    longitude: 99.9598,
+    rating: 4.3,
+    totalUserRatings: 500,
+    address: 'Ratchaburi, Thailand',
+    city: 'Ratchaburi',
+    countryCode: 'TH',
+    createdAt: DateTime.parse('2024-01-25T07:30:00'),
+    createdBy: 'admin_7',
+    updatedAt: DateTime.parse('2024-02-25T07:30:00'),
+    updatedBy: 'admin_7',
+    deleted: false,
+    deletedAt: null,
+    deletedBy: null,
+    imageUrl: 'https://res.cloudinary.com/thetripguru/image/upload/f_auto,c_limit,w_1080,q_auto/02-tours/oe3fc0rqeqm8antub1m1',
+    reviewGroups: [
+      PlaceReviewGroup(
+        sourceName: 'Google Reviews',
+        sourceLogo: 'assets/images/google_icon.png',
+        reviews: [
+          PlaceReview(authorName: 'Isabel', rating: 4.2, relativeTime: '1 day ago', text: 'Fun and authentic experience!'),
+        ],
+      ),
+      PlaceReviewGroup(
+        sourceName: 'Tripadvisor',
+        sourceLogo: 'assets/images/tripadvisor_icon.png',
+        reviews: [
+          PlaceReview(authorName: 'Ken', rating: 4.4, relativeTime: '6 days ago', text: 'Very lively and worth a visit.'),
+        ],
+      ),
+    ],
+  ),
+];
+

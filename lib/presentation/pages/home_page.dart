@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../widgets/bottom_navbar.dart';
 import '../widgets/home_page/header_section.dart';
 import '../widgets/home_page/horizontal_card_list.dart';
-import '../widgets/destination_card.dart';
 
 //Mock data
 import '../../data/mock/mock_tours.dart';
