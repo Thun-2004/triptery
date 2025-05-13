@@ -41,8 +41,8 @@ class Place {
     required this.updatedAt,
     required this.updatedBy,
     required this.deleted,
-    required this.deletedAt,
-    required this.deletedBy,
+    this.deletedAt,
+    this.deletedBy,
     required this.imageUrl,
   });
 }

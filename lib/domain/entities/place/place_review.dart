@@ -6,13 +6,13 @@ class PlaceReview {
   final double rating;
   final String description;
   final String approved;
-  final String createdAt;
+  final DateTime createdAt;
   final String createdBy;
-  final String updatedAt;
+  final DateTime updatedAt;
   final String updatedBy;
   final String deleted;
-  final String deletedAt;
-  final String deletedBy;
+  final DateTime? deletedAt;
+  final String? deletedBy;
 
   PlaceReview({
     required this.id,
@@ -26,8 +26,8 @@ class PlaceReview {
     required this.updatedAt,
     required this.updatedBy,
     required this.deleted,
-    required this.deletedAt,
-    required this.deletedBy,
+    this.deletedAt,
+    this.deletedBy,
     String? userProfilePictureUrl,
   }) : userProfilePictureUrl =
            userProfilePictureUrl ??
