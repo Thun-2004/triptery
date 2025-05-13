@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/place/place.dart';
 import '../pages/place_detail.dart';
+import 'package:get/get.dart';
 
 class DestinationCard extends StatelessWidget {
   final Place place;
@@ -11,12 +12,15 @@ class DestinationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PlaceDetailPage(place: place),
-          ),
-        );
+        Get.to(
+          () => PlaceDetailPage(place: place)
+        ); 
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => PlaceDetailPage(place: place),
+        //   ),
+        // );
       },
       child: Container(
         width: 160,

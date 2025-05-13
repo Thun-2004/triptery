@@ -89,12 +89,14 @@ class _LoginPageState extends State<LoginPage> {
                         try {
                           final res = await SocialAuthService.googleSignIn(); 
                           if (res.user != null) {
+
+                            Get.off(const HomePage()); 
                             // Handle successful sign-in
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const HomePage(),
-                              ),
-                            ); 
+                            // Navigator.of(context).pushReplacement(
+                            //   MaterialPageRoute(
+                            //     builder: (context) => const HomePage(),
+                            //   ),
+                            // ); 
                           } 
                         } catch (e) {
                           // Handle error

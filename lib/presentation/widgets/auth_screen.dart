@@ -9,6 +9,7 @@ import 'package:triptery/services/social_auth.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
+import 'package:get/get.dart';
 import 'dart:io';
 
 class AuthScreen extends StatefulWidget {
@@ -102,9 +103,10 @@ class _AuthScreenState extends State<AuthScreen> {
     supabase.auth.onAuthStateChange.listen((data) {
       final event = data.event;
       if (event == AuthChangeEvent.signedIn) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
+        Get.off(const HomePage()); 
+        // Navigator.of(context).pushReplacement(
+        //   MaterialPageRoute(builder: (context) => const HomePage()),
+        // );
       }
     });
   }

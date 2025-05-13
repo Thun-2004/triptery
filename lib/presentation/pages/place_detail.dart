@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../domain/entities/place/place.dart';
 import '../widgets/place_detail_page/place_review_section.dart';
 import '../widgets/dash_divider.dart';
+import 'package:get/get.dart';
 
 class PlaceDetailPage extends StatelessWidget {
   final Place place;
@@ -29,7 +30,9 @@ class PlaceDetailPage extends StatelessWidget {
                   left: 16,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () => Navigator.pop(context),
+                    // onPressed: () => Navigator.pop(context),
+                    onPressed: () => Get.back(),
+
                   ),
                 ),
                 Positioned(
