@@ -12,6 +12,7 @@ class PlaceDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -23,6 +24,21 @@ class PlaceDetailPage extends StatelessWidget {
                   height: 300,
                   width: double.infinity,
                   fit: BoxFit.cover,
+                ),
+                Container(
+                  height: 300,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.black.withOpacity(0.5),
+                        Colors.black.withOpacity(0.3),
+                        Colors.transparent,
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                  ),
                 ),
                 Positioned(
                   top: 40,
@@ -71,20 +87,41 @@ class PlaceDetailPage extends StatelessWidget {
                     children: [
                       Icon(Icons.star, color: Colors.amber[700], size: 20),
                       const SizedBox(width: 4),
-                      Text('${place.rating}', style: const TextStyle(fontSize: 14, fontFamily: 'Roboto')),
+                      Text(
+                        '${place.rating}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Roboto',
+                        ),
+                      ),
                       const SizedBox(width: 8),
-                      Text('(${place.totalUserRatings} Reviews)', style: const TextStyle(fontSize: 14, fontFamily: 'Roboto')),
+                      Text(
+                        '(${place.totalUserRatings} Reviews)',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Roboto',
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 12),
                   Text(
                     place.description,
-                    style: const TextStyle(fontSize: 14, height: 2, fontFamily: 'Roboto', color: Color(0xff848997)),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      height: 2,
+                      fontFamily: 'Roboto',
+                      color: Color(0xff848997),
+                    ),
                   ),
                   const SizedBox(height: 24),
                   const Text(
                     'Review',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, fontFamily: 'Roboto'),
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto',
+                    ),
                   ),
 
                   const SizedBox(height: 16),

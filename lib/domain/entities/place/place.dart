@@ -1,4 +1,3 @@
-import 'place_review_group.dart';
 
 class Place {
   final String id;
@@ -22,7 +21,6 @@ class Place {
   final DateTime? deletedAt;
   final String? deletedBy;
   final String imageUrl;
-  final List<PlaceReviewGroup> reviewGroups;
 
   Place({
     required this.id,
@@ -46,6 +44,5 @@ class Place {
     required this.deletedAt,
     required this.deletedBy,
     required this.imageUrl,
-    required this.reviewGroups,
   });
 }

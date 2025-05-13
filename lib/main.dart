@@ -12,6 +12,7 @@ import 'package:triptery/l10n/support_locale.dart';
 import 'package:provider/provider.dart';
 import 'package:triptery/presentation/controllers/language_controller.dart';
 import 'package:get/get.dart';
+import 'package:triptery/presentation/pages/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
 
     return 
         GetMaterialApp(
+          scrollBehavior: NoBounceScrollBehavior(),
           //like MaterialApp but with GetX features
           title: 'Global Design Example',
           localizationsDelegates: [
@@ -82,8 +84,15 @@ class MyApp extends StatelessWidget {
               margin: const EdgeInsets.all(8),
             ),
           ),
-          home: const LoginPage(),
+          home: const HomePage(),
         );
       
+  }
+}
+
+class NoBounceScrollBehavior extends ScrollBehavior {
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const ClampingScrollPhysics();
   }
 }
