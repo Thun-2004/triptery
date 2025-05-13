@@ -8,6 +8,7 @@ import 'package:triptery/data/datasources/supabase_client.dart';
 import 'package:triptery/services/social_auth.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
 import 'dart:io';
 
 class AuthScreen extends StatefulWidget {
@@ -46,7 +47,7 @@ class _AuthScreenState extends State<AuthScreen> {
         );
         // Handle successful login
         print("Login successful");
-        return "Login link send via email";
+        return AppLocalizations.of(context)!.loginLinkSend;
       } catch (e) {
         // Handle error
         displayText = "Login error: $e";
@@ -75,7 +76,7 @@ class _AuthScreenState extends State<AuthScreen> {
           fullNameController.text = "";
         });
 
-        return "Sign-up successful";
+        return AppLocalizations.of(context)!.signUpSuccessful;
       } catch (e) {
         print("Sign-up error: $e");
         return "Sign-up error: $e";
@@ -166,7 +167,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Text(
-                                  "Log In",
+                                  AppLocalizations.of(context)!.logIn,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color:
@@ -203,7 +204,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: Text(
-                                  "Sign Up",
+                                  AppLocalizations.of(context)!.signUp,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color:
@@ -227,7 +228,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         children: [
                           const SizedBox(height: 20),
                           Text(
-                            "Full Name",
+                            AppLocalizations.of(context)!.fullName,
                             style: TextStyle(color: Colors.white),
                           ),
                           TextFormField(
@@ -241,7 +242,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               ),
                               filled: true,
                               fillColor: Colors.white,
-                              hintText: 'Full Name',
+                              hintText: AppLocalizations.of(context)!.fullName,
                               contentPadding: const EdgeInsets.symmetric(
                                 vertical: 10,
                                 horizontal: 10,
@@ -253,7 +254,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       : SizedBox.shrink(),
 
                   const SizedBox(height: 20),
-                  Text("Email", style: TextStyle(color: Colors.white)),
+                  Text(AppLocalizations.of(context)!.email, style: TextStyle(color: Colors.white)),
                   TextFormField(
                     controller: emailController,
                     decoration: InputDecoration(
@@ -265,7 +266,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                       filled: true,
                       fillColor: Colors.white,
-                      hintText: 'Email',
+                      hintText: AppLocalizations.of(context)!.email,
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 10,
@@ -277,7 +278,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           !RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                           ).hasMatch(value)) {
-                        return 'Please enter a valid email';
+                        return AppLocalizations.of(context)!.emailError;
                       } else {
                         return null;
                       }
@@ -286,7 +287,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
                   const SizedBox(height: 20),
 
-                  Text("Password", style: TextStyle(color: Colors.white)),
+                  Text(AppLocalizations.of(context)!.password, style: TextStyle(color: Colors.white)),
                   TextFormField(
                     controller: passwordController,
                     obscureText: true,
@@ -296,7 +297,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                       filled: true,
                       fillColor: Colors.white,
-                      hintText: 'Password',
+                      hintText: AppLocalizations.of(context)!.password,
                       contentPadding: const EdgeInsets.symmetric(
                         vertical: 10,
                         horizontal: 10,
@@ -307,7 +308,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           !RegExp(
                             r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^(){}[\]\\/+<>=~_|])[A-Za-z\d@$!%*?&#^(){}[\]\\/+<>=~_|]{8,}$',
                           ).hasMatch(value)) {
-                        return 'at least 8 characters, upper, lower, number, symbol';
+                        return AppLocalizations.of(context)!.passwordError;
                       }
                       return null;
                     },
@@ -337,8 +338,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         onPressed: () {
                           // forgot password
                         },
-                        child: const Text(
-                          "Forgot Password ?",
+                        child: Text(
+                          AppLocalizations.of(context)!.forgotPassword,
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -395,7 +396,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                       ),
                       child: Text(
-                        mode == "signup" ? "Sign Up" : "Login",
+                        mode == "signup" ? AppLocalizations.of(context)!.signUp : AppLocalizations.of(context)!.logIn,
                         style: const TextStyle(
                           fontSize: 16,
                           fontFamily: 'Montserrat',
@@ -406,16 +407,16 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   const SizedBox(height: 20),
                   Row(
-                    children: const [
-                      Expanded(child: Divider(color: Colors.white)),
+                    children: [
+                      const Expanded(child: Divider(color: Colors.white)),
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          "Or login with",
-                          style: TextStyle(color: Colors.white),
+                          AppLocalizations.of(context)!.orLoginWith,
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
-                      Expanded(child: Divider(color: Colors.white)),
+                      const Expanded(child: Divider(color: Colors.white)),
                     ],
                   ),
 
