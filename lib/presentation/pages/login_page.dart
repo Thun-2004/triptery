@@ -3,10 +3,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:triptery/presentation/widgets/auth_screen.dart';
 import 'package:triptery/services/social_auth.dart';
-
+import 'package:triptery/provider/locale_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key}); 
@@ -16,8 +18,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
-  void _openBottomModal(){
+  var localeTH = const Locale("th");
+
+  void _openBottomModal() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -53,15 +56,17 @@ class _LoginPageState extends State<LoginPage> {
                     // Title & Subtitle
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: const [
+                      children: [
                         Text(
-                          "Sign up",
+                          AppLocalizations.of(context)!.hello,
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
+                        // Text(AppLocalizations.of(context)!.hello),
+
                         SizedBox(height: 8),
                         Text(
                           "Login up to access your plan from any device",
@@ -127,6 +132,27 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: const Text(
                         "FACEBOOK",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Montserrat',
+                        ),
+                      ),
+                    ),
+
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<LocaleProvider>().setLocale(localeTH);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF324987),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: const Text(
+                        "Change language to TH",
                         style: TextStyle(
                           fontSize: 16,
                           fontFamily: 'Montserrat',
