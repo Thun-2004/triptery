@@ -3,7 +3,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:twitter_login/twitter_login.dart';
 import 'package:triptery/data/datasources/supabase_client.dart'; 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
