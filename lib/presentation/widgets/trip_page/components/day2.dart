@@ -161,28 +161,28 @@ class _DayState extends State<Day> {
     {
       "name": "Place 1",
       "description": "Description 1",
-      "image": "https://via.placeholder.com/150",
+      "image": "",
     },
-    {
-      "name": "Place 2",
-      "description": "Description 2",
-      "image": "https://via.placeholder.com/150",
-    },
-    {
-      "name": "Place 3",
-      "description": "Description 3",
-      "image": "https://via.placeholder.com/150",
-    },
-    {
-      "name": "Place 4",
-      "description": "Description 4",
-      "image": "https://via.placeholder.com/150",
-    },
-    {
-      "name": "Place 5",
-      "description": "Description 5",
-      "image": "https://via.placeholder.com/150",
-    },
+    // {
+    //   "name": "Place 2",
+    //   "description": "Description 2",
+    //   "image": "",
+    // },
+    // {
+    //   "name": "Place 3",
+    //   "description": "Description 3",
+    //   "image": "",
+    // },
+    // {
+    //   "name": "Place 4",
+    //   "description": "Description 4",
+    //   "image": "",
+    // },
+    // {
+    //   "name": "Place 5",
+    //   "description": "Description 5",
+    //   "image": "",
+    // },
   ];
 
   @override
@@ -255,21 +255,21 @@ class _DayState extends State<Day> {
                       child: Row(
                         children: [
                           Expanded(
-                            child : PlaceCard(
-                                  placeName: places[index]["name"]!,
-                                  placeDescription: places[index]["description"]!,
-                                  placeImage: places[index]["image"]!,
-                                ),
-                            // child: Row (
-                            //   children : [
-                            //     PlaceCard(
+                            // child : PlaceCard(
                             //       placeName: places[index]["name"]!,
                             //       placeDescription: places[index]["description"]!,
                             //       placeImage: places[index]["image"]!,
                             //     ),
-                            //     RouteDropdown()
-                            //   ]
-                            // )
+                            child: Column (
+                              children : [
+                                PlaceCard(
+                                  placeName: places[index]["name"]!,
+                                  placeDescription: places[index]["description"]!,
+                                  placeImage: places[index]["image"]!,
+                                ),
+                                RouteDropdown()
+                              ]
+                            )
                           ),
                         ],
                       ),

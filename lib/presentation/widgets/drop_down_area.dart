@@ -19,22 +19,33 @@ class DropDownArea extends StatefulWidget {
 class _DropDownAreaState extends State<DropDownArea> {
   static const Duration duration = Duration(milliseconds: 300);
   static const Curve curve = Curves.easeIn;
+  bool _isExpanded = false; 
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Card(
+    return 
+       Card(
         margin: const EdgeInsets.all(16),
-        child: Center(
-          child: AnimatedSizeExample(
-            duration: duration, 
-            curve: curve,
-            header: widget.header,
-            body: widget.body,
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min, 
+          children : [
+            InkWell(
+              onTap: (){
+                setState(() {
+                  _isExpanded = !_isExpanded; 
+                }); 
+              },
+              child: widget.header,
+            ), 
+            AnimatedContainer(
+              duration: duration,
+              curve: curve,
+              height: _isExpanded ? 200 : 0, // Adjust height based on expansion
+              child: _isExpanded ? widget.body : Container(), // Show body only when expanded
+            )
+          ]
         ),
-      ),
-    );
+      );
   }
 }
 

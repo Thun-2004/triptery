@@ -14,25 +14,32 @@ class _RouteDropdownState extends State<RouteDropdown> {
     return DropDownArea(
       header: RouteDropdownHeader(),
       body: RouteDropdownBody(),
+
     );
   }
 }
 
 class RouteDropdownHeader extends StatelessWidget {
+
+  const RouteDropdownHeader({super.key});
+  
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
+
+      width: double.infinity,
+      height: 60,
+
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             children: [
-              const Icon(Icons.arrow_back),
-              // const SizedBox(width: 8),
               Text('Transportation mode'),
             ],
           ),
+          const Icon(Icons.keyboard_arrow_down)
         ],
       ),
     );
@@ -57,18 +64,22 @@ class _RouteDropdownBodyState extends State<RouteDropdownBody> {
 
   @override
   Widget build(BuildContext context) {
-    return DropDownArea(
-      header: RouteDropdownHeader(),
-      body: Column(
+    return Container(
+      padding: const EdgeInsets.all(16),
+      width: double.infinity,
+      constraints: const BoxConstraints(maxHeight: 300),
+      
+      child: Column(
         children: List.generate(routes.length, (i) {
           return ListTile(
-            title: Text('$routes[i]["mode"]'),
+            title: Text(routes[i]['mode']!),
+            subtitle: Text("${routes[i]["time"]!} · ${routes[i]["price"]!}"),
             leading: Radio<int>(
               value: i,
               groupValue: selected,
               onChanged: (int? value) {
                 setState(() {
-                  selected = i;
+                  selected = value!;
                 });
               },
             ),
@@ -78,3 +89,5 @@ class _RouteDropdownBodyState extends State<RouteDropdownBody> {
     );
   }
 }
+
+

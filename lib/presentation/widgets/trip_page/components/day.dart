@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/widgets/trip_page/components/place_card.dart';
+import 'package:triptery/presentation/widgets/trip_page/components/route_dropdown.dart';
 
 class Day extends StatefulWidget {
   const Day({super.key});
@@ -18,26 +19,26 @@ class _DayState extends State<Day> {
       "description": "Description 1",
       "image": "https://via.placeholder.com/150",
     },
-    {
-      "name": "Place 2",
-      "description": "Description 2",
-      "image": "https://via.placeholder.com/150",
-    },
-    {
-      "name": "Place 3",
-      "description": "Description 3",
-      "image": "https://via.placeholder.com/150",
-    },
-    {
-      "name": "Place 4",
-      "description": "Description 4",
-      "image": "https://via.placeholder.com/150",
-    },
-    {
-      "name": "Place 5",
-      "description": "Description 5",
-      "image": "https://via.placeholder.com/150",
-    },
+    // {
+    //   "name": "Place 2",
+    //   "description": "Description 2",
+    //   "image": "https://via.placeholder.com/150",
+    // },
+    // {
+    //   "name": "Place 3",
+    //   "description": "Description 3",
+    //   "image": "https://via.placeholder.com/150",
+    // },
+    // {
+    //   "name": "Place 4",
+    //   "description": "Description 4",
+    //   "image": "https://via.placeholder.com/150",
+    // },
+    // {
+    //   "name": "Place 5",
+    //   "description": "Description 5",
+    //   "image": "https://via.placeholder.com/150",
+    // },
   ];
 
   @override
