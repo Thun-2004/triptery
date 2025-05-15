@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:triptery/presentation/widgets/trip_page/components/day.dart';
+import 'package:triptery/presentation/widgets/trip_page/components/day2.dart';
 
 class DayList extends StatefulWidget {
   const DayList({super.key});

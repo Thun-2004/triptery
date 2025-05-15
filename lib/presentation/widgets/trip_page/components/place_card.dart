@@ -26,25 +26,26 @@ class PlaceCard extends StatelessWidget {
             ),
             child: CircleAvatar(
               backgroundImage: NetworkImage(placeImage),
-              radius: 50,
+              radius: 25,
             ),
           ),
           const SizedBox(width: 10),
           Flex(
             direction: Axis.vertical,
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 placeName,
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 5),
               Text(
                 placeDescription,
-                style: const TextStyle(fontSize: 16, color: Colors.grey),
+                style: const TextStyle(fontSize: 13, color: Colors.grey),
               ),
             ],
           ),
