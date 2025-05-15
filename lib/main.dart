@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:triptery/l10n/support_locale.dart';
 import 'package:provider/provider.dart';
 import 'package:triptery/presentation/controllers/language_controller.dart';
+import 'package:triptery/presentation/pages/trip/trip_page.dart'; 
 import 'package:get/get.dart';
 
 Future<void> main() async {
@@ -82,8 +83,9 @@ class MyApp extends StatelessWidget {
               margin: const EdgeInsets.all(8),
             ),
           ),
-          home: const LoginPage(),
-        );
+          // home: const LoginPage(),
+          home: const TripPage(),
+        );  
       
   }
 }

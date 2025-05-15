@@ -1,0 +1,16 @@
+
+UI components used in multiple places:
+
+CustomButton
+
+CustomTextField
+
+CustomDivider
+
+ReusableCard
+
+CustomSvgLogo (as you have)
+
+LanguageSelectorDropdown
+
+Stateless or lightly stateful widgets that don’t represent an entire screen or modal.
