@@ -25,7 +25,7 @@ class _DropDownAreaState extends State<DropDownArea> {
   Widget build(BuildContext context) {
     return 
        Card(
-        margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.all(8),
         child: Column(
           mainAxisSize: MainAxisSize.min, 
           children : [
@@ -37,10 +37,10 @@ class _DropDownAreaState extends State<DropDownArea> {
               },
               child: widget.header,
             ), 
-            AnimatedContainer(
+            AnimatedSize(
               duration: duration,
               curve: curve,
-              height: _isExpanded ? 200 : 0, // Adjust height based on expansion
+              // height: _isExpanded ? 200 : 0, // Adjust height based on expansion
               child: _isExpanded ? widget.body : Container(), // Show body only when expanded
             )
           ]
@@ -85,18 +85,17 @@ class _AnimatedSizeExampleState extends State<AnimatedSizeExample> {
         child: AnimatedSize(
           duration: widget.duration,
           curve: widget.curve,
-          child: AnimatedContainer(
+          child: AnimatedSize(
             // height: _isSelected ? 250.0 : 100,
             duration: widget.duration,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-
                 widget.header,
-
                 _isSelected
-                    ? Expanded( 
+                    ? Expanded(
                     child: widget.body) : Container()
               ]
             ),

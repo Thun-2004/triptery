@@ -22,7 +22,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
 class RouteDropdownHeader extends StatelessWidget {
 
   const RouteDropdownHeader({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,17 +60,21 @@ class _RouteDropdownBodyState extends State<RouteDropdownBody> {
     {"mode": "Car -> Train -> Bus", "time": "21mins", "price": "100THB"},
     {"mode": "Bus -> Train", "time": "16mins", "price": "140THB"},
     {"mode": "Train -> Walk", "time": "22mins", "price": "130THB"},
+    {"mode": "Train -> Walk", "time": "22mins", "price": "130THB"},
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      width: double.infinity,
-      constraints: const BoxConstraints(maxHeight: 300),
+    return Column(
+      // padding: const EdgeInsets.all(16),
+      // width: double.infinity,
+      // constraints: const BoxConstraints(maxHeight: 300),
+      mainAxisSize: MainAxisSize.min,
       
-      child: Column(
-        children: List.generate(routes.length, (i) {
+      // child: Column(
+      //   mainAxisSize : MainAxisSize.min,
+      //   children: 
+       children : List.generate(routes.length, (i) {
           return ListTile(
             title: Text(routes[i]['mode']!),
             subtitle: Text("${routes[i]["time"]!} · ${routes[i]["price"]!}"),
@@ -82,11 +86,10 @@ class _RouteDropdownBodyState extends State<RouteDropdownBody> {
                   selected = value!;
                 });
               },
-            ),
+          )
           );
         }),
-      ),
-    );
+      );
   }
 }
 

@@ -163,11 +163,11 @@ class _DayState extends State<Day> {
       "description": "Description 1",
       "image": "",
     },
-    // {
-    //   "name": "Place 2",
-    //   "description": "Description 2",
-    //   "image": "",
-    // },
+    {
+      "name": "Place 2",
+      "description": "Description 2",
+      "image": "",
+    },
     // {
     //   "name": "Place 3",
     //   "description": "Description 3",
