@@ -1,104 +1,71 @@
 {
-  "html_attributions": [],
-  "result": {
-    "address_components": [
-      {
-        "long_name": "1600",
-        "short_name": "1600",
-        "types": ["street_number"]
+  "places": [
+    {
+      "place_id": "place_1",
+      "name": "Wat Arun",
+      "formatted_address": "Bangkok Yai, Bangkok, Thailand",
+      "description": "A famous temple on the west bank of the Chao Phraya River, known for its stunning sunset views and riverside beauty.",
+      "geometry": {
+        "location": { "lat": 13.7437, "lng": 100.4889 }
       },
-      {
-        "long_name": "Amphitheatre Parkway",
-        "short_name": "Amphitheatre Pkwy",
-        "types": ["route"]
+      "rating": 4.7,
+      "user_ratings_total": 1050,
+      "opening_hours": {
+        "weekday_text": [
+          "Monday: 8:00 AM – 6:00 PM",
+          "Tuesday: 8:00 AM – 6:00 PM"
+        ]
       },
-      {
-        "long_name": "Mountain View",
-        "short_name": "Mountain View",
-        "types": ["locality", "political"]
-      },
-      {
-        "long_name": "Santa Clara County",
-        "short_name": "Santa Clara County",
-        "types": ["administrative_area_level_2", "political"]
-      },
-      {
-        "long_name": "California",
-        "short_name": "CA",
-        "types": ["administrative_area_level_1", "political"]
-      },
-      {
-        "long_name": "United States",
-        "short_name": "US",
-        "types": ["country", "political"]
-      },
-      {
-        "long_name": "94043",
-        "short_name": "94043",
-        "types": ["postal_code"]
-      }
-    ],
-    "formatted_address": "1600 Amphitheatre Parkway, Mountain View, CA 94043, USA",
-    "formatted_phone_number": "(650) 253-0000",
-    "geometry": {
-      "location": {
-        "lat": 37.4224764,
-        "lng": -122.0842499
-      },
-      "viewport": {
-        "northeast": {
-          "lat": 37.4238253802915,
-          "lng": -122.0829009197085
+      "address_components": [
+        { "long_name": "Bangkok", "types": ["locality"] },
+        { "short_name": "TH", "types": ["country"] }
+      ],
+      "reviews": [
+        {
+          "author_name": "Alice",
+          "rating": 5,
+          "text": "The temple is stunning and peaceful.",
+          "profile_photo_url": "https://example.com/photo1.jpg",
+          "relative_time_description": "3 days ago"
         },
-        "southwest": {
-          "lat": 37.4211274197085,
-          "lng": -122.0855988802915
+        {
+          "author_name": "Bob",
+          "rating": 4,
+          "text": "Great views at sunset.",
+          "profile_photo_url": "https://example.com/photo2.jpg",
+          "relative_time_description": "1 week ago"
         }
-      }
-    },
-    "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png",
-    "name": "Googleplex",
-    "opening_hours": {
-      "open_now": true,
-      "weekday_text": [
-        "Monday: 6:00 AM – 10:00 PM",
-        "Tuesday: 6:00 AM – 10:00 PM",
-        "Wednesday: 6:00 AM – 10:00 PM",
-        "Thursday: 6:00 AM – 10:00 PM",
-        "Friday: 6:00 AM – 10:00 PM",
-        "Saturday: 6:00 AM – 10:00 PM",
-        "Sunday: 6:00 AM – 10:00 PM"
       ]
     },
-    "photos": [
-      {
-        "height": 3024,
-        "html_attributions": [
-          "<a href=\"https://maps.google.com/maps/contrib/104066891898402127786\">John Doe</a>"
-        ],
-        "photo_reference": "CmRaAAAA...",
-        "width": 4032
-      }
-    ],
-    "place_id": "ChIJj61dQgK6j4AR4GeTYWZsKWw",
-    "rating": 4.6,
-    "user_ratings_total": 1102,
-    "reviews": [
-      {
-        "author_name": "Jane Smith",
-        "author_url": "https://www.google.com/maps/contrib/123456789012345678901",
-        "language": "en",
-        "profile_photo_url": "https://example.com/photo.jpg",
-        "rating": 5,
-        "relative_time_description": "a week ago",
-        "text": "Great place to work and visit.",
-        "time": 1694200000
-      }
-    ],
-    "types": ["establishment", "point_of_interest"],
-    "url": "https://maps.google.com/?cid=10281119596374313554",
-    "website": "https://about.google/locations/mountain-view/",
-    "utc_offset_minutes": -480
-  },
-  "status": "OK"
+    {
+      "place_id": "place_2",
+      "name": "Railay Beach",
+      "formatted_address": "Krabi, Thailand",
+      "description": "A stunning beach only accessible by boat, surrounded by limestone cliffs and caves.",
+      "geometry": {
+        "location": { "lat": 8.0078, "lng": 98.8396 }
+      },
+      "rating": 4.9,
+      "user_ratings_total": 1200,
+      "opening_hours": {
+        "weekday_text": [
+          "Monday: 6:00 AM – 7:00 PM",
+          "Tuesday: 6:00 AM – 7:00 PM"
+        ]
+      },
+      "address_components": [
+        { "long_name": "Krabi", "types": ["locality"] },
+        { "short_name": "TH", "types": ["country"] }
+      ],
+      "reviews": [
+        {
+          "author_name": "Carla",
+          "rating": 5,
+          "text": "Paradise! Perfect for relaxing or rock climbing.",
+          "profile_photo_url": "https://example.com/photo3.jpg",
+          "relative_time_description": "2 days ago"
+        }
+      ]
+    }
+  ]
 }
