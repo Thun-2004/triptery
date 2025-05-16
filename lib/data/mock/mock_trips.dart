@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../domain/entities/trip/trip.dart';
 
 
-final List<Trip> mockPlaces = [
+final List<Trip> mockTrips = [
   Trip(
     id: "1",
     planId: "1",

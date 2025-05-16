@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class PlaceCard extends StatelessWidget {
   const PlaceCard({
     super.key,
+    required this.placeId, 
     required this.placeName,
     required this.placeDescription,
     required this.placeImage,
   });
 
+  final String placeId;
   final String placeName;
   final String placeDescription;
   final String placeImage;
@@ -36,25 +38,31 @@ class PlaceCard extends StatelessWidget {
             )
           ),
           const SizedBox(width: 10),
-          Flex(
-            direction: Axis.vertical,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                placeName,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+          Expanded(  // Wrap in Expanded to prevent overflow
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  placeName,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,  // Add ellipsis for long text
+                  maxLines: 1,  // Limit to one line
                 ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                placeDescription,
-                style: const TextStyle(fontSize: 13, color: Colors.grey),
-              ),
-            ],
+                const SizedBox(height: 5),
+                Text(
+                  placeDescription,
+                  style: const TextStyle(fontSize: 13, color: Colors.grey),
+                  overflow: TextOverflow.ellipsis,  // Add ellipsis for long text
+                  maxLines: 2,  // Limit to two lines
+                ),
+              ],
+            ),
           ),
+          
         ],
       ),
       )
