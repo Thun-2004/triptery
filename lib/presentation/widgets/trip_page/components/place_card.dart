@@ -15,19 +15,25 @@ class PlaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(10),
+      // margin: const EdgeInsets.all(20),
       elevation: 0,
-      child: Row(
+      margin: EdgeInsets.symmetric(vertical: 0),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
         children: [
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
               border: Border.all(color: Colors.white, width: 2),
             ),
-            child: CircleAvatar(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: CircleAvatar(
               backgroundImage: NetworkImage(placeImage),
               radius: 25,
-            ),
+            )
+            )
           ),
           const SizedBox(width: 10),
           Flex(
@@ -51,6 +57,7 @@ class PlaceCard extends StatelessWidget {
           ),
         ],
       ),
+      )
     );
   }
 }

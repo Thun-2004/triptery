@@ -185,10 +185,11 @@ class _DayState extends State<Day> {
     // },
   ];
 
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(16),
+    return Container(
+      // margin: const EdgeInsets.all(16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -211,18 +212,12 @@ class _DayState extends State<Day> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const Text("Thursday, 12th October 2023"),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        _isExpanded ? "Tap to collapse" : "Tap to expand",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
-                    ],
-                  ),
+                  Row(children: [
+                    const Text("Thursday, 12th October 2023"),
+                    const Spacer(),
+                    Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+                  ],)
+                
                 ],
               ),
             ),
@@ -262,12 +257,24 @@ class _DayState extends State<Day> {
                             //     ),
                             child: Column (
                               children : [
-                                PlaceCard(
-                                  placeName: places[index]["name"]!,
-                                  placeDescription: places[index]["description"]!,
-                                  placeImage: places[index]["image"]!,
-                                ),
-                                RouteDropdown()
+                                Container(
+                                  margin: EdgeInsets.all(0),
+                                  child: 
+                                    Column(
+                                      children: [
+                                        PlaceCard(
+                                          placeName: places[index]["name"]!,
+                                          placeDescription: places[index]["description"]!,
+                                          placeImage: places[index]["image"]!,
+                                        ),
+                                        if (index == places.length - 1)
+                                          const SizedBox(height: 10)
+                                        else
+                                          RouteDropdown()
+                                      ],
+                                    )
+                                )
+                                
                               ]
                             )
                           ),
@@ -283,6 +290,5 @@ class _DayState extends State<Day> {
     );
   }
 }
-
 
 

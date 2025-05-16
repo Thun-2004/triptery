@@ -5,11 +5,17 @@ import 'package:flutter/material.dart';
 class DropDownArea extends StatefulWidget {
   final Widget header; 
   final Widget body; 
+  final int elevation; 
+  final int verticalMargin; 
+  final int horizontalMargin; 
 
   const DropDownArea({
     super.key, 
     required this.header,
     required this.body,
+    required this.elevation,
+    this.verticalMargin = 8,
+    this.horizontalMargin = 8,
   });
 
   @override
@@ -25,7 +31,10 @@ class _DropDownAreaState extends State<DropDownArea> {
   Widget build(BuildContext context) {
     return 
        Card(
-        margin: const EdgeInsets.all(8),
+        elevation: widget.elevation.toDouble(),
+        margin: EdgeInsets.symmetric(horizontal: widget.horizontalMargin.toDouble(), vertical: widget.verticalMargin.toDouble()),
+        // margin: const EdgeInsets.all(8),
+        color: Colors.white,
         child: Column(
           mainAxisSize: MainAxisSize.min, 
           children : [
@@ -33,14 +42,13 @@ class _DropDownAreaState extends State<DropDownArea> {
               onTap: (){
                 setState(() {
                   _isExpanded = !_isExpanded; 
-                }); 
+                });
               },
               child: widget.header,
             ), 
             AnimatedSize(
               duration: duration,
               curve: curve,
-              // height: _isExpanded ? 200 : 0, // Adjust height based on expansion
               child: _isExpanded ? widget.body : Container(), // Show body only when expanded
             )
           ]
