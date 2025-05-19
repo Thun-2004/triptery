@@ -1,26 +1,53 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/place/place.dart';
+import '../../domain/entities/place/place_review_group.dart';
 import '../widgets/place_detail_page/place_review_section.dart';
 import '../widgets/dash_divider.dart';
+import '../../domain/usecases/get_review_groups_by_place_id.dart';
+import '../../domain/repositories/place_repository_impl.dart'; // or Mock
 
-class PlaceDetailPage extends StatelessWidget {
+class PlaceDetailPage extends StatefulWidget {
   final Place place;
 
   const PlaceDetailPage({super.key, required this.place});
 
   @override
+  State<PlaceDetailPage> createState() => _PlaceDetailPageState();
+}
+
+class _PlaceDetailPageState extends State<PlaceDetailPage> {
+  List<PlaceReviewGroup> reviewGroups = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadReviewGroups();
+  }
+
+  Future<void> _loadReviewGroups() async {
+    final repo = PlaceRepositoryImpl();
+    final groups = await GetPlaceReviewGroupsByPlaceId(repo).execute(widget.place.id);
+
+    setState(() {
+      reviewGroups = groups;
+      isLoading = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🔺 Top image with overlay
+            // 🔺 Top image with gradient overlay
             Stack(
               children: [
                 Image.network(
-                  place.imageUrl ?? '',
+                  widget.place.imageUrl,
                   height: 300,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -56,7 +83,7 @@ class PlaceDetailPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        place.name,
+                        widget.place.name,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 28,
@@ -65,7 +92,7 @@ class PlaceDetailPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${place.address}, ${place.city}',
+                        '${widget.place.address}, ${widget.place.city}',
                         style: const TextStyle(
                           color: Color(0xffffa000),
                           fontSize: 14,
@@ -87,48 +114,27 @@ class PlaceDetailPage extends StatelessWidget {
                     children: [
                       Icon(Icons.star, color: Colors.amber[700], size: 20),
                       const SizedBox(width: 4),
-                      Text(
-                        '${place.rating}',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Roboto',
-                        ),
-                      ),
+                      Text('${widget.place.rating}', style: const TextStyle(fontSize: 14)),
                       const SizedBox(width: 8),
-                      Text(
-                        '(${place.totalUserRatings} Reviews)',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontFamily: 'Roboto',
-                        ),
-                      ),
+                      Text('(${widget.place.totalUserRatings} Reviews)', style: const TextStyle(fontSize: 14)),
                     ],
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    place.description,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      height: 2,
-                      fontFamily: 'Roboto',
-                      color: Color(0xff848997),
-                    ),
+                    widget.place.description,
+                    style: const TextStyle(fontSize: 14, height: 2, color: Color(0xff848997)),
                   ),
                   const SizedBox(height: 24),
-                  const Text(
-                    'Review',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Roboto',
-                    ),
-                  ),
-
+                  const Text('Review', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 16),
-                  DashedDivider(),
+                  const DashedDivider(),
 
-                  // 🔄 Multiple review groups
-                  PlaceReviewSection(reviewGroups: place.reviewGroups),
+                  isLoading
+                      ? const Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      : PlaceReviewSection(reviewGroups: reviewGroups),
                 ],
               ),
             ),

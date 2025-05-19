@@ -5,25 +5,22 @@ import 'package:uuid/uuid.dart';
 import '../entities/place/place.dart';
 import '../repositories/to_place.dart';
 
-class GetTopPlacesFromMock {
+class GetPopularActivitiesFromMock {
   final _uuid = const Uuid();
 
   Future<List<Place>> execute({int limit = 3}) async {
-    // 1. Load JSON file
     final jsonString = await rootBundle.loadString('lib/data/mock/mock_multiple_places.json');
     final Map<String, dynamic> decoded = jsonDecode(jsonString);
     final List<dynamic> rawPlaces = decoded['places'];
 
-    // 2. Convert each JSON result to a Place
     final List<Place> allPlaces = rawPlaces.map((placeJson) {
       final placeId = _uuid.v4();
       return mapGoogleJsonToPlace(placeJson, placeId);
     }).toList();
 
-    // 3. Sort by rating descending
-    allPlaces.sort((a, b) => b.rating.compareTo(a.rating));
+    // Sort by popularity (user_ratings_total)
+    allPlaces.sort((a, b) => b.totalUserRatings.compareTo(a.totalUserRatings));
 
-    // 4. Return top N
     return allPlaces.take(limit).toList();
   }
 }
