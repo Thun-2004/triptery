@@ -14,11 +14,13 @@ List<PlaceReview> mapGoogleJsonToPlaceReviews({
       id: uuid.v4(),
       placeReviewGroupId: groupId,
       username: r['author_name'] ?? 'Anonymous',
-      userProfilePictureUrl: r['profile_photo_url'],
+      userProfilePictureUrl: r['profile_photo_url'] ?? 'https://www.gravatar.com/avatar/placeholder?d=mp&s=200',
       rating: (r['rating'] ?? 0).toDouble(),
       description: r['text'] ?? '',
       approved: 'true',
-      createdAt: DateTime.now(),
+      createdAt: r['time'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(r['time'] * 1000)
+          : DateTime.now(),
       createdBy: 'admin',
       updatedAt: DateTime.now(),
       updatedBy: 'admin',

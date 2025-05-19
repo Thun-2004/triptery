@@ -4,9 +4,9 @@ Place mapGoogleJsonToPlace(Map<String, dynamic> result, String generatedId) {
   String extractFromAddress(List components, String targetType, {bool useShort = false}) {
     final match = components.firstWhere(
       (c) => (c['types'] as List).contains(targetType),
-      orElse: () => null,
+      orElse: () => {},
     );
-    if (match == null) return '';
+    if (match.isEmpty) return '';
     return useShort ? match['short_name'] : match['long_name'];
   }
 
@@ -15,8 +15,8 @@ Place mapGoogleJsonToPlace(Map<String, dynamic> result, String generatedId) {
   return Place(
     id: generatedId,
     googlePlaceId: result['place_id'],
-    name: result['name'],
-    description: '',
+    name: result['name'] ?? 'Unknown Place',
+    description: result['vicinity'] ?? '',
     openingTime: weekdayText != null && weekdayText.isNotEmpty
         ? weekdayText.first.split(": ").last.split("–").first.trim()
         : '',
@@ -27,7 +27,7 @@ Place mapGoogleJsonToPlace(Map<String, dynamic> result, String generatedId) {
     longitude: result['geometry']['location']['lng'],
     rating: (result['rating'] ?? 0).toDouble(),
     totalUserRatings: result['user_ratings_total'] ?? 0,
-    address: result['formatted_address'],
+    address: result['formatted_address'] ?? '',
     city: extractFromAddress(result['address_components'], 'locality'),
     countryCode: extractFromAddress(result['address_components'], 'country', useShort: true),
     createdAt: DateTime.now(),
@@ -37,6 +37,8 @@ Place mapGoogleJsonToPlace(Map<String, dynamic> result, String generatedId) {
     deleted: false,
     deletedAt: null,
     deletedBy: null,
-    imageUrl: '', // Optional: handle photos here if needed
+    imageUrl: result['photos'] != null && result['photos'].isNotEmpty
+        ? 'https://example.com/static-photo.jpg' // Mock or real URL
+        : 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg',
   );
 }

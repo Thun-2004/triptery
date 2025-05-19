@@ -8,22 +8,13 @@ import '../repositories/to_place.dart';
 class GetTopPlacesFromMock {
   final _uuid = const Uuid();
 
-  Future<List<Place>> execute({int limit = 3}) async {
-    // 1. Load JSON file
-    final jsonString = await rootBundle.loadString('lib/data/mock/mock_response.json');
-    final Map<String, dynamic> decoded = jsonDecode(jsonString);
-    final List<dynamic> rawPlaces = decoded['places'];
+Future<List<Place>> execute({int limit = 3}) async {
+  final jsonString = await rootBundle.loadString('lib/data/mock/mock_response.json');
+  final Map<String, dynamic> decoded = jsonDecode(jsonString);
+  final placeId = _uuid.v4();
 
-    // 2. Convert each JSON result to a Place
-    final List<Place> allPlaces = rawPlaces.map((placeJson) {
-      final placeId = _uuid.v4();
-      return mapGoogleJsonToPlace(placeJson, placeId);
-    }).toList();
+  final place = mapGoogleJsonToPlace(decoded['result'], placeId);
+  return [place]; // Return as a list for compatibility
+}
 
-    // 3. Sort by rating descending
-    allPlaces.sort((a, b) => b.rating.compareTo(a.rating));
-
-    // 4. Return top N
-    return allPlaces.take(limit).toList();
-  }
 }

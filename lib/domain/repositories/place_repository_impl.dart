@@ -55,7 +55,7 @@ class PlaceRepositoryImpl implements PlaceRepository {
     final result = _json!['result'];
 
     return mapGoogleJsonToPlaceReviews(
-      rawReviews: result['reviews'],
+      rawReviews: result['reviews'] ?? [],
       groupId: groupId,
     );
   }

@@ -57,7 +57,7 @@ class _PlaceReviewSectionState extends State<PlaceReviewSection> {
                 children: [
                   Image.asset(group.companyLogo, width: 24, height: 24),
                   const SizedBox(width: 8),
-                  Text('${group.companyName} Reviews', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Text(group.companyName, style: const TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
               isLoading
