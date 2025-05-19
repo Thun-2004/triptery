@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:triptery/presentation/widgets/trip_page/components/day2.dart';
+import 'package:triptery/presentation/widgets/trip_page/components/day.dart';
 import 'package:triptery/data/mock/mock_trips.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 
