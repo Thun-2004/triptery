@@ -1,9 +1,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:triptery/presentation/widgets/auth_screen.dart';
 import 'package:triptery/services/social_auth.dart';

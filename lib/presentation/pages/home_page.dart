@@ -8,7 +8,7 @@ import '../../domain/usecases/get_top_places.dart';
 import '../../domain/usecases/get_popular_activities.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -26,8 +26,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> loadPlaces() async {
-    final top = await GetTopPlacesFromMock().execute(limit: 5);
-    final popular = await GetPopularActivitiesFromMock().execute(limit: 5);
+    final top = await GetTopPlacesFromMock().execute(limit: 3);
+    final popular = await GetPopularActivitiesFromMock().execute(limit: 3);
 
     setState(() {
       topBangkokTours = top;

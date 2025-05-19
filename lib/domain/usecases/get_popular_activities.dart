@@ -9,7 +9,7 @@ class GetPopularActivitiesFromMock {
   final _uuid = const Uuid();
 
   Future<List<Place>> execute({int limit = 3}) async {
-    final jsonString = await rootBundle.loadString('lib/data/mock/mock_multiple_places.json');
+    final jsonString = await rootBundle.loadString('lib/data/mock/mock_response.json');
     final Map<String, dynamic> decoded = jsonDecode(jsonString);
     final List<dynamic> rawPlaces = decoded['places'];
 
