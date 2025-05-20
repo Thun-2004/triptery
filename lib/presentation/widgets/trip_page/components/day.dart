@@ -121,8 +121,6 @@ class _DayState extends State<Day> {
    
       _recalculateAllRoutes();
 
-      // choices = findRouteOptions(newIndex, oldIndex);
-
       print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
     });
   }
@@ -316,6 +314,11 @@ class _DayState extends State<Day> {
 
                       onReorder: _handleReorder,
                       itemBuilder: (context, index) {
+                         List<Map<String, String>> routeOptions = index < places2.length - 1 && 
+                            places2[index].placeId != null && 
+                            places2[index + 1].placeId != null
+                            ? findRouteOptions(places2[index].placeId!, places2[index + 1].placeId!)
+                            : [];
                         return Padding(
                           key: ValueKey('place-$index'),
                           padding: const EdgeInsets.only(bottom: 8.0),
@@ -369,12 +372,12 @@ class _DayState extends State<Day> {
                                               routes[index].day == widget.day && places2[index].placeId != null && places2[index+1].placeId != null)
                                             RouteDropdown(
                                               key: ValueKey(
-                                                'route-${_selectedIndex == index ? "selected" : "normal"}-$index',
-                                              ),
-                                              choices: findRouteOptions(
-                                                places2[index].placeId!,
-                                                places2[index + 1].placeId!,
-                                              ),
+                                                'route-${places2[index].placeId}-${places2[index+1].placeId}-$index',
+                                              ), 
+                                              // key: ValueKey(
+                                              //   'route-${_selectedIndex == index ? "selected" : "normal"}-$index',
+                                              // ),
+                                              choices: routeOptions,
                                               pastChoice:
                                                   _selectedIndex == index
                                                       ? "Select route mode"
