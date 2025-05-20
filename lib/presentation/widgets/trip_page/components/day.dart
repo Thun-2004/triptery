@@ -87,98 +87,146 @@ class _DayState extends State<Day> {
       "time": "25mins",
       "price": "130THB",
     },
+    {
+      //dest : placeId
+      "Dest1": "1",
+      "Dest2": "3",
+      "mode": "Walk -> Bus",
+      "time": "2mins",
+      "price": "10THB",
+    },
   ];
 
   void _onCardSelected(int index) {
     setState(() {
-      // If tapping the same card, toggle its selection
       if (_selectedIndex == index) {
         _selectedIndex = -1;
       } else {
-        // Otherwise, select the new card
         _selectedIndex = index;
       }
+      _handleReorder; 
     });
-
-    if (_selectedIndex != -1 && _selectedIndex < places2.length) {
-      _recalculateRouteMode(_selectedIndex);
-    }
-  }
-
-  void _recalculateRouteMode(int index) {
-    if (index < routes.length) {
-      // Get available route options
-      List<Map<String, String>> options = findRouteOptions(
-        places2[index].placeId!,
-        places2[index + 1].placeId!,
-      );
-
-      // Log available options
-      print('Available route options: $options');
-
-      // Here you would update the route mode based on selection
-      // For example, you might set it to the first available option
-      if (options.isNotEmpty) {
-        setState(() {
-          // Update the route mode in yoxur data model
-          // routes[index].routeMode = options[0]['mode'];
-          print('Selected route mode: ${options[0]['mode']}');
-        });
-      }
-    }
   }
 
   void _handleReorder(int oldIndex, int newIndex) {
     setState(() {
-      // Adjust newIndex if needed
       if (oldIndex < newIndex) {
         newIndex -= 1;
       }
-
-      // Move the place
+      //swap place
       final Trip item = places2.removeAt(oldIndex);
       places2.insert(newIndex, item);
 
-      // Reset selection
       _selectedIndex = -1;
-
-      // Recalculate all routes that were affected by the reordering
+   
       _recalculateAllRoutes();
+
+      // choices = findRouteOptions(newIndex, oldIndex);
+
+      print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
     });
   }
 
+  // void _recalculateAllRoutes() {
+  //   // routes.clear();
+    
+  //   for (int i = 0; i < places2.length - 1; i++) {
+  //     if (places2[i].placeId != null && places2[i + 1].placeId != null) {
+  //       routes[i] = Trip(
+  //         id: places2[i].id,
+  //         planId: places2[i].planId,
+  //         day: widget.day,
+  //         type: TripType.route,
+  //         placeId: null,
+  //         placeName: null,
+  //         placeDescription: null,
+  //         placeImageUrl: null,
+  //         arrivalTime: null,
+  //         routeMode: RouteMode.unselected,
+  //         routeFrom: places2[i].placeId,
+  //         routeTo: places2[i + 1].placeId,
+  //         routeTotalTime: null,
+  //         routeTotalCost: null,
+  //         routeTotalDistance: null,
+  //         routeDistance: null,
+  //         routeNote: null,
+  //         note: null,
+  //       );
+  //     }
+  //   }
+    
+  //   // Force UI update
+  //   // setState(() {});
+  // }
   void _recalculateAllRoutes() {
-    print('Recalculating all routes after reordering');
-
-    // Loop through all places except the last one
+  // Calculate how many routes we should have based on places
+    int expectedRouteCount = 0;
     for (int i = 0; i < places2.length - 1; i++) {
-      // Find route options between current place and next place
-      List<Map<String, String>> options = findRouteOptions(
-        places2[i].placeId!,
-        places2[i + 1].placeId!,
-      );
-
-      print(
-        'Route options between ${places2[i].placeName} and ${places2[i + 1].placeName}: $options',
-      );
-
-      // Update route if options exist
-      if (options.isNotEmpty && i < routes.length) {
-        // Here you would update your data model
-        // For now, we'll just print the selected route
-        print('Selected route: ${options[0]['mode']}');
+      if (places2[i].placeId != null && places2[i + 1].placeId != null) {
+        expectedRouteCount++;
       }
     }
-  }
+    
+    // Resize routes list if needed
+    if (routes.length > expectedRouteCount) {
+      routes = routes.sublist(0, expectedRouteCount);
+    }
+    
+    // Update existing routes or add new ones
+    int routeIndex = 0;
+    for (int i = 0; i < places2.length - 1; i++) {
+      if (places2[i].placeId != null && places2[i + 1].placeId != null) {
+        // Create or update route
+        if (routeIndex < routes.length) {
+          // Update existing route
+          routes[routeIndex] = Trip(
+            id: routes[routeIndex].id,
+            planId: routes[routeIndex].planId,
+            day: widget.day,
+            type: TripType.route,
+            placeId: null,
+            placeName: null,
+            placeDescription: null,
+            placeImageUrl: null,
+            arrivalTime: null,
+            routeMode: routes[routeIndex].routeMode ?? RouteMode.unselected,
+            routeFrom: places2[i].placeId,
+            routeTo: places2[i + 1].placeId,
+            routeTotalTime: routes[routeIndex].routeTotalTime,
+            routeTotalCost: routes[routeIndex].routeTotalCost,
+            routeTotalDistance: routes[routeIndex].routeTotalDistance,
+            routeDistance: routes[routeIndex].routeDistance,
+            routeNote: routes[routeIndex].routeNote,
+            note: routes[routeIndex].note,
+          );
+        } else {
+          // Add new route
+          routes.add(Trip(
+            id: places2[i].id,
+            planId: places2[i].planId,
+            day: widget.day,
+            type: TripType.route,
+            placeId: null,
+            placeName: null,
+            placeDescription: null,
+            placeImageUrl: null,
+            arrivalTime: null,
+            routeMode: RouteMode.unselected,
+            routeFrom: places2[i].placeId,
+            routeTo: places2[i + 1].placeId,
+            routeTotalTime: null,
+            routeTotalCost: null,
+            routeTotalDistance: null,
+            routeDistance: null,
+            routeNote: null,
+            note: null,
+          ));
+        }
+        routeIndex++;
+      }
 
-  List<Map<String, String>> findRoute(String placeId1, String placeId2) {
-    return routeChoices
-        .where(
-          (route) =>
-              (route["Dest1"] == placeId1 && route["Dest2"] == placeId2) ||
-              (route["Dest1"] == placeId2 && route["Dest2"] == placeId1),
-        )
-        .toList();
+      print('route options: ${findRouteOptions(places2[i].id, places2[i+1].id)}'); 
+    }
   }
 
   final List<Map<String, String>> places = [
@@ -187,102 +235,7 @@ class _DayState extends State<Day> {
   ];
 
   List<Trip> places2 = [];
-
-  // List<Trip> get places2 {
-  //   return trips.where((trip) => trip.type == TripType.dest).toList();
-  // }
-  // final List<Trip> places2 = [
-  //   Trip(
-  //     id: "1",
-  //     planId: "1",
-  //     day: 1,
-  //     type: TripType.dest,
-  //     placeId: "1",
-  //     placeName: "Pattaya walking street",
-  //     placeDescription:
-  //         "a vibrant entertainment area in Pattaya that has gained notoriety for its go-go bars and adult shows, as well as karaoke bars and nightclubs",
-  //     placeImageUrl:
-  //         "https://i.pinimg.com/736x/0b/8b/44/0b8b44749794c89156391daf1e607f95.jpg",
-  //     arrivalTime: "10:00 AM",
-  //     routeMode: null,
-  //     routeTotalTime: null,
-  //     routeTotalCost: null,
-  //     routeTotalDistance: null,
-  //     routeDistance: null,
-  //     routeNote: null,
-  //     note: "Teemy's fav",
-  //   ),
-    
-  //   Trip(
-  //     id: "1",
-  //     planId: "1",
-  //     day: 1,
-  //     type: TripType.dest,
-  //     placeId: "2",
-  //     placeName: "Jomtien Beach",
-  //     placeDescription:
-  //         "a popular tourist destination located in Pattaya, Thailand, known for its long stretch of sand, vibrant atmosphere, and variety of activities.",
-  //     placeImageUrl:
-  //         "https://i.pinimg.com/736x/5e/75/2e/5e752e76c0b3846cb24f7c0ebbeaabd4.jpg",
-  //     arrivalTime: "11:00 AM",
-  //     routeMode: null,
-  //     routeTotalTime: null,
-  //     routeTotalCost: null,
-  //     routeTotalDistance: null,
-  //     routeDistance: null,
-  //     routeNote: null,
-  //     note: "Teemy's fav",
-  //   ),
-   
-  //   Trip(
-  //     id: "1",
-  //     planId: "1",
-  //     day: 1,
-  //     type: TripType.dest,
-  //     placeId: "3",
-  //     placeName: "Sanctuary of Truth",
-  //     placeDescription:
-  //         "an unfinished museum in Pattaya, Thailand designed by Thai businessman Lek Viriyaphan. The museum structure is a hybrid of a temple and a castle that is themed on the Ayutthaya Kingdom and of Buddhist and Hindu beliefs.",
-  //     placeImageUrl:
-  //         "https://i.pinimg.com/736x/29/75/4a/29754a69b3706015f0cc4b4815a6a159.jpg",
-  //     arrivalTime: "12:00 PM",
-  //     routeMode: null,
-  //     routeTotalTime: null,
-  //     routeTotalCost: null,
-  //     routeTotalDistance: null,
-  //     routeDistance: null,
-  //     routeNote: null,
-  //     note: "Teemy's fav",
-  //   ),
-  //   Trip(
-  //     id: "1",
-  //     planId: "1",
-  //     day: 2,
-  //     type: TripType.dest,
-  //     placeId: "4",
-  //     placeName: "Ripley's Believe It or Not! Pattaya ",
-  //     placeDescription:
-  //         "Family entertainment venue with haunted houses, a theater with moving seats & an oddities museum.",
-  //     placeImageUrl:
-  //         "https://i.pinimg.com/736x/c5/89/3e/c5893eb920affd31a202fdc9f4a100a5.jpg",
-  //     arrivalTime: "10:00 PM",
-  //     routeMode: null,
-  //     routeTotalTime: null,
-  //     routeTotalCost: null,
-  //     routeTotalDistance: null,
-  //     routeDistance: null,
-  //     routeNote: null,
-  //     note: "Teemy's fav",
-  //   ),
-  // ];
-
-  void logPlaces() {
-    print('Places: ${places2.map((p) => p.placeName).toList()}');
-  }
-
-  List<Trip> get routes {
-    return trips.where((trip) => trip.type == TripType.route).toList();
-  }
+  List<Trip> routes = [];
 
   bool isExpanded = false;
   isExtended() {
@@ -303,18 +256,19 @@ class _DayState extends State<Day> {
   void initState() {
     super.initState();
     places2 = trips.where((trip) => trip.type == TripType.dest).toList();
-    logPlaces(); // Log places when the widget initializes
+    routes = trips.where((trip) => trip.type == TripType.route).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     if (places2.isEmpty && trips.isNotEmpty) {
       places2 = trips.where((trip) => trip.type == TripType.dest).toList();
-      print("Initializing places2 in build method: ${places2.length} items");
     }
 
-    List<Trip> dayPlaces = places2.where((trip) => trip.day == widget.day).toList();
-    
+    if (trips.isEmpty){
+      routes = trips.where((trip) => trip.type == TripType.route).toList();
+    }
+
     return Container(
       // margin: const EdgeInsets.all(16),
       child: Column(
@@ -348,7 +302,6 @@ class _DayState extends State<Day> {
             ),
           ),
 
-          // Expandable content with scrolling and reordering
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             height: _isExpanded ? 600 : 0,
@@ -361,17 +314,7 @@ class _DayState extends State<Day> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       itemCount: places2.length,
 
-                      onReorder: (int oldIndex, int newIndex) {
-                        setState(() {
-                          if (oldIndex < newIndex) {
-                            newIndex -= 1;
-                          }
-                          final Trip item = places2.removeAt(oldIndex);
-                          places2.insert(newIndex, item);
-                        });
-                      },
-
-                      // onReorder: _handleReorder,
+                      onReorder: _handleReorder,
                       itemBuilder: (context, index) {
                         return Padding(
                           key: ValueKey('place-$index'),

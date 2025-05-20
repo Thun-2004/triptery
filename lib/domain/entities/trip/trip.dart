@@ -1,5 +1,5 @@
 enum TripType { route, dest }
-enum RouteMode { car, motorcycle, publicTransit }
+enum RouteMode { car, motorcycle, publicTransit, unselected }
 
 class Trip {
   final String id;
@@ -14,6 +14,8 @@ class Trip {
   final String? arrivalTime;
 
   final RouteMode? routeMode;
+  final String? routeFrom; 
+  final String? routeTo; 
   final int? routeTotalTime;
   final int? routeTotalCost;
   final int? routeTotalDistance;
@@ -33,6 +35,8 @@ class Trip {
     this.placeImageUrl,
     this.arrivalTime,
     this.routeMode,
+    this.routeFrom, 
+    this.routeTo, 
     this.routeTotalTime,
     this.routeTotalCost,
     this.routeTotalDistance,
