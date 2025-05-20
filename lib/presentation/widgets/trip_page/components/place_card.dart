@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class PlaceCard extends StatelessWidget {
   const PlaceCard({
     super.key,
+    required this.placeId, 
     required this.placeName,
     required this.placeDescription,
     required this.placeImage,
   });
 
+  final String placeId;
   final String placeName;
   final String placeDescription;
   final String placeImage;
@@ -15,42 +17,55 @@ class PlaceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(10),
+      // margin: const EdgeInsets.all(20),
       elevation: 0,
-      child: Row(
+      margin: EdgeInsets.symmetric(vertical: 0),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
         children: [
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
               border: Border.all(color: Colors.white, width: 2),
             ),
-            child: CircleAvatar(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              child: CircleAvatar(
               backgroundImage: NetworkImage(placeImage),
               radius: 25,
-            ),
+            )
+            )
           ),
           const SizedBox(width: 10),
-          Flex(
-            direction: Axis.vertical,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                placeName,
-                style: const TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
+          Expanded(  // Wrap in Expanded to prevent overflow
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  placeName,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,  // Add ellipsis for long text
+                  maxLines: 1,  // Limit to one line
                 ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                placeDescription,
-                style: const TextStyle(fontSize: 13, color: Colors.grey),
-              ),
-            ],
+                const SizedBox(height: 5),
+                Text(
+                  placeDescription,
+                  style: const TextStyle(fontSize: 13, color: Colors.grey),
+                  overflow: TextOverflow.ellipsis,  // Add ellipsis for long text
+                  maxLines: 2,  // Limit to two lines
+                ),
+              ],
+            ),
           ),
+          
         ],
       ),
+      )
     );
   }
 }
