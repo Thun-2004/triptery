@@ -20,12 +20,6 @@ class _RouteDropdownState extends State<RouteDropdown> {
   var selected = 0;
   late String currentChoice; 
 
-  // final List<Map<String, String>> routes = [
-  //   {"mode": "Car -> Train -> Bus", "time": "21mins", "price": "100THB"},
-  //   {"mode": "Bus -> Train", "time": "16mins", "price": "140THB"},
-  //   {"mode": "Train -> Walk", "time": "22mins", "price": "130THB"},
-  //   {"mode": "Train -> Walk", "time": "22mins", "price": "130THB"},
-  // ];
   late final List<Map<String, String>> routes;
 
   @override
