@@ -1,8 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:triptery/presentation/pages/trip/trip_tag_window.dart';
 import 'package:triptery/presentation/widgets/trip_page/components/trip_tag.dart';
 
 class TripSummaryWindow extends StatefulWidget{
+  
   @override
   _TripSummaryWindowState createState() => _TripSummaryWindowState();
   
@@ -12,10 +14,19 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
 
   bool _isPublic = true; 
 
+  void _openBottomModal() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => TripTagWindow()
+    );
+  }
+
   @override
   Widget build(BuildContext context){
     return Align(
-      alignment: Alignment.bottomCenter, 
+      alignment: Alignment.bottomCenter,
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -37,7 +48,7 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                 const SizedBox(height: 30),
                 Column(
                   children: [
-                    Container(
+                    SizedBox(
                       width: double.infinity,
                       child: Column(
                         children: [
@@ -142,13 +153,17 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(children: [
-                                Icon(Icons.location_on), 
+                                Icon(Icons.tag_rounded), 
                                 Text('Tags')
+                                
                               ]), 
                               
-                              Icon(Icons.arrow_back_ios, 
-                              textDirection: TextDirection.rtl, 
-                              size: 16,)
+                              IconButton(
+                                icon: Icon(Icons.arrow_back_ios, 
+                                  textDirection: TextDirection.rtl, 
+                                  size: 16), 
+                                onPressed: () => _openBottomModal(),
+                              )
                             ]
                           ), 
                           const SizedBox(height: 10),

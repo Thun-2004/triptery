@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
+import 'package:triptery/presentation/pages/trip/trip_tag_window.dart';
 import 'package:triptery/presentation/widgets/auth_screen.dart';
 import 'package:triptery/presentation/pages/trip/trip_summary_window.dart'; 
 
 
 class HeaderSection extends StatefulWidget {
-  HeaderSection({ required this.tripController, super.key});
+  const HeaderSection({ required this.tripController, super.key});
   final TripController tripController;
 
   @override
@@ -20,7 +21,9 @@ class _HeaderSectionState extends State<HeaderSection> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => TripSummaryWindow()
+      // builder: (context) => TripSummaryWindow()
+      builder: (context) => TripTagWindow()
+
     );
   }
   
