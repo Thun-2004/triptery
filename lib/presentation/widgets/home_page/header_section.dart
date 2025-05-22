@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:triptery/domain/repositories/place_repository_impl.dart';
 import 'search_bar.dart';
 
 class HeaderSection extends StatelessWidget {
-  const HeaderSection({super.key});
+  final PlaceRepositoryImpl repository;
+
+  const HeaderSection({super.key, required this.repository});
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +83,9 @@ class HeaderSection extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 // 🔍 Search bar full width
-                const SizedBox(
+                SizedBox(
                   width: double.infinity,
-                  child: CustomSearchBar(),
+                  child: CustomSearchBar(repository: repository),
                 ),
 
                 const SizedBox(height: 16),

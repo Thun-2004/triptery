@@ -7,7 +7,7 @@ class Place {
   final String openingTime;
   final String closingTime;
   final double latitude;
-  final double longitude;
+  final double longtitude;
   final double rating;
   final int totalUserRatings;
   final String address;
@@ -30,7 +30,7 @@ class Place {
     required this.openingTime,
     required this.closingTime,
     required this.latitude,
-    required this.longitude,
+    required this.longtitude,
     required this.rating,
     required this.totalUserRatings,
     required this.address,

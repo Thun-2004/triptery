@@ -24,7 +24,7 @@ Place mapGoogleJsonToPlace(Map<String, dynamic> result, String generatedId) {
         ? weekdayText.first.split("–").last.trim()
         : '',
     latitude: result['geometry']['location']['lat'],
-    longitude: result['geometry']['location']['lng'],
+    longtitude: result['geometry']['location']['lng'],
     rating: (result['rating'] ?? 0).toDouble(),
     totalUserRatings: result['user_ratings_total'] ?? 0,
     address: result['formatted_address'] ?? '',

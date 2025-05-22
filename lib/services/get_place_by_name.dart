@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../domain/entities/place/place.dart';
+import 'package:triptery/domain/entities/place/place.dart';
+
 
 Future<Place?> getCachedPlaceByNameService(String name) async {
   final response = await Supabase.instance.client
@@ -16,7 +17,7 @@ Future<Place?> getCachedPlaceByNameService(String name) async {
     name: response['name'],
     address: response['address'],
     latitude: response['latitude'],
-    longitude: response['longitude'],
+    longtitude: response['longitude'],
     rating: (response['rating'] ?? 0).toDouble(),
     totalUserRatings: response['user_ratings_total'] ?? 0,
     description: response['description'] ?? '',

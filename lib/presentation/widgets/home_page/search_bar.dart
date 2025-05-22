@@ -1,9 +1,31 @@
 import 'package:flutter/material.dart';
+import '../../../domain/repositories/place_repository_impl.dart'; // adjust the import path as needed
+import '../../../domain/entities/place/place.dart';
 
 class CustomSearchBar extends StatelessWidget {
-  final Function(String)? onSearch;
+  final PlaceRepositoryImpl repository;
 
-  const CustomSearchBar({super.key, this.onSearch});
+  const CustomSearchBar({
+    super.key,
+    required this.repository,
+  });
+
+  Future<void> _handleSearch(String input, BuildContext context) async {
+    if (input.trim().isEmpty) return;
+
+    final messenger = ScaffoldMessenger.of(context);
+
+    try {
+      final Place place = await repository.fetchAndCachePlaceFromGoogle(input);
+      messenger.showSnackBar(
+        SnackBar(content: Text('✅ ${place.name} saved to Supabase!')),
+      );
+    } catch (e) {
+      messenger.showSnackBar(
+        SnackBar(content: Text('❌ Error: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +43,12 @@ class CustomSearchBar extends StatelessWidget {
         ],
       ),
       child: TextField(
-        onChanged: onSearch,
-        decoration: InputDecoration(
-          hintText: 'Enter destination (Country,Region,City)',
-          prefixIcon: const Icon(
-            Icons.location_on_outlined,
-            color: Colors.grey,
-          ),
+        onSubmitted: (value) => _handleSearch(value, context),
+        decoration: const InputDecoration(
+          hintText: 'Enter destination (Country, Region, City)',
+          prefixIcon: Icon(Icons.location_on_outlined, color: Colors.grey),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 14,
-          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
       ),
     );

@@ -16,7 +16,7 @@ return Place(
   name: response['name'],
   address: response['address'],
   latitude: response['latitude'],
-  longitude: response['longitude'],
+  longtitude: response['longitude'],
   rating: (response['rating'] ?? 0).toDouble(),
   totalUserRatings: response['user_ratings_total'] ?? 0,
   description: response['description'] ?? '',
