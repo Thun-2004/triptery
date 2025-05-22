@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:triptery/presentation/pages/trip/trip_group_window.dart';
 import 'package:triptery/presentation/pages/trip/trip_tag_window.dart';
 import 'package:triptery/presentation/widgets/trip_page/components/trip_tag.dart';
 
@@ -11,15 +12,23 @@ class TripSummaryWindow extends StatefulWidget{
 }
 
 class _TripSummaryWindowState extends State<TripSummaryWindow> {
-
   bool _isPublic = true; 
 
-  void _openBottomModal() {
+  void _openTagModal() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => TripTagWindow()
+    );
+  }
+
+  void _openTripGroupModal() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => TripGroupWindow()
     );
   }
 
@@ -60,11 +69,14 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                                 Text('Trip Name')
                               ]), 
                               
-                              Icon(Icons.arrow_back_ios, 
-                              textDirection: TextDirection.rtl, 
-                              size: 16,)
+                              IconButton(
+                                icon: Icon(Icons.arrow_back_ios, 
+                                  textDirection: TextDirection.rtl, 
+                                  size: 16), 
+                                onPressed: () => _openTagModal(),
+                              )
                             ]
-                          ), 
+                          ),
                           const SizedBox(height: 10),
                           Container(
                             height: 100,
@@ -93,9 +105,12 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                                 Text('Party')
                               ]), 
                               
-                              Icon(Icons.arrow_back_ios, 
-                              textDirection: TextDirection.rtl, 
-                              size: 16,)
+                              IconButton(
+                                icon: Icon(Icons.arrow_back_ios, 
+                                  textDirection: TextDirection.rtl, 
+                                  size: 16), 
+                                onPressed: () => _openTripGroupModal(),
+                              )
                             ]
                           ), 
                           const SizedBox(height: 10),
@@ -125,9 +140,12 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                                 Text('Trip Dates')
                               ]), 
                               
-                              Icon(Icons.arrow_back_ios, 
-                              textDirection: TextDirection.rtl, 
-                              size: 16,)
+                              IconButton(
+                                icon: Icon(Icons.arrow_back_ios, 
+                                  textDirection: TextDirection.rtl, 
+                                  size: 16), 
+                                onPressed: () => _openTagModal(),
+                              )
                             ]
                           ), 
                           const SizedBox(height: 10),
@@ -162,7 +180,7 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                                 icon: Icon(Icons.arrow_back_ios, 
                                   textDirection: TextDirection.rtl, 
                                   size: 16), 
-                                onPressed: () => _openBottomModal(),
+                                onPressed: () => _openTagModal(),
                               )
                             ]
                           ), 
@@ -196,9 +214,12 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                                 Text('Budget')
                               ]),
                               
-                              Icon(Icons.arrow_back_ios, 
-                              textDirection: TextDirection.rtl, 
-                              size: 16,)
+                              IconButton(
+                                icon: Icon(Icons.arrow_back_ios, 
+                                  textDirection: TextDirection.rtl, 
+                                  size: 16), 
+                                onPressed: () => _openTagModal(),
+                              )
                             ]
                           ), 
                           const SizedBox(height: 10),

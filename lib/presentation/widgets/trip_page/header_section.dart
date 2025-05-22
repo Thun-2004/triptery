@@ -21,8 +21,8 @@ class _HeaderSectionState extends State<HeaderSection> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      // builder: (context) => TripSummaryWindow()
-      builder: (context) => TripTagWindow()
+      builder: (context) => TripSummaryWindow()
+      // builder: (context) => TripTagWindow()
 
     );
   }
