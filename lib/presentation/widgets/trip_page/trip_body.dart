@@ -5,9 +5,11 @@ import 'package:triptery/presentation/widgets/trip_page/components/day.dart';
 import 'package:triptery/presentation/widgets/trip_page/components/day_list.dart';
 import 'package:triptery/data/mock/mock_trips.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
+
+
 class TripBody extends StatefulWidget {
   const TripBody({super.key});
-
+  
   @override
   State<TripBody> createState() => _TripBodyState();
 }
@@ -31,7 +33,7 @@ class _TripBodyState extends State<TripBody> {
       }else{
         dayMode = Day(day: day);
       }
-    }); 
+    });
   }
 
   @override
@@ -60,7 +62,7 @@ class _TripBodyState extends State<TripBody> {
               ]
             ],
           ),
-          dayMode, 
+          dayMode,
           const SizedBox(height: 16),
           // Add your trip details here
           

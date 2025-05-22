@@ -12,6 +12,7 @@ import 'package:triptery/l10n/support_locale.dart';
 import 'package:provider/provider.dart';
 import 'package:triptery/presentation/controllers/language_controller.dart';
 import 'package:triptery/presentation/pages/trip/trip_page.dart'; 
+import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:get/get.dart';
 
 Future<void> main() async {
@@ -24,6 +25,7 @@ Future<void> main() async {
   );
 
   Get.put(LanguageController());
+  Get.put(TripController());
   runApp(MyApp());
 }
 

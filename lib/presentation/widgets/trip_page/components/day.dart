@@ -4,10 +4,11 @@ import 'package:triptery/presentation/widgets/trip_page/components/route_dropdow
 import 'package:triptery/data/mock/mock_trips.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 
-class Day extends StatefulWidget {
-  const Day({super.key, required this.day});
-  final int day;
 
+
+class Day extends StatefulWidget {
+  Day({super.key, required this.day});
+  final int day;
   @override
   State<Day> createState() => _DayState();
 }
@@ -293,6 +294,7 @@ class _DayState extends State<Day> {
                       const Text("Thursday, 12th October 2023"),
                       const Spacer(),
                       Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+                      
                     ],
                   ),
                 ],
