@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/pages/trip/trip_budget_window.dart';
+import 'package:triptery/presentation/pages/trip/trip_calendar_window.dart';
 import 'package:triptery/presentation/pages/trip/trip_group_window.dart';
 import 'package:triptery/presentation/pages/trip/trip_tag_window.dart';
 import 'package:triptery/presentation/widgets/trip_page/components/trip_tag.dart';
@@ -39,6 +40,15 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => TripBudgetWindow()
+    );
+  }
+  
+  void _openTripCalendarModal() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => TripCalendarWindow()
     );
   }
 
@@ -154,7 +164,7 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                                 icon: Icon(Icons.arrow_back_ios, 
                                   textDirection: TextDirection.rtl, 
                                   size: 16), 
-                                onPressed: () => _openTagModal(),
+                                onPressed: () => _openTripCalendarModal(),
                               )
                             ]
                           ), 
