@@ -1,22 +1,20 @@
-
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/widgets/Item/custom_text.dart';
 import 'package:triptery/presentation/widgets/trip_page/components/trip_tag.dart';
 import 'package:triptery/presentation/widgets/Item/custom_text.dart';
 
-class TripGroupWindow extends StatefulWidget {
+class TripBudgetWindow extends StatefulWidget {
   @override
-  TripGroupWindowState createState() => TripGroupWindowState();
+  TripBudgetWindowState createState() => TripBudgetWindowState();
 }
 
-class TripGroupWindowState extends State<TripGroupWindow> {
+class TripBudgetWindowState extends State<TripBudgetWindow> {
   int _isSelectedIndex = 0;
   final List<Map<String, String>> modes = [
-    {"mode": "Only Me 🚶", "detail": "Traveling solo, just you."},
-    {"mode": "A Couple 🩷", "detail": "A romantic gataway for two."},
-    {"mode": "Family", "detail": "Quality time with your loved ones."},
-    {"mode": "Friends 🌟", "detail": "Adventure with your closest pals."},
-    {"mode": "Work 💼", "detail": "Bussiness or corporate travel."},
+    {"mode": "Cheap 💰", "detail": "Budget - friendly, economical travel."},
+    {"mode": "Balanced 💼", "detail": "Moderate spending for a balanced trip."},
+    {"mode": "Luxury 💎", "detail": "High-end, indulgent experiences."},
+    {"mode": "Flexible 💫", "detail": "No budget restrictions."},
   ];
 
   @override
@@ -41,14 +39,14 @@ class TripGroupWindowState extends State<TripGroupWindow> {
               child: Column(
                 children: [
                   CustomText(
-                    text: 'Who is going? 🧳',
+                    text: 'Set your trip budget 💰',
                     type: TextType.heading,
                     color: Colors.black,
                   ),
                   const SizedBox(height: 20),
                   CustomText(
                     text:
-                        'Let’s get started by selecting who you’re traveling with.',
+                        'Select your estimated budget',
                     type: TextType.body,
                     color: Colors.black,
                   ),
