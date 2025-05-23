@@ -36,7 +36,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final languageController = Get.find<LanguageController>();
 
-
     return 
         GetMaterialApp(
           //like MaterialApp but with GetX features
@@ -75,7 +74,7 @@ class MyApp extends StatelessWidget {
             // bodyMedium: TextStyle(color: Colors.black54, fontSize: 14),
             // headlineSmall: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
             // ),
-            textTheme: GoogleFonts.montserratTextTheme(),
+            textTheme: GoogleFonts.notoSansTextTheme(),
             // Default card style
             cardTheme: CardTheme(
               elevation: 4,
@@ -94,3 +93,5 @@ class MyApp extends StatelessWidget {
 
 
 
+//edit
+// font/ui config file

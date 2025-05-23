@@ -26,17 +26,14 @@ class _TripPageState extends State<TripPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children : [
-                HeaderSection(
-                  tripController: tripController
-                ),
+                HeaderSection(),
                 TripBody(), 
-                
               ]
             )
           )
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() => mode = Mode.edit),
+        onPressed: () => setState(() => tripController.toggleEditPlaceOrder()),
         child: const Icon(Icons.edit),
       ),
     );

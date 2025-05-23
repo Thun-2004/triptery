@@ -7,8 +7,7 @@ import 'package:triptery/presentation/pages/trip/trip_summary_window.dart';
 
 
 class HeaderSection extends StatefulWidget {
-  const HeaderSection({ required this.tripController, super.key});
-  final TripController tripController;
+  const HeaderSection({ super.key});
 
   @override
   State<HeaderSection> createState() => _HeaderSectionState();
