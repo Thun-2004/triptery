@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
             scaffoldBackgroundColor: Colors.white,
-            fontFamily: 'Roboto', // Set default font
+            fontFamily: GoogleFonts.notoSansThai().fontFamily, // Set default font
             // Default button style
             elevatedButtonTheme: ElevatedButtonThemeData(
               style: ElevatedButton.styleFrom(
