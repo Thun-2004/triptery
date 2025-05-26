@@ -38,12 +38,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> loadPlaces() async {
-    final top = await GetTopPlacesFromMock().execute(limit: 3);
-    final popular = await GetPopularActivitiesFromMock().execute(limit: 3);
+    final topByRating = await GetTopPlacesByRating(limit: 3).execute();
 
     setState(() {
-      topBangkokTours = top;
-      popularActivities = popular;
+      topBangkokTours = topByRating;
+      popularActivities = topByRating;
       isLoading = false;
     });
   }

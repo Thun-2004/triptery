@@ -1,20 +1,12 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
-import 'package:uuid/uuid.dart';
-
 import '../entities/place/place.dart';
-import '../repositories/to_place.dart';
+import '../../services/get_top_place_by_rating.dart'; // import your service file
 
-class GetTopPlacesFromMock {
-  final _uuid = const Uuid();
+class GetTopPlacesByRating {
+  final int limit;
 
-Future<List<Place>> execute({int limit = 3}) async {
-  final jsonString = await rootBundle.loadString('lib/data/mock/mock_response.json');
-  final Map<String, dynamic> decoded = jsonDecode(jsonString);
-  final placeId = _uuid.v4();
+  GetTopPlacesByRating({this.limit = 5}); // allow optional custom limit
 
-  final place = mapGoogleJsonToPlace(decoded['result'], placeId);
-  return [place]; // Return as a list for compatibility
-}
-
+  Future<List<Place>> execute() async {
+    return await getTopPlacesByRatingService(limit: limit);
+  }
 }
