@@ -1,132 +1,180 @@
 import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:triptery/domain/repositories/place_repository_impl.dart';
-import 'search_bar.dart';
 
-class HeaderSection extends StatelessWidget {
+class HeaderSection extends StatefulWidget {
   final PlaceRepositoryImpl repository;
 
   const HeaderSection({super.key, required this.repository});
 
   @override
+  State<HeaderSection> createState() => _HeaderSectionState();
+}
+
+class _HeaderSectionState extends State<HeaderSection> {
+  final PageController _controller = PageController();
+
+  // 📷 Duplicate same image 5 times
+  final List<String> images = List.generate(
+    5,
+    (_) => 'assets/images/header_image.png',
+  );
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 320,
+      height: 360,
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // Background image
-          Image.asset(
-            'assets/images/header_image.png',
-            fit: BoxFit.cover,
+          // 🔄 Image carousel
+          PageView.builder(
+            controller: _controller,
+            itemCount: images.length,
+            itemBuilder: (context, index) {
+              return Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.asset(images[index], fit: BoxFit.cover),
+                  Positioned.fill(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Color(0x4425283C),
+                            Color(0xFF25283C),
+                          ],
+                          stops: [0, 0.4, 0.7],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
 
-          // Foreground content
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          // 🔘 Dot indicator
+          // 🔘 Dot indicator (smaller, moved down, custom color)
+          Positioned(
+            bottom: 118, // ⬇️ moved lower by 12
+            left: 0,
+            right: 0,
+            child: Center(
+              child: SmoothPageIndicator(
+                controller: _controller,
+                count: images.length,
+                effect: WormEffect(
+                  dotHeight: 6, // ⬇️ smaller dot
+                  dotWidth: 6,
+                  spacing: 6,
+                  dotColor: Colors.white.withOpacity(0.3),
+                  activeDotColor: Color(0xFFFE8C56), // 🎯 custom color
+                ),
+              ),
+            ),
+          ),
+
+          // 🏷 Title & Explore Button
+          Align(
+            alignment: Alignment.center,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 15),
-                const Icon(Icons.menu, color: Colors.white, size: 28),
-                const SizedBox(height: 16),
-
-                // Title + Button row
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Expanded(
-                      child: Text(
-                        "What's your\ndestination?",
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          height: 1.2,
-                        ),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xff1c1c27),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                          side: const BorderSide(
-                            color: Colors.white,
-                            width: 1,
-                          ),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 17,
-                        ),
-                        elevation: 0,
-                      ),
-                      child: Row(
-                        children: const [
-                          Text(
-                            'Enter Plan',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SizedBox(width: 2),
-                          Icon(Icons.add, size: 25, color: Colors.white),
-                        ],
-                      ),
-                    ),
-                  ],
+                const Text(
+                  "Bangkok, Thailand",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-
-                const SizedBox(height: 20),
-
-                // 🔍 Search bar full width
-                SizedBox(
-                  width: double.infinity,
-                  child: CustomSearchBar(repository: repository),
-                ),
-
-                const SizedBox(height: 16),
-
-                // 📦 Filter chips
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Row(
-                        children: const [
-                          Icon(Icons.calendar_today, size: 16),
-                          SizedBox(width: 4),
-                          Text('Start'),
-                          Icon(Icons.arrow_forward, size: 16),
-                          Text('End'),
-                        ],
-                      ),
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFFE8757),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Row(
-                        children: const [
-                          Icon(Icons.person_outline, size: 16),
-                          SizedBox(width: 4),
-                          Text('2 adults'),
-                        ],
-                      ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 28,
+                      vertical: 10,
                     ),
-                  ],
+                    elevation: 2,
+                  ),
+                  child: const Text(
+                    "Explore",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ],
+            ),
+          ),
+
+          // 👤 Bottom user info overlay
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 60,
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+              height: 60,
+              decoration: const BoxDecoration(color: Colors.transparent),
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    backgroundImage: AssetImage(
+                      'assets/images/user_profile.jpg',
+                    ),
+                    radius: 20,
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Hi, Salmon",
+                          style: TextStyle(color: Colors.white70, fontSize: 12),
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              size: 16,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              "You're in Bangkok, Thailand",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.notifications_none,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
             ),
           ),
         ],

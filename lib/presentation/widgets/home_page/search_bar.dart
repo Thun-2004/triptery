@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../domain/repositories/place_repository_impl.dart'; // adjust the import path as needed
+import '../../../domain/repositories/place_repository_impl.dart';
 import '../../../domain/entities/place/place.dart';
 
 class CustomSearchBar extends StatelessWidget {
@@ -33,20 +33,21 @@ class CustomSearchBar extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(30), // more rounded like the picture
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
             blurRadius: 8,
-            offset: const Offset(0, 2),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: TextField(
         onSubmitted: (value) => _handleSearch(value, context),
         decoration: const InputDecoration(
-          hintText: 'Enter destination (Country, Region, City)',
-          prefixIcon: Icon(Icons.location_on_outlined, color: Colors.grey),
+          hintText: 'Where would you like to go?',
+          prefixIcon: Icon(Icons.menu, color: Colors.grey),
+          suffixIcon: Icon(Icons.search, color: Colors.grey),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
