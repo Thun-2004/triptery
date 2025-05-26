@@ -83,6 +83,11 @@ flutter:
     - assets/images/header_image.png
     - assets/images/google_icon.png
     - assets/images/tripadvisor_icon.png
+    - assets/images/island.png
+    - assets/images/hills.png
+    - assets/images/cruise.png
+    - assets/images/adventure.png
+    - assets/images/camping.png
     - lib/data/mock/mock_response.json
 
     

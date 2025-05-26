@@ -4,6 +4,8 @@ import 'package:triptery/presentation/widgets/home_page/search_bar.dart';
 import '../widgets/bottom_navbar.dart';
 import '../widgets/home_page/header_section.dart';
 import '../widgets/home_page/horizontal_card_list.dart';
+import '../../domain/entities/category.dart';
+import '../widgets/home_page/categories.dart';
 
 import '../../domain/entities/place/place.dart';
 import '../../domain/usecases/get_top_places.dart';
@@ -20,6 +22,14 @@ class _HomePageState extends State<HomePage> {
   List<Place> topBangkokTours = [];
   List<Place> popularActivities = [];
   bool isLoading = true;
+  final List<Category> categories = [
+  Category(name: 'Island', imagePath: 'assets/images/island.png'),
+  Category(name: 'Hills', imagePath: 'assets/images/hills.png'),
+  Category(name: 'Cruise', imagePath: 'assets/images/cruise.png'),
+  Category(name: 'Adventure', imagePath: 'assets/images/adventure.png'),
+  Category(name: 'Camping', imagePath: 'assets/images/camping.png'),
+];
+
 
   @override
   void initState() {
@@ -60,6 +70,7 @@ class _HomePageState extends State<HomePage> {
                           // 2. Padding to make room under the floating bar
                           const SizedBox(height: 45),
 
+                          Categories(categories: categories),
                           // 3. Rest of page
                           HorizontalCardList(
                             title: 'Top Bangkok tours',
