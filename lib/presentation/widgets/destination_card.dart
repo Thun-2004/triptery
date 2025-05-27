@@ -37,19 +37,33 @@ class DestinationCard extends StatelessWidget {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(12),
+                  ),
                   child: Image.network(
                     place.imageUrl ?? '',
                     height: 120,
                     width: double.infinity,
                     fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.network(
+                        'https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=',
+                        height: 120,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      );
+                    },
                   ),
                 ),
+
                 Positioned(
                   bottom: 8,
                   right: 8,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.black54,
                       borderRadius: BorderRadius.circular(8),
@@ -64,7 +78,10 @@ class DestinationCard extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8.0,
+                  vertical: 8,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,13 +100,19 @@ class DestinationCard extends StatelessWidget {
                       children: [
                         Text(
                           '2km',
-                          style: const TextStyle(fontSize: 12, color: Colors.white),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
                         ),
                         const SizedBox(width: 8),
                         Icon(Icons.star, size: 14, color: Colors.amber[700]),
                         Text(
                           '${place.rating}',
-                          style: const TextStyle(fontSize: 12, color: Colors.white),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),

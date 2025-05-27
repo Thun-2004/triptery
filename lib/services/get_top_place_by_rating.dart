@@ -11,7 +11,6 @@ Future<List<Place>> getTopPlacesByRatingService({int limit = 5}) async {
   // 🔍 Check for null or empty
   if (response == null || response.isEmpty) return [];
 
-  print(response);
 
   return response.map<Place>((placeData) {
     return Place(

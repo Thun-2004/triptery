@@ -131,7 +131,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                 children: [
                   const CircleAvatar(
                     backgroundImage: AssetImage(
-                      'assets/images/user_profile.jpg',
+                      'assets/images/user_profile.png',
                     ),
                     radius: 20,
                   ),

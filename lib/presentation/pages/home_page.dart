@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:triptery/domain/repositories/place_repository_impl.dart';
+import 'package:triptery/domain/usecases/get_top_plans.dart';
+import 'package:triptery/presentation/widgets/home_page/plan_horizontal_list.dart';
 import 'package:triptery/presentation/widgets/home_page/search_bar.dart';
 import '../widgets/bottom_navbar.dart';
 import '../widgets/home_page/header_section.dart';
@@ -8,6 +10,7 @@ import '../../domain/entities/category.dart';
 import '../widgets/home_page/categories.dart';
 
 import '../../domain/entities/place/place.dart';
+import '../../domain/entities/plan/plans.dart';
 import '../../domain/usecases/get_top_places.dart';
 import '../../domain/usecases/get_popular_activities.dart';
 
@@ -21,6 +24,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<Place> topBangkokTours = [];
   List<Place> popularActivities = [];
+  List<Plan> trendingPlan = [];
   bool isLoading = true;
   final List<Category> categories = [
   Category(name: 'Island', imagePath: 'assets/images/island.png'),
@@ -39,10 +43,12 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> loadPlaces() async {
     final topByRating = await GetTopPlacesByRating(limit: 3).execute();
+    final plans = await GetTopPlans(limit: 3).execute();
 
     setState(() {
       topBangkokTours = topByRating;
       popularActivities = topByRating;
+      trendingPlan = plans;
       isLoading = false;
     });
   }
@@ -71,6 +77,8 @@ class _HomePageState extends State<HomePage> {
 
                           Categories(categories: categories),
                           // 3. Rest of page
+
+                          PlanHorizontalList(plans: trendingPlan),
                           HorizontalCardList(
                             title: 'Top Bangkok tours',
                             cards: topBangkokTours,

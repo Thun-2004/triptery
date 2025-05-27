@@ -1,5 +1,5 @@
 
-class Plans {
+class Plan{
   final String id;
   final String name;
   final String ownerId;
@@ -12,9 +12,9 @@ class Plans {
   final String note;
   final String visibility;
   final String budget;
-  final String createdAt;
+  final DateTime createdAt;
 
-  Plans({
+  Plan({
     required this.id,
     required this.name,
     required this.ownerId,
