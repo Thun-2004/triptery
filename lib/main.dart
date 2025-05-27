@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
             // bodyMedium: TextStyle(color: Colors.black54, fontSize: 14),
             // headlineSmall: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
             // ),
-            textTheme: GoogleFonts.montserratTextTheme(),
+            textTheme: GoogleFonts.notoSansTextTheme(),
             // Default card style
             cardTheme: CardTheme(
               elevation: 4,

@@ -41,7 +41,7 @@ class NearbyPlans extends StatelessWidget {
                   errorBuilder: (context, error, stackTrace) => Image.asset(
                     'assets/images/salmonjuseyo.png',
                     width: 131,
-                    height: 112,
+                    height: 120,
                     fit: BoxFit.cover,
                   ),
                 ),
