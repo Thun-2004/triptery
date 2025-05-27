@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:triptery/domain/repositories/place_repository_impl.dart';
 import 'package:triptery/domain/usecases/get_top_plans.dart';
+import 'package:triptery/presentation/widgets/home_page/nearby.dart';
 import 'package:triptery/presentation/widgets/home_page/plan_horizontal_list.dart';
 import 'package:triptery/presentation/widgets/home_page/search_bar.dart';
 import '../widgets/bottom_navbar.dart';
@@ -80,13 +81,15 @@ class _HomePageState extends State<HomePage> {
 
                           PlanHorizontalList(plans: trendingPlan),
                           HorizontalCardList(
-                            title: 'Top Bangkok tours',
+                            title: 'Popular in Bangkok',
                             cards: topBangkokTours,
                           ),
                           HorizontalCardList(
-                            title: 'Popular things to do in Thailand',
+                            title: 'Activities & Experiences',
                             cards: popularActivities,
                           ),
+
+                          NearbyPlans(plans: trendingPlan),
                         ],
                       ),
 
