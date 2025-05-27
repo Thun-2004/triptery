@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/widgets/Item/custom_text.dart';
-import 'package:triptery/presentation/widgets/trip_page/components/trip_tag.dart';
+import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
 import 'package:triptery/presentation/widgets/Item/custom_text.dart';
 
 class TripGroupWindow extends StatefulWidget {

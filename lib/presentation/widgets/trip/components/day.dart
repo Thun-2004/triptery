@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:triptery/presentation/widgets/trip_page/components/place_card.dart';
-import 'package:triptery/presentation/widgets/trip_page/components/route_dropdown.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:triptery/presentation/widgets/trip/components/place_card.dart';
+import 'package:triptery/presentation/widgets/trip/components/route_dropdown.dart';
 import 'package:triptery/data/mock/mock_trips.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:lucide_icons_flutter/test_icons.dart';
 
 class Day extends StatefulWidget {
   Day({super.key, required this.day});
@@ -169,37 +172,6 @@ class _DayState extends State<Day> {
     });
   }
 
-  // void _recalculateAllRoutes() {
-  //   // routes.clear();
-
-  //   for (int i = 0; i < places2.length - 1; i++) {
-  //     if (places2[i].placeId != null && places2[i + 1].placeId != null) {
-  //       routes[i] = Trip(
-  //         id: places2[i].id,
-  //         planId: places2[i].planId,
-  //         day: widget.day,
-  //         type: TripType.route,
-  //         placeId: null,
-  //         placeName: null,
-  //         placeDescription: null,
-  //         placeImageUrl: null,
-  //         arrivalTime: null,
-  //         routeMode: RouteMode.unselected,
-  //         routeFrom: places2[i].placeId,
-  //         routeTo: places2[i + 1].placeId,
-  //         routeTotalTime: null,
-  //         routeTotalCost: null,
-  //         routeTotalDistance: null,
-  //         routeDistance: null,
-  //         routeNote: null,
-  //         note: null,
-  //       );
-  //     }
-  //   }
-
-  //   // Force UI update
-  //   // setState(() {});
-  // }
   void _recalculateAllRoutes() {
     // Calculate how many routes we should have based on places
     int expectedRouteCount = 0;
@@ -275,7 +247,7 @@ class _DayState extends State<Day> {
     }
   }
 
-  void addPlace(index){
+  void addPlace(index) {
     Trip newPlace = Trip(
       id: "1",
       planId: "1",
@@ -283,8 +255,10 @@ class _DayState extends State<Day> {
       type: TripType.dest,
       placeId: "5",
       placeName: "Pattaya Floating Market",
-      placeDescription: "Established since 2008, Pattaya Floating Market is riverside attraction in Pattaya displaying and showcasing the beautiful ancient Thai riverside living community and authentic ways of life",
-      placeImageUrl: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/53/6d/b7/pattaya-floating-market.jpg?w=1400&h=-1&s=1",
+      placeDescription:
+          "Established since 2008, Pattaya Floating Market is riverside attraction in Pattaya displaying and showcasing the beautiful ancient Thai riverside living community and authentic ways of life",
+      placeImageUrl:
+          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/53/6d/b7/pattaya-floating-market.jpg?w=1400&h=-1&s=1",
       arrivalTime: null,
       routeMode: null,
       routeTotalTime: null,
@@ -294,11 +268,17 @@ class _DayState extends State<Day> {
       routeNote: null,
       note: null,
     );
-    places2.insert(index+1, newPlace);
+
+    places2.insert(index + 1, newPlace);
     _recalculateAllRoutes();
 
+    setState(() {});
+  }
+
+  void deleteCard(index) {
     setState(() {
-      
+      places2.removeAt(index);
+      _recalculateAllRoutes();
     });
   }
 
@@ -346,7 +326,19 @@ class _DayState extends State<Day> {
     return Obx(() {
       _isEditing = tripController.isEditingPlaceOrder;
       return Container(
-        // margin: const EdgeInsets.all(16),
+        margin: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              offset: const Offset(0, 2),
+              blurRadius: 1,
+              spreadRadius: 0,
+            ),
+          ],
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -359,25 +351,34 @@ class _DayState extends State<Day> {
               },
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Day 1",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
                     Row(
                       children: [
-                        const Text("Thursday, 12th October 2023"),
-                        const Spacer(),
-                        Icon(
-                          _isExpanded ? Icons.expand_less : Icons.expand_more,
+                        const Icon(LucideIcons.gripVertical, size: 24, color: Color(0xFFD9D9D9)),
+                        const SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Day 1",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                      
+                            Text("Thursday, 12th October 2023", 
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Color(0xFF848997),
+                              ),),
+                          ],
                         ),
                       ],
                     ),
+                    Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
                   ],
                 ),
               ),
@@ -454,6 +455,9 @@ class _DayState extends State<Day> {
                                                     placeImage:
                                                         places2[index]
                                                             .placeImageUrl!,
+                                                    onClick:
+                                                        () => deleteCard(index),
+                                                    isEdit: _isEditing,
                                                   ),
                                                 ),
                                               ),
@@ -468,8 +472,8 @@ class _DayState extends State<Day> {
                                                 places2[index].placeId !=
                                                     null &&
                                                 places2[index + 1].placeId !=
-                                                    null && routeOptions.isNotEmpty)
-
+                                                    null &&
+                                                routeOptions.isNotEmpty)
                                               RouteDropdown(
                                                 key: ValueKey(
                                                   'route-${places2[index].placeId}-${places2[index + 1].placeId}-$index',
@@ -484,9 +488,11 @@ class _DayState extends State<Day> {
                                                             .toString(),
                                               ),
 
-                                            if (_isEditing && index < places2.length - 1)
+                                            if (_isEditing &&
+                                                index < places2.length - 1)
                                               ElevatedButton(
-                                                onPressed: () => addPlace(index),
+                                                onPressed:
+                                                    () => addPlace(index),
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor:
                                                       Color.fromARGB(

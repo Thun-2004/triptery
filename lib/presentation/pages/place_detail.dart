@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/place/place.dart';
-import '../widgets/place_detail_page/place_review_section.dart';
+import '../widgets/place_detail/place_review_section.dart';
 import '../widgets/dash_divider.dart';
 import 'package:get/get.dart';
 

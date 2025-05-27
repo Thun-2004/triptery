@@ -14,6 +14,7 @@ import 'package:triptery/presentation/controllers/language_controller.dart';
 import 'package:triptery/presentation/pages/trip/trip_page.dart'; 
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:get/get.dart';
+import 'package:triptery/utils/ui.dart' show NoBounceScrollBehavior;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,8 +39,8 @@ class MyApp extends StatelessWidget {
 
     return 
         GetMaterialApp(
-          //like MaterialApp but with GetX features
           title: 'Global Design Example',
+          scrollBehavior: NoBounceScrollBehavior(),
           localizationsDelegates: [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -95,3 +96,11 @@ class MyApp extends StatelessWidget {
 
 //edit
 // font/ui config file
+
+
+
+//language translation
+//ui not default
+//new icon lib -> lucide or new
+//new routing algo -> prev / new index O(3)
+//ios sim fix

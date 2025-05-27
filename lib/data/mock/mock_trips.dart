@@ -98,6 +98,7 @@ final List<Trip> mockTrips = [
     routeNote: null,
     note: "Teemy's fav",
   ), 
+  
   Trip(
     id: "1",
     planId: "1",
