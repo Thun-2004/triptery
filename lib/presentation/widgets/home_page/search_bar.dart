@@ -4,27 +4,17 @@ import '../../../domain/entities/place/place.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final PlaceRepositoryImpl repository;
+  final Function(String) onSearch;
 
   const CustomSearchBar({
     super.key,
     required this.repository,
+    required this.onSearch,
   });
 
   Future<void> _handleSearch(String input, BuildContext context) async {
     if (input.trim().isEmpty) return;
-
-    final messenger = ScaffoldMessenger.of(context);
-
-    try {
-      final Place place = await repository.fetchAndCachePlaceFromGoogle(input);
-      messenger.showSnackBar(
-        SnackBar(content: Text('✅ ${place.name} saved to Supabase!')),
-      );
-    } catch (e) {
-      messenger.showSnackBar(
-        SnackBar(content: Text('❌ Error: $e')),
-      );
-    }
+    onSearch(input);
   }
 
   @override
@@ -33,7 +23,7 @@ class CustomSearchBar extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(30), // more rounded like the picture
+        borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),

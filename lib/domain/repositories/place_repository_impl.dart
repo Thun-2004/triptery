@@ -13,14 +13,16 @@ import '../../services/get_place.dart';
 import '../../services/save_place.dart';
 import '../../services/fetch_place_from_google.dart';
 import '../../services//get_place_by_name.dart';
+import '../../services/search_places.dart';
 
 class PlaceRepositoryImpl implements PlaceRepository {
   Map<String, dynamic>? _json;
 
   Future<void> _loadJson() async {
     if (_json != null) return;
-    final jsonString =
-        await rootBundle.loadString('lib/data/mock/mock_response.json');
+    final jsonString = await rootBundle.loadString(
+      'lib/data/mock/mock_response.json',
+    );
     _json = jsonDecode(jsonString);
   }
 
@@ -35,13 +37,16 @@ class PlaceRepositoryImpl implements PlaceRepository {
 
   @override
   Future<List<PlaceReviewGroup>> getPlaceReviewGroupsByPlaceId(
-      String placeId) async {
+    String placeId,
+  ) async {
     await _loadJson();
     final result = _json!['result'];
 
     final groupId = const Uuid().v4();
-    final group =
-        mapGoogleJsonToReviewGroup(groupId: groupId, placeId: placeId);
+    final group = mapGoogleJsonToReviewGroup(
+      groupId: groupId,
+      placeId: placeId,
+    );
 
     return [
       PlaceReviewGroup(
@@ -49,7 +54,7 @@ class PlaceRepositoryImpl implements PlaceRepository {
         companyName: group.companyName,
         companyLogo: group.companyLogo,
         placeId: group.placeId,
-      )
+      ),
     ];
   }
 
@@ -63,6 +68,7 @@ class PlaceRepositoryImpl implements PlaceRepository {
       groupId: groupId,
     );
   }
+
   @override
   Future<Place?> getCachedPlaceByGoogleId(String googlePlaceId) {
     return getCachedPlaceByGoogleIdService(googlePlaceId);
@@ -71,7 +77,10 @@ class PlaceRepositoryImpl implements PlaceRepository {
   @override
   Future<Place> fetchAndCachePlaceFromGoogle(String placeName) async {
     // 1. Fetch full Google place detail JSON
-    final googlePlaceJson = await fetchPlaceFromGoogleApiService(placeName, 'AIzaSyDkpK__n05zMQb49-ydguva8RmP_z4K1IY');
+    final googlePlaceJson = await fetchPlaceFromGoogleApiService(
+      placeName,
+      'AIzaSyDkpK__n05zMQb49-ydguva8RmP_z4K1IY',
+    );
 
     // 2. Extract `result` field if needed (if your fetch already returns it, skip this line)
     final result = googlePlaceJson['result'] ?? googlePlaceJson;
@@ -88,11 +97,12 @@ class PlaceRepositoryImpl implements PlaceRepository {
   }
 
   @override
-  Future<Place?> getCachedPlaceByName(String placeName){
+  Future<Place?> getCachedPlaceByName(String placeName) {
     return getCachedPlaceByNameService(placeName);
   }
 
-
-  
-
+  @override
+  Future<List<Place>> searchPlaces(String query) async {
+    return searchPlacesService(query);
+  }
 }

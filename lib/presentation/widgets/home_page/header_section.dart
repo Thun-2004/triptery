@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:triptery/domain/repositories/place_repository_impl.dart';
@@ -13,12 +14,32 @@ class HeaderSection extends StatefulWidget {
 
 class _HeaderSectionState extends State<HeaderSection> {
   final PageController _controller = PageController();
-
-  // 📷 Duplicate same image 5 times
   final List<String> images = List.generate(
     5,
     (_) => 'assets/images/header_image.png',
   );
+
+  Timer? _autoScrollTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      final nextPage = (_controller.page?.round() ?? 0) + 1;
+      _controller.animateToPage(
+        nextPage % images.length,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _autoScrollTimer?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +79,8 @@ class _HeaderSectionState extends State<HeaderSection> {
           ),
 
           // 🔘 Dot indicator
-          // 🔘 Dot indicator (smaller, moved down, custom color)
           Positioned(
-            bottom: 118, // ⬇️ moved lower by 12
+            bottom: 118,
             left: 0,
             right: 0,
             child: Center(
@@ -68,11 +88,11 @@ class _HeaderSectionState extends State<HeaderSection> {
                 controller: _controller,
                 count: images.length,
                 effect: WormEffect(
-                  dotHeight: 6, // ⬇️ smaller dot
+                  dotHeight: 6,
                   dotWidth: 6,
                   spacing: 6,
                   dotColor: Colors.white.withOpacity(0.3),
-                  activeDotColor: Color(0xFFFE8C56), // 🎯 custom color
+                  activeDotColor: const Color(0xFFFE8C56),
                 ),
               ),
             ),

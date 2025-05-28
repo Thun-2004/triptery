@@ -9,4 +9,5 @@ abstract class PlaceRepository {
   Future<Place?> getCachedPlaceByGoogleId(String googlePlaceId);
   Future<Place> fetchAndCachePlaceFromGoogle(String googlePlaceId);
   Future<Place?> getCachedPlaceByName(String name);
+  Future<List<Place>> searchPlaces(String query);
 }

@@ -9,6 +9,7 @@ import '../widgets/home_page/header_section.dart';
 import '../widgets/home_page/horizontal_card_list.dart';
 import '../../domain/entities/category.dart';
 import '../widgets/home_page/categories.dart';
+import '../pages/search_page.dart';
 
 import '../../domain/entities/place/place.dart';
 import '../../domain/entities/plan/plans.dart';
@@ -28,13 +29,12 @@ class _HomePageState extends State<HomePage> {
   List<Plan> trendingPlan = [];
   bool isLoading = true;
   final List<Category> categories = [
-  Category(name: 'Island', imagePath: 'assets/images/island.png'),
-  Category(name: 'Hills', imagePath: 'assets/images/hills.png'),
-  Category(name: 'Cruise', imagePath: 'assets/images/cruise.png'),
-  Category(name: 'Adventure', imagePath: 'assets/images/adventure.png'),
-  Category(name: 'Camping', imagePath: 'assets/images/camping.png'),
-];
-
+    Category(name: 'Island', imagePath: 'assets/images/island.png'),
+    Category(name: 'Hills', imagePath: 'assets/images/hills.png'),
+    Category(name: 'Cruise', imagePath: 'assets/images/cruise.png'),
+    Category(name: 'Adventure', imagePath: 'assets/images/adventure.png'),
+    Category(name: 'Camping', imagePath: 'assets/images/camping.png'),
+  ];
 
   @override
   void initState() {
@@ -77,8 +77,8 @@ class _HomePageState extends State<HomePage> {
                           const SizedBox(height: 45),
 
                           Categories(categories: categories),
-                          // 3. Rest of page
 
+                          // 3. Rest of page
                           PlanHorizontalList(plans: trendingPlan),
                           HorizontalCardList(
                             title: 'Popular in Bangkok',
@@ -97,8 +97,7 @@ class _HomePageState extends State<HomePage> {
                       Positioned(
                         left: 16,
                         right: 16,
-                        top:
-                            330, // 👈 adjust this to line up visually with header bottom
+                        top: 330,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.transparent,
@@ -111,7 +110,21 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ],
                           ),
-                          child: CustomSearchBar(repository: placeRepository),
+                          child: CustomSearchBar(
+                            repository: placeRepository,
+                            onSearch: (query) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => SearchPage(
+                                        repository: placeRepository,
+                                        initialQuery: query,
+                                      ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ],
