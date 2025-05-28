@@ -96,8 +96,10 @@ class PlaceCard extends StatelessWidget {
                       const SizedBox(height: 3),
                       Tag(
                         text: "hotel",
+                        textSize: 10,
                         textColor: AppColors.black,
                         tagColor: AppColors.gray,
+                        height: 18, 
                       ),
                       const SizedBox(height: 3),
                       Row(

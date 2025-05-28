@@ -68,6 +68,9 @@ class _TripBodyState extends State<TripBody> {
             ),
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 21),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+              ),
               child: Row(
                 children: [
                   DayButton(text: 'All', onPressed: () => _selectDay(0), index: 0, selectedDay: selectedDay),

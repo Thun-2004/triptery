@@ -3,6 +3,7 @@ import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/pages/trip/trip_summary_sheet.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
+import 'package:triptery/presentation/widgets/tag.dart';
 
 class HeaderSection extends StatefulWidget {
   const HeaderSection({super.key});
@@ -25,6 +26,9 @@ class _HeaderSectionState extends State<HeaderSection> {
   Widget build(BuildContext context) {
     return Container(
       height: 350,
+      decoration: BoxDecoration(
+        color: AppColors.grayBg,
+      ),
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -54,7 +58,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                 colors: [
                   Colors.transparent,
                   Colors.black.withOpacity(0.5),
-                  Colors.black.withOpacity(1),
+                  AppColors.grayBg.withOpacity(1),
                 ],
                 stops: const [0.5, 0.7, 1.0],
               ),
@@ -116,12 +120,15 @@ class _HeaderSectionState extends State<HeaderSection> {
                         // const SizedBox(height: 20),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             CustomText(
                               text: 'Chilling Beach at Samui',
                               type: TextType.heading,
                               color: AppColors.black,
                             ),
+
+                            const SizedBox(height:2),
 
                             Row(
                               children: [
@@ -132,6 +139,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                       size: 16,
                                       color: AppColors.black,
                                     ),
+                                    const SizedBox(width: 4),
                                     CustomText(
                                       text: '4 days',
                                       type: TextType.body,
@@ -157,53 +165,55 @@ class _HeaderSectionState extends State<HeaderSection> {
                               ],
                             ),
 
-                            const SizedBox(height: 10),
+                            const SizedBox(height:3),
 
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
-                                    Icon(
-                                      LucideIcons.eye,
-                                      color: AppColors.black,
+                                    Tag(
+                                      text: '5.0 (986)',
+                                      textSize: 12,
+                                      textColor: AppColors.black,
+                                      tagColor: AppColors.white,
+                                      height: 22,
+                                      borderRadius: 4, 
+                                      borderColor: AppColors.gray,
+                                      icon: LucideIcons.star, 
+                                      iconColor: AppColors.black,
                                     ),
-
-                                    CustomText(
+                                    const SizedBox(width: 5),
+                                    Tag(
                                       text: '1.2k',
-                                      type: TextType.body,
-                                      color: AppColors.black,
+                                      textSize: 12,
+                                      textColor: AppColors.black,
+                                      tagColor: AppColors.white,
+                                      height: 22,
+                                      borderRadius: 4, 
+                                      borderColor: AppColors.gray,
+                                      icon: LucideIcons.eye, 
+                                      iconColor: AppColors.black,
                                     ),
-                                    const SizedBox(width: 8),
-
-                                    Icon(
-                                      LucideIcons.heart,
-                                      color: AppColors.black,
-                                      size: 18,
+                                    const SizedBox(width: 5),
+                                    Tag(
+                                      text: '300',
+                                      textSize: 12,
+                                      textColor: AppColors.black,
+                                      tagColor: AppColors.white,
+                                      height: 22,
+                                      borderRadius: 4, 
+                                      borderColor: AppColors.gray,
+                                      icon: LucideIcons.clipboardList, 
+                                      iconColor: AppColors.black,
                                     ),
-                                    CustomText(
-                                      text: '1.2k',
-                                      type: TextType.body,
-                                      color: AppColors.black,
-                                    ),
-                                    const SizedBox(width: 8),
-
-                                    Icon(
-                                      LucideIcons.copy,
-                                      color: AppColors.black,
-                                      size: 18,
-                                    ),
-                                    CustomText(
-                                      text: '1.2k',
-                                      type: TextType.body,
-                                      color: AppColors.black,
-                                    ),
+ 
                                     const SizedBox(width: 8),
                                   ],
                                 ),
 
                                 CustomText(
-                                  text: 'Couple Trip Cheap budget',
+                                  text: 'Salmon',
                                   type: TextType.body,
                                   color: AppColors.black,
                                 ),
@@ -215,7 +225,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                     ),
                   ),
 
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 5),
                 ],
               ),
             ],
