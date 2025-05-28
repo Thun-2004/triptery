@@ -4,7 +4,6 @@ import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:triptery/presentation/widgets/trip/header_section.dart';
 import 'package:triptery/presentation/widgets/trip/trip_body.dart';
 import 'package:get/get.dart';
-import 'package:triptery/utils/ui.dart' show NoBounceScrollBehavior;
 
 enum Mode { normal, edit }
 

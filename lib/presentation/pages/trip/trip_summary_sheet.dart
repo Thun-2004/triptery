@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/pages/trip/trip_budget_sheet.dart';
-import 'package:triptery/presentation/pages/trip/trip_calendar_window.dart';
-import 'package:triptery/presentation/pages/trip/trip_group_window.dart';
-import 'package:triptery/presentation/pages/trip/trip_tag_window.dart';
+import 'package:triptery/presentation/pages/trip/trip_calendar_sheet.dart';
+import 'package:triptery/presentation/pages/trip/trip_group_sheet.dart';
+import 'package:triptery/presentation/pages/trip/trip_tag_sheet.dart';
 import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
 
 class TripSummaryWindow extends StatefulWidget {

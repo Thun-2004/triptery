@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:triptery/constant/colors.dart';
+import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/place_card.dart';
 import 'package:triptery/presentation/widgets/trip/components/route_dropdown.dart';
 import 'package:triptery/data/mock/mock_trips.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:lucide_icons_flutter/test_icons.dart';
 
 class Day extends StatefulWidget {
   Day({super.key, required this.day});
@@ -328,11 +328,11 @@ class _DayState extends State<Day> {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.white,
           borderRadius: BorderRadius.all(Radius.circular(16)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: AppColors.black.withOpacity(0.1),
               offset: const Offset(0, 2),
               blurRadius: 1,
               spreadRadius: 0,
@@ -343,43 +343,56 @@ class _DayState extends State<Day> {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Header section (always visible)
-            InkWell(
-              onTap: () {
-                setState(() {
-                  _isExpanded = !_isExpanded;
-                });
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        const Icon(LucideIcons.gripVertical, size: 24, color: Color(0xFFD9D9D9)),
-                        const SizedBox(width: 12),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Day 1",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+            Container(
+              decoration: BoxDecoration(
+                color: _isExpanded ? AppColors.orange_950 : AppColors.white, 
+                borderRadius: _isExpanded ? const BorderRadius.only(
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
+                ) : BorderRadius.all(Radius.circular(16)),
+              ),
+              margin: _isExpanded ? const EdgeInsets.only(bottom: 20) : const EdgeInsets.all(0),
+
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    _isExpanded = !_isExpanded;
+                  });
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            LucideIcons.gripVertical,
+                            size: 24,
+                            color: AppColors.gray,
+                          ),
+                          const SizedBox(width: 12),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: "Day 1",
+                                type: TextType.subHeading,
+                                color: _isExpanded ?AppColors.white : AppColors.black,
                               ),
-                            ),
-                      
-                            Text("Thursday, 12th October 2023", 
-                            style: TextStyle(
-                                fontSize: 14,
-                                color: Color(0xFF848997),
-                              ),),
-                          ],
-                        ),
-                      ],
-                    ),
-                    Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
-                  ],
+                              CustomText(
+                                text: "Thursday, 12th October 2023",
+                                type: TextType.body,
+                                color: _isExpanded ? AppColors.white : AppColors.darkGray,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+
+                      Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -474,6 +487,7 @@ class _DayState extends State<Day> {
                                                 places2[index + 1].placeId !=
                                                     null &&
                                                 routeOptions.isNotEmpty)
+                                             
                                               RouteDropdown(
                                                 key: ValueKey(
                                                   'route-${places2[index].placeId}-${places2[index + 1].placeId}-$index',
@@ -516,7 +530,7 @@ class _DayState extends State<Day> {
                                                 child: Text(
                                                   "Add Place",
                                                   style: TextStyle(
-                                                    color: Colors.white,
+                                                    color: AppColors.white,
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.bold,
                                                   ),

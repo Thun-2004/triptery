@@ -1,6 +1,10 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:triptery/constant/colors.dart';
+import 'package:triptery/presentation/pages/trip/trip_transport_info_sheet.dart';
+import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/drop_down_area.dart';
 
 class RouteDropdown extends StatefulWidget {
@@ -19,8 +23,16 @@ class RouteDropdown extends StatefulWidget {
 class _RouteDropdownState extends State<RouteDropdown> {
   var selected = 0;
   late String currentChoice; 
-
   late final List<Map<String, String>> routes;
+
+  void showTransportationInfo(){
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => TransportationInfoWindow(),
+    );
+  }
 
   @override
   void initState() {
@@ -34,19 +46,44 @@ class _RouteDropdownState extends State<RouteDropdown> {
     // Make sure routes is not empty before generating items
     final routesToDisplay = routes.isNotEmpty ? routes : [];
     
-
     return DropDownArea(
       elevation: 0,
-      verticalMargin: 0,
+      verticalMargin: 7,
       header: Container(
-        padding: const EdgeInsets.all(0),
+        decoration: BoxDecoration(
+          color: AppColors.grayRoute,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.all(10),
         width: double.infinity,
         height: 40,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(currentChoice),
-            const Icon(Icons.keyboard_arrow_down),
+            Row(
+              children : [
+                Text(currentChoice)
+              ]
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children : [
+                CustomText(
+                  text: "21 mins", 
+                  type: TextType.body,
+                  color: AppColors.black,
+                ), 
+                const Icon(Icons.keyboard_arrow_down),
+                IconButton(
+                  icon: Icon(LucideIcons.info, size: 16), 
+                  onPressed: () {
+                    showTransportationInfo();
+                  }
+                ), 
+
+              ]
+            )
+            
           ],
         ),
       ),

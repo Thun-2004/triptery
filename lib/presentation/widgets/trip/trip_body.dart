@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:triptery/constant/colors.dart';
+import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/day.dart';
 import 'package:triptery/presentation/widgets/trip/components/day_list.dart';
 import 'package:triptery/data/mock/mock_trips.dart';
@@ -47,17 +49,17 @@ class _TripBodyState extends State<TripBody> {
     return Container(
       height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
-        color: const Color(0xFFF5F5F5),
+        color: AppColors.grayBg,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: AppColors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: AppColors.black.withOpacity(0.1),
                   offset: const Offset(0, 4),
                   blurRadius: 4,
                   spreadRadius: 0,
@@ -136,18 +138,23 @@ class DayButtonState extends State<DayButton>{
         widget.onPressed(); 
       }, 
       style: ElevatedButton.styleFrom(
-        backgroundColor: widget.index == widget.selectedDay ? Color(0xFFFE8257) : Colors.white,
+        backgroundColor: widget.index == widget.selectedDay ? AppColors.orange_900 : AppColors.white,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side: BorderSide(color: widget.index == widget.selectedDay ? Colors.transparent : Color(0xFFCDCCD2), width: 1),
+          side: BorderSide(color: widget.index == widget.selectedDay ? Colors.transparent : AppColors.gray, width: 1),
         ),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       ),
-      child: Text(
-        widget.text,
-        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: widget.index == widget.selectedDay ? Colors.white : Colors.black),
-      ),
+      child: CustomText(
+        text: widget.text,
+        type: TextType.body,
+        color: widget.index == widget.selectedDay ? AppColors.white : AppColors.black
+      )
+      // )Text(
+      //   widget.text,
+      //   style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: widget.index == widget.selectedDay ? Colors.white : Colors.black),
+      // ),
     );
   }
 }

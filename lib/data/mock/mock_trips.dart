@@ -50,7 +50,7 @@ final List<Trip> mockTrips = [
     placeId: "2",
     placeName: "Jomtien Beach",
     placeDescription: "a popular tourist destination located in Pattaya, Thailand, known for its long stretch of sand, vibrant atmosphere, and variety of activities.",
-    placeImageUrl: "https://i.pinimg.com/736x/5e/75/2e/5e752e76c0b3846cb24f7c0ebbeaabd4.jpg",
+    placeImageUrl: "https://i.pinimg.com/736x/09/cc/81/09cc8103a174d70e7b7cdb96d4bc30d2.jpg",
     arrivalTime: "11:00 AM",
     routeMode: null,
     routeTotalTime: null,
