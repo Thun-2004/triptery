@@ -5,12 +5,13 @@ import 'package:triptery/presentation/widgets/tag.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class PlaceCard extends StatelessWidget {
-  const PlaceCard({
+  PlaceCard({
     super.key,
     required this.placeId,
     required this.placeName,
     required this.placeDescription,
     required this.placeImage,
+    required this.arrivalTime, 
     required this.onClick,
     required this.isEdit,
   });
@@ -19,6 +20,7 @@ class PlaceCard extends StatelessWidget {
   final String placeName;
   final String placeDescription;
   final String placeImage;
+  String arrivalTime; // Assuming this is a string for simplicity
   final VoidCallback onClick;
   final bool isEdit;
 

@@ -164,10 +164,15 @@ class _DayState extends State<Day> {
       final Trip item = places2.removeAt(oldIndex);
       places2.insert(newIndex, item);
 
+      //swap time
+      String tempTime = places2[newIndex].arrivalTime ?? '';
+      places2[newIndex].arrivalTime = places2[oldIndex].arrivalTime;
+      places2[oldIndex].arrivalTime = tempTime;
+
+
+      //recalculate routes
       _selectedIndex = -1;
-
       _recalculateAllRoutes();
-
       print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
     });
   }
@@ -428,10 +433,28 @@ class _DayState extends State<Day> {
                                 Expanded(
                                   child: Column(
                                     children: [
+
                                       Container(
                                         margin: EdgeInsets.all(0),
                                         child: Column(
                                           children: [
+                                            const SizedBox(height: 4),
+                                            if (places2[index].day ==
+                                                    widget.day &&
+                                                index <= places2.length - 1 &&
+                                                places2[index].placeId != null)
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children : [                                             
+                                                  Icon(LucideIcons.clock, color: AppColors.orange_950, size: 16),
+                                                  CustomText(
+                                                    text: places2[index].arrivalTime!,                                               
+                                                    type: TextType.body,
+                                                    color: AppColors.orange_950,), 
+                                                ]
+                                              ), 
+                                            // const SizedBox(height: 4),
+
                                             if (places2[index].day ==
                                                     widget.day &&
                                                 index <= places2.length - 1 &&
@@ -468,6 +491,9 @@ class _DayState extends State<Day> {
                                                     placeImage:
                                                         places2[index]
                                                             .placeImageUrl!,
+                                                    arrivalTime:
+                                                        places2[index]
+                                                            .arrivalTime!,
                                                     onClick:
                                                         () => deleteCard(index),
                                                     isEdit: _isEditing,
