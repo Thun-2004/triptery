@@ -48,6 +48,7 @@ class _TripBodyState extends State<TripBody> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
+     
       decoration: BoxDecoration(
         color: AppColors.grayBg,
       ),

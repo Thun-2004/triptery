@@ -37,18 +37,26 @@ class _TripPageState extends State<TripPage> {
             children: [
               HeaderSection(toggleMap: toggleMap), 
 
-              if (showMap) 
-                Map(), // Show map if showMap is true
-
-              TripBody()
+              
+              
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: showMap ? 400 : 0,
+                curve: Curves.easeInOut,
+                child: ClipRect(
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    heightFactor: showMap ? 1.0 : 0.0,
+                    child: const Map(),
+                  ),
+                ),
+              ), 
+              TripBody(), 
             ],
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => setState(() => tripController.toggleEditPlaceOrder()),
-      //   child: const Icon(Icons.edit),
-      // ),
+     
       floatingActionButton: FloatingActionButton(
         onPressed: () => setState(() => tripController.toggleEditPlaceOrder()),
         elevation: 4,
