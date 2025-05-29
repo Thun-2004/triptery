@@ -422,7 +422,7 @@ class _DayState extends State<Day> {
                                   : [];
                           return Padding(
                             key: ValueKey('place-$index'),
-                            padding: const EdgeInsets.only(bottom: 8.0),
+                            padding: const EdgeInsets.only(bottom: 0.0),
                             child: Row(
                               children: [
                                 Expanded(

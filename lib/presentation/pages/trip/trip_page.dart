@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:triptery/presentation/widgets/trip/header_section.dart';
 import 'package:triptery/presentation/widgets/trip/trip_body.dart';
+import 'package:triptery/presentation/widgets/trip/components/map.dart';
 import 'package:get/get.dart';
 
 enum Mode { normal, edit }
@@ -15,8 +16,15 @@ class TripPage extends StatefulWidget {
 }
 
 class _TripPageState extends State<TripPage> {
+  bool showMap = false; 
   Mode mode = Mode.normal;
   final tripController = Get.find<TripController>();
+
+  void toggleMap() {
+    setState(() {
+      showMap = !showMap;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +34,14 @@ class _TripPageState extends State<TripPage> {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [HeaderSection(), TripBody()],
+            children: [
+              HeaderSection(toggleMap: toggleMap), 
+
+              if (showMap) 
+                Map(), // Show map if showMap is true
+
+              TripBody()
+            ],
           ),
         ),
       ),

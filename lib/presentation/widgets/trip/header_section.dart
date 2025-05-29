@@ -6,13 +6,19 @@ import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/tag.dart';
 
 class HeaderSection extends StatefulWidget {
-  const HeaderSection({super.key});
+  final VoidCallback toggleMap;
+
+  HeaderSection({
+    super.key, 
+    required this.toggleMap
+  });
 
   @override
   State<HeaderSection> createState() => _HeaderSectionState();
 }
 
 class _HeaderSectionState extends State<HeaderSection> {
+
   void _openBottomModal() {
     showModalBottomSheet(
       context: context,
@@ -50,28 +56,37 @@ class _HeaderSectionState extends State<HeaderSection> {
             ),
           ),
           // Gradient overlay
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.transparent,
-                  Colors.black.withOpacity(0.5),
-                  AppColors.grayBg.withOpacity(1),
-                ],
-                stops: const [0.5, 0.7, 1.0],
+          Positioned(
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black.withOpacity(0.5),
+                    Colors.black.withOpacity(0.7),
+                    AppColors.grayBg.withOpacity(1),
+                  ],
+                  stops: const [0.5, 0.6, 0.7, 1.0],
+                ),
               ),
-            ),
+            )
           ),
 
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
+              Padding (
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.arrow_back),
+                  Icon(Icons.arrow_back, color: AppColors.white),
                   Row(
                     children: [
                       IconButton(
@@ -86,7 +101,11 @@ class _HeaderSectionState extends State<HeaderSection> {
                       ),
 
                       SizedBox(width: 8),
-                      Icon(LucideIcons.map, color: AppColors.white),
+                      IconButton(
+                        icon: Icon(LucideIcons.map), 
+                        color: AppColors.black,
+                        onPressed: widget.toggleMap
+                      ),
                       SizedBox(width: 8),
                       Icon(
                         LucideIcons.ellipsisVertical,
@@ -95,7 +114,8 @@ class _HeaderSectionState extends State<HeaderSection> {
                     ],
                   ),
                 ],
-              ),
+              )
+              ), 
               
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -224,12 +244,14 @@ class _HeaderSectionState extends State<HeaderSection> {
                       ],
                     ),
                   ),
-
+                  
                   const SizedBox(height: 5),
+
                 ],
               ),
             ],
           ),
+          
         ],
       ),
     );
