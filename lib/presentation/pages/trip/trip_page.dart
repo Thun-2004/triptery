@@ -35,13 +35,10 @@ class _TripPageState extends State<TripPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              HeaderSection(toggleMap: toggleMap), 
-
-              
-              
+              HeaderSection(toggleMap: toggleMap),
               AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
-                height: showMap ? 400 : 0,
+                height: showMap ? 550 : 0,
                 curve: Curves.easeInOut,
                 child: ClipRect(
                   child: Align(
@@ -85,3 +82,4 @@ class _TripPageState extends State<TripPage> {
     );
   }
 }
+

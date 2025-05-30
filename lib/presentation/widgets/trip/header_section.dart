@@ -8,17 +8,15 @@ import 'package:triptery/presentation/widgets/tag.dart';
 class HeaderSection extends StatefulWidget {
   final VoidCallback toggleMap;
 
-  HeaderSection({
-    super.key, 
-    required this.toggleMap
-  });
+  HeaderSection({super.key, required this.toggleMap});
 
   @override
   State<HeaderSection> createState() => _HeaderSectionState();
 }
 
 class _HeaderSectionState extends State<HeaderSection> {
-
+  bool isClicked = false;
+  
   void _openBottomModal() {
     showModalBottomSheet(
       context: context,
@@ -32,9 +30,7 @@ class _HeaderSectionState extends State<HeaderSection> {
   Widget build(BuildContext context) {
     return Container(
       height: 350,
-      decoration: BoxDecoration(
-        color: AppColors.grayBg,
-      ),
+      decoration: BoxDecoration(color: AppColors.grayBg),
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -47,8 +43,8 @@ class _HeaderSectionState extends State<HeaderSection> {
               decoration: BoxDecoration(
                 color: AppColors.white,
                 image: DecorationImage(
-                  image: NetworkImage(
-                    'https://i.pinimg.com/736x/09/cc/81/09cc8103a174d70e7b7cdb96d4bc30d2.jpg', // Replace with your image path
+                  image: AssetImage(
+                    'assets/images/sea.jpeg', // Replace with your image path
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -75,48 +71,52 @@ class _HeaderSectionState extends State<HeaderSection> {
                   stops: const [0.5, 0.6, 0.7, 1.0],
                 ),
               ),
-            )
+            ),
           ),
 
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding (
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 20,
+                ),
                 child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(Icons.arrow_back, color: AppColors.white),
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          LucideIcons.pencil,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(Icons.arrow_back, color: AppColors.white),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            LucideIcons.pencil,
+                            color: AppColors.white,
+                          ),
+                          onPressed: () {
+                            // widget.tripController.toggleEditTripInfo();
+                            _openBottomModal();
+                          },
+                        ),
+
+                        SizedBox(width: 8),
+
+                        Icon(
+                          LucideIcons.copy,
+                          size: 20,
+                          color: AppColors.black,
+                        ),
+                        SizedBox(width: 8),
+                        Icon(
+                          LucideIcons.ellipsisVertical,
                           color: AppColors.white,
                         ),
-                        onPressed: () {
-                          // widget.tripController.toggleEditTripInfo();
-                          _openBottomModal();
-                        },
-                      ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
 
-                      SizedBox(width: 8),
-                      IconButton(
-                        icon: Icon(LucideIcons.map), 
-                        color: AppColors.black,
-                        onPressed: widget.toggleMap
-                      ),
-                      SizedBox(width: 8),
-                      Icon(
-                        LucideIcons.ellipsisVertical,
-                        color: AppColors.white,
-                      ),
-                    ],
-                  ),
-                ],
-              )
-              ), 
-              
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,13 +142,34 @@ class _HeaderSectionState extends State<HeaderSection> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            CustomText(
-                              text: 'Chilling Beach at Samui',
-                              type: TextType.heading,
-                              color: AppColors.black,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CustomText(
+                                  text: 'Chilling Beach at Samui',
+                                  type: TextType.heading,
+                                  color: AppColors.black,
+                                ),
+                                Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundImage: AssetImage(
+                                        "assets/images/user.jpg",
+                                      ),
+                                      radius: 12,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    CustomText(
+                                      text: 'Levi',
+                                      type: TextType.body,
+                                      color: AppColors.black,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
 
-                            const SizedBox(height:2),
+                            const SizedBox(height: 2),
 
                             Row(
                               children: [
@@ -185,7 +206,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                               ],
                             ),
 
-                            const SizedBox(height:3),
+                            const SizedBox(height: 3),
 
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -198,9 +219,9 @@ class _HeaderSectionState extends State<HeaderSection> {
                                       textColor: AppColors.black,
                                       tagColor: AppColors.white,
                                       height: 22,
-                                      borderRadius: 4, 
+                                      borderRadius: 4,
                                       borderColor: AppColors.gray,
-                                      icon: LucideIcons.star, 
+                                      icon: LucideIcons.star,
                                       iconColor: AppColors.black,
                                     ),
                                     const SizedBox(width: 5),
@@ -210,9 +231,9 @@ class _HeaderSectionState extends State<HeaderSection> {
                                       textColor: AppColors.black,
                                       tagColor: AppColors.white,
                                       height: 22,
-                                      borderRadius: 4, 
+                                      borderRadius: 4,
                                       borderColor: AppColors.gray,
-                                      icon: LucideIcons.eye, 
+                                      icon: LucideIcons.eye,
                                       iconColor: AppColors.black,
                                     ),
                                     const SizedBox(width: 5),
@@ -222,20 +243,40 @@ class _HeaderSectionState extends State<HeaderSection> {
                                       textColor: AppColors.black,
                                       tagColor: AppColors.white,
                                       height: 22,
-                                      borderRadius: 4, 
+                                      borderRadius: 4,
                                       borderColor: AppColors.gray,
-                                      icon: LucideIcons.clipboardList, 
+                                      icon: LucideIcons.clipboardList,
                                       iconColor: AppColors.black,
                                     ),
- 
+
                                     const SizedBox(width: 8),
                                   ],
                                 ),
 
-                                CustomText(
-                                  text: 'Salmon',
-                                  type: TextType.body,
-                                  color: AppColors.black,
+                                Container(
+                                  padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                                  width: 32,
+                                  height: 32,
+                                  decoration: BoxDecoration(
+                                    color: isClicked ? AppColors.orange_950 : AppColors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: isClicked ? AppColors.orange_950 : AppColors.black,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: IconButton(
+                                    icon: Icon(LucideIcons.map),
+                                    iconSize: 16,
+                                    color: isClicked ? AppColors.white : AppColors.black,
+                                    onPressed: ((){
+                                      // Toggle map view
+                                      widget.toggleMap();
+                                      setState(() {
+                                        isClicked = !isClicked;
+                                      });
+                                    })
+                                  ),
                                 ),
                               ],
                             ),
@@ -244,14 +285,12 @@ class _HeaderSectionState extends State<HeaderSection> {
                       ],
                     ),
                   ),
-                  
-                  const SizedBox(height: 5),
 
+                  const SizedBox(height: 5),
                 ],
               ),
             ],
           ),
-          
         ],
       ),
     );

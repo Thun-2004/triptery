@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'package:triptery/constant/colors.dart';
+import 'package:triptery/presentation/widgets/add_button.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/day.dart';
 import 'package:triptery/presentation/widgets/trip/components/day_list.dart';
 import 'package:triptery/data/mock/mock_trips.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
+
+
+class TripState extends ChangeNotifier {
+  bool showDelete = false; 
+
+  void toggleDelete() {
+    showDelete = !showDelete;
+    notifyListeners();
+  }
+}
 
 class TripBody extends StatefulWidget {
   const TripBody({super.key});
@@ -46,7 +58,7 @@ class _TripBodyState extends State<TripBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return  Container(
       height: MediaQuery.of(context).size.height,
      
       decoration: BoxDecoration(
@@ -99,6 +111,39 @@ class _TripBodyState extends State<TripBody> {
                       ),
                     ),
                   ),
+                  const SizedBox(width: 10),
+                  AddButton(
+                    onPressed: () {
+                      // Handle add button press
+                      // For example, navigate to a new page or show a dialog
+                    }, 
+                    text: '+', 
+                    textSize: 16, 
+                    textColor: AppColors.orange_950,
+                    width: 50, 
+                    height: 30, 
+                  ),
+
+                  // const SizedBox(width: 10), 
+                  // DayButton(text: 'All', onPressed: () => _selectDay(0), index: 0, selectedDay: selectedDay),
+
+                  // const SizedBox(width: 10), 
+                  // DayButton(text: 'All', onPressed: () => _selectDay(0), index: 0, selectedDay: selectedDay),
+
+                  // const SizedBox(width: 10), 
+                  // DayButton(text: 'All', onPressed: () => _selectDay(0), index: 0, selectedDay: selectedDay),
+
+                  // const SizedBox(width: 10), 
+                  // DayButton(text: 'All', onPressed: () => _selectDay(0), index: 0, selectedDay: selectedDay),
+
+                  // const SizedBox(width: 10), 
+                  // DayButton(text: 'All', onPressed: () => _selectDay(0), index: 0, selectedDay: selectedDay),
+
+                  // const SizedBox(width: 10), 
+                  // DayButton(text: 'All', onPressed: () => _selectDay(0), index: 0, selectedDay: selectedDay),
+
+                  // const SizedBox(width: 10), 
+                  // DayButton(text: 'All', onPressed: () => _selectDay(0), index: 0, selectedDay: selectedDay),
                 ],
               ),
             ),
@@ -110,7 +155,7 @@ class _TripBodyState extends State<TripBody> {
           // Add your trip details here
         ],
       ),
-    );
+    ); 
   }
 }
 

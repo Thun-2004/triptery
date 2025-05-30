@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/tag.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:triptery/presentation/widgets/trip/trip_body.dart';
 
 class PlaceCard extends StatelessWidget {
   PlaceCard({
@@ -11,7 +13,7 @@ class PlaceCard extends StatelessWidget {
     required this.placeName,
     required this.placeDescription,
     required this.placeImage,
-    required this.arrivalTime, 
+    required this.arrivalTime,
     required this.onClick,
     required this.isEdit,
   });
@@ -26,6 +28,9 @@ class PlaceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final showMap = context.watch<TripState>().showMap;
+    bool isChecked = false; 
+
     return Card(
       // margin: const EdgeInsets.all(20),
       elevation: 0,
@@ -54,7 +59,7 @@ class PlaceCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
-                      image: NetworkImage(placeImage),
+                      image: AssetImage(placeImage),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -68,30 +73,48 @@ class PlaceCard extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          CustomText(
-                            text: placeName,
-                            textSize: 13,
-                            type: TextType.subHeading,
-                            color: AppColors.black,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomText(
+                                text: placeName,
+                                textSize: 13,
+                                type: TextType.subHeading,
+                                color: AppColors.black,
+                              ),
+                              // if (isEdit)
+                              //   Checkbox(
+                              //     isError: true,
+                              //     tristate: true,
+                              //     value: isChecked,
+                              //     onChanged: (bool? value) {
+                              //       isChecked = !isChecked; 
+                              //       // setState(() {
+                              //       //   isChecked = !isChecked; 
+                              //       // }); 
+                              //     },
+                              //   ),
+                            ],
                           ),
 
-                          if (isEdit)
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-                              child: IconButton(
-                                icon: Icon(Icons.remove, color: Colors.white),
-                                padding: EdgeInsets.all(0),
-                                constraints: BoxConstraints(
-                                  minWidth: 24,
-                                  minHeight: 24,
-                                ),
-                                iconSize: 18,
-                                onPressed: onClick,
-                              ),
-                            ),
+                          // if (isEdit)
+                          //   Container(
+                          //     decoration: BoxDecoration(
+                          //       color: Colors.red,
+                          //       shape: BoxShape.circle,
+                          //     ),
+                          //     child: IconButton(
+                          //       icon: Icon(Icons.remove, color: Colors.white),
+                          //       padding: EdgeInsets.all(0),
+                          //       constraints: BoxConstraints(
+                          //         minWidth: 24,
+                          //         minHeight: 24,
+                          //       ),
+                          //       iconSize: 18,
+                          //       onPressed: onClick,
+                          //     ),
+                          //   ),
                         ],
                       ),
 
@@ -101,7 +124,7 @@ class PlaceCard extends StatelessWidget {
                         textSize: 10,
                         textColor: AppColors.black,
                         tagColor: AppColors.gray,
-                        height: 18, 
+                        height: 18,
                       ),
                       const SizedBox(height: 3),
                       Row(

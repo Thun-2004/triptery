@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:triptery/constant/colors.dart';
+import 'package:triptery/presentation/widgets/add_button.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/place_card.dart';
 import 'package:triptery/presentation/widgets/trip/components/route_dropdown.dart';
@@ -530,38 +531,46 @@ class _DayState extends State<Day> {
 
                                             if (_isEditing &&
                                                 index < places2.length - 1)
-                                              ElevatedButton(
-                                                onPressed:
-                                                    () => addPlace(index),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                        255,
-                                                        250,
-                                                        98,
-                                                        47,
-                                                      ),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          15,
-                                                        ),
-                                                  ),
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                        vertical: 10,
-                                                        horizontal: 10,
-                                                      ),
-                                                ),
-                                                child: Text(
-                                                  "Add Place",
-                                                  style: TextStyle(
-                                                    color: AppColors.white,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
+                                              AddButton(
+                                                text: "+ Add Place",
+                                                textSize: 14, 
+                                                textColor: AppColors.orange_950, 
+                                                width: double.infinity,
+                                                height: 30,
+                                                onPressed: () => addPlace(index),
+                                              )
+                                              // ElevatedButton(
+                                              //   onPressed:
+                                              //       () => addPlace(index),
+                                              //   style: ElevatedButton.styleFrom(
+                                              //     backgroundColor:
+                                              //         Color.fromARGB(
+                                              //           255,
+                                              //           250,
+                                              //           98,
+                                              //           47,
+                                              //         ),
+                                              //     shape: RoundedRectangleBorder(
+                                              //       borderRadius:
+                                              //           BorderRadius.circular(
+                                              //             15,
+                                              //           ),
+                                              //     ),
+                                              //     padding:
+                                              //         const EdgeInsets.symmetric(
+                                              //           vertical: 10,
+                                              //           horizontal: 10,
+                                              //         ),
+                                              //   ),
+                                              //   child: Text(
+                                              //     "Add Place",
+                                              //     style: TextStyle(
+                                              //       color: AppColors.white,
+                                              //       fontSize: 14,
+                                              //       fontWeight: FontWeight.bold,
+                                              //     ),
+                                              //   ),
+                                              // ),
                                           ],
                                         ),
                                       ),
