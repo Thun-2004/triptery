@@ -104,7 +104,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                         Icon(
                           LucideIcons.copy,
                           size: 20,
-                          color: AppColors.black,
+                          color: AppColors.white,
                         ),
                         SizedBox(width: 8),
                         Icon(
@@ -152,6 +152,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                 ),
                                 Row(
                                   children: [
+                                    Text("by  "), 
                                     CircleAvatar(
                                       backgroundImage: AssetImage(
                                         "assets/images/user.jpg",
@@ -261,7 +262,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                     color: isClicked ? AppColors.orange_950 : AppColors.white,
                                     borderRadius: BorderRadius.circular(8),
                                     border: Border.all(
-                                      color: isClicked ? AppColors.orange_950 : AppColors.black,
+                                      color: isClicked ? AppColors.orange_950 : AppColors.darkGray,
                                       width: 1,
                                     ),
                                   ),

@@ -6,8 +6,8 @@ import 'package:triptery/presentation/widgets/tag.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/presentation/widgets/trip/trip_body.dart';
 
-class PlaceCard extends StatelessWidget {
-  PlaceCard({
+class PlaceCard extends StatefulWidget {
+  const PlaceCard({
     super.key,
     required this.placeId,
     required this.placeName,
@@ -22,14 +22,26 @@ class PlaceCard extends StatelessWidget {
   final String placeName;
   final String placeDescription;
   final String placeImage;
-  String arrivalTime; // Assuming this is a string for simplicity
+  final String arrivalTime;
   final VoidCallback onClick;
   final bool isEdit;
 
   @override
+  State<PlaceCard> createState() => _PlaceCardState();
+}
+
+class _PlaceCardState extends State<PlaceCard> {
+  bool isActivityExpanded = false;
+  List<String> itemsToShow = [
+    "Not Ping pong show",
+    "Martini at the bar",
+    "Try street food",
+    "Visit the night market",
+  ];
+
+  @override
   Widget build(BuildContext context) {
     // final showMap = context.watch<TripState>().showMap;
-    bool isChecked = false; 
 
     return Card(
       // margin: const EdgeInsets.all(20),
@@ -59,7 +71,7 @@ class PlaceCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
-                      image: AssetImage(placeImage),
+                      image: AssetImage(widget.placeImage),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -78,7 +90,7 @@ class PlaceCard extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               CustomText(
-                                text: placeName,
+                                text: widget.placeName,
                                 textSize: 13,
                                 type: TextType.subHeading,
                                 color: AppColors.black,
@@ -89,10 +101,10 @@ class PlaceCard extends StatelessWidget {
                               //     tristate: true,
                               //     value: isChecked,
                               //     onChanged: (bool? value) {
-                              //       isChecked = !isChecked; 
+                              //       isChecked = !isChecked;
                               //       // setState(() {
-                              //       //   isChecked = !isChecked; 
-                              //       // }); 
+                              //       //   isChecked = !isChecked;
+                              //       // });
                               //     },
                               //   ),
                             ],
@@ -129,32 +141,131 @@ class PlaceCard extends StatelessWidget {
                       const SizedBox(height: 3),
                       Row(
                         children: [
-                          Icon(LucideIcons.clockFading, size: 16),
-                          const SizedBox(width: 5),
-                          CustomText(
-                            text: "2 hours",
-                            textSize: 12,
-                            type: TextType.body,
-                            color: AppColors.black,
+                          Row(
+                            children: [
+                              Icon(LucideIcons.clockFading, size: 16),
+                              const SizedBox(width: 3),
+                              CustomText(
+                                text: "2 hours",
+                                textSize: 12,
+                                type: TextType.body,
+                                color: AppColors.black,
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 2),
-                      Row(
-                        children: [
-                          Icon(LucideIcons.circleDollarSign, size: 16),
                           const SizedBox(width: 5),
-                          CustomText(
-                            text: "2,000 Baht",
-                            textSize: 12,
-                            type: TextType.body,
-                            color: AppColors.black,
+                          Row(
+                            children: [
+                              Icon(LucideIcons.circleDollarSign, size: 16),
+                              const SizedBox(width: 3),
+                              CustomText(
+                                text: "2,000 Baht",
+                                textSize: 12,
+                                type: TextType.body,
+                                color: AppColors.black,
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 5),
+            Column(
+              children: [
+                const SizedBox(height: 3),
+                Row(
+                  children: [
+                    CustomText(
+                      text: "Don't Miss",
+                      textSize: 13,
+                      type: TextType.subHeading,
+                      color: AppColors.black,
+                    ),
+                    const SizedBox(width: 5),
+                    IconButton(
+                      icon: Icon(
+                        isActivityExpanded
+                            ? LucideIcons.chevronDown
+                            : LucideIcons.chevronUp,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isActivityExpanded = !isActivityExpanded;
+                        });
+                      },
+                     
+                      style: IconButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        iconSize: 14,
+                        foregroundColor: AppColors.black,
+                      ),
+                    ),
+                  ],
+                ),
+
+                AnimatedSize(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut, 
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: isActivityExpanded ? List.generate((itemsToShow.length / 2).ceil(), (
+                      i,
+                    ) {
+                      
+                      final left = itemsToShow[i * 2];
+                      final right =
+                          (i * 2 + 1 < itemsToShow.length)
+                              ? itemsToShow[i * 2 + 1]
+                              : null;
+
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "• $left",
+                            style: const TextStyle(fontSize: 12),
+                          ),
+
+                          if (right != null) 
+                            Text(
+                              "• $right",
+                              style: const TextStyle(fontSize: 12),
+                            )
+                          else 
+                            const SizedBox(width: 20),
+                          const SizedBox(width: 20),
+                        ],
+                      );
+                    }) 
+                    : [
+                      if (itemsToShow.isEmpty) 
+                        const SizedBox.shrink() 
+                      else
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "• ${itemsToShow[0]}",
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                            if (itemsToShow[1] != null) 
+                              Text(
+                                "• ${itemsToShow[1]}",
+                                style: const TextStyle(fontSize: 12),
+                              )
+                            else 
+                              const SizedBox(width: 20),
+                            const SizedBox(width: 20),
+                          ]
+                        )
+                    ],
+                  ) 
+                ), 
+                const SizedBox(height: 3),
               ],
             ),
             const SizedBox(height: 5),
