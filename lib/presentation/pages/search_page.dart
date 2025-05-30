@@ -3,7 +3,6 @@ import 'dart:developer';
 import '../../domain/repositories/place_repository_impl.dart';
 import '../../domain/entities/place/place.dart';
 import '../widgets/home_page/search_bar.dart';
-import '../widgets/destination_card.dart';
 
 class SearchPage extends StatefulWidget {
   final PlaceRepositoryImpl repository;
@@ -16,8 +15,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  List<Place> searchResults = [];
-  bool isLoading = false;
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -37,61 +34,31 @@ class _SearchPageState extends State<SearchPage> {
 
   Future<void> _handleSearch(String input) async {
     if (input.trim().isEmpty) {
-      setState(() {
-        searchResults = [];
-      });
+      debugPrint('🔍 Empty search input.');
       return;
     }
 
-    setState(() {
-      isLoading = true;
-    });
+    debugPrint('🔍 Searching for "$input"...');
 
     try {
-      // First, try to search in Supabase
       final results = await widget.repository.searchPlaces(input);
+
       if (results.isNotEmpty) {
-        log('✅ Found "$input" in Supabase, displaying results.');
-        setState(() {
-          searchResults = results;
-          isLoading = false;
-        });
+        debugPrint('✅ Found ${results.length} result(s) from Supabase:');
+        for (var place in results) {
+          debugPrint('➡️ ${place.name}');
+        }
       } else {
-        log('❌ Not found in Supabase, fetching from Google: "$input"');
-        // If no results in Supabase, fetch from Google and save
+        debugPrint('❌ Not found in Supabase, trying Google API...');
         try {
-          final place = await widget.repository.fetchAndCachePlaceFromGoogle(
-            input,
-          );
-          log('🌍 Displaying Google result for "$input"');
-          setState(() {
-            searchResults = [place];
-            isLoading = false;
-          });
+          final place = await widget.repository.fetchAndCachePlaceFromGoogle(input);
+          debugPrint('🌍 Google result: ${place.name}');
         } catch (e) {
-          if (mounted) {
-            log('🚨 Error fetching from Google for "$input": $e');
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('❌ Error fetching from Google: $e')),
-            );
-          }
-          setState(() {
-            searchResults = [];
-            isLoading = false;
-          });
+          debugPrint('🚫 Error fetching from Google API: $e');
         }
       }
-    } catch (e) {
-      if (mounted) {
-        log('🚨 Error searching in Supabase for "$input": $e');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('❌ Error searching in Supabase: $e')),
-        );
-      }
-      setState(() {
-        searchResults = [];
-        isLoading = false;
-      });
+    } catch (e, stack) {
+      debugPrint('💥 Error during search: $e\n$stack');
     }
   }
 
@@ -99,42 +66,14 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search Destinations'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        foregroundColor: Colors.white,
+        title: const Text('Search Debug Mode'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: CustomSearchBar(
-              repository: widget.repository,
-              onSearch: _handleSearch,
-            ),
-          ),
-          Expanded(
-            child:
-                isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : searchResults.isEmpty
-                    ? const Center(
-                      child: Text(
-                        'Search for destinations...',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                    )
-                    : ListView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      itemCount: searchResults.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: DestinationCard(place: searchResults[index]),
-                        );
-                      },
-                    ),
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: CustomSearchBar(
+          repository: widget.repository,
+          onSearch: _handleSearch,
+        ),
       ),
     );
   }

@@ -39,10 +39,22 @@ Place mapJsonToPlace(Map<String, dynamic> json) {
 Future<List<Place>> searchPlacesService(String query) async {
   final supabase = Supabase.instance.client;
   log('🔎 Searching Supabase for "$query"');
-  final response = await supabase
-      .from('places')
-      .select()
-      .ilike('name', '%$query%')
-      .order('name');
-  return response.map((json) => mapJsonToPlace(json)).toList();
+  try {
+    final response = await supabase
+        .from('places')
+        .select()
+        .ilike('name', '%$query%')
+        .eq('deleted', false)
+        .order('name');
+
+    if (response.isEmpty) {
+      log('📭 No results found for "$query"');
+    }
+
+    return response.map((json) => mapJsonToPlace(json)).toList();
+  } catch (e, stack) {
+    log('🚨 Supabase search error: $e\n$stack');
+    return [];
+  }
 }
+
