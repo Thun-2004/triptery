@@ -6,6 +6,8 @@ class PlaceReviewSection extends StatelessWidget {
 
   const PlaceReviewSection({super.key, required this.reviewGroups});
 
+  //TODO: Add a method to fetch reviews if needed
+
   @override
   Widget build(BuildContext context) {
     return Column(

@@ -137,6 +137,7 @@ class _PlaceCardState extends State<PlaceCard> {
                         textColor: AppColors.black,
                         tagColor: AppColors.gray,
                         height: 18,
+                        
                       ),
                       const SizedBox(height: 3),
                       Row(

@@ -8,6 +8,7 @@ class Tag extends StatelessWidget {
   final Color tagColor;
   final int height;
   final int borderRadius;
+  final int? width;
   final Color? borderColor;
   final IconData? icon;
   final Color iconColor;
@@ -19,17 +20,22 @@ class Tag extends StatelessWidget {
     required this.tagColor,
     required this.textSize,
     required this.height,
+    this.width,
     this.borderRadius = 12,
     this.borderColor,
     this.icon,
-    this.iconColor = AppColors.black,
+    this.iconColor = AppColors.black
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: width?.toDouble(),
       height: height.toDouble(),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+      padding: (width != null && width! < 50)
+      ? EdgeInsets.symmetric(horizontal: 0, vertical: 1)
+      : const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+
       decoration: BoxDecoration(
         color: tagColor,
         borderRadius: BorderRadius.circular(borderRadius.toDouble()),
