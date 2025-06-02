@@ -110,145 +110,149 @@ class _RouteDropdownState extends State<RouteDropdown> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10.0),
-        Container()
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children:
-              routesToDisplay.isEmpty
-                  ? [const Text("No routes available")]
-                  : List.generate(routesToDisplay.length, (i) {
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                routesToDisplay[i]["mode"] ?? 'Unknown mode',
-                                style: TextStyle(
-                                  color: AppColors.black,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
+        padding: const EdgeInsets.only(bottom: 15.0),
+        child: Container(
+          width: double.infinity,
+          // decoration: BoxDecoration(
+          //   color: AppColors.white,
+          // ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children:
+                routesToDisplay.isEmpty
+                    ? [const Text("No routes available")]
+                    : List.generate(routesToDisplay.length, (i) {
+                      return Column(
+                        children: [
+                          ListTile(
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  routesToDisplay[i]["mode"] ?? 'Unknown mode',
+                                  style: TextStyle(
+                                    color: AppColors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
 
-                              Row(
-                                children: [ 
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      CustomText(
-                                        text: "21 mins",
-                                        type: TextType.heading,
-                                        textSize: 12,
-                                        color: AppColors.black,
-                                      ),
-                                      Text(
-                                        "11.5 km - 180฿",
-                                        style: TextStyle(
+                                Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        CustomText(
+                                          text: "21 mins",
+                                          type: TextType.heading,
+                                          textSize: 12,
                                           color: AppColors.black,
-                                          fontSize: 10,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Icon(
-                                    isSelected
-                                        ? Icons.keyboard_arrow_down
-                                        : Icons.keyboard_arrow_up,
-                                    color: AppColors.black,
-                                  ),
-                                ])
-                            ],
+                                        Text(
+                                          "11.5 km - 180฿",
+                                          style: TextStyle(
+                                            color: AppColors.black,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(width: 4),
+                                   
+                                  ],
+                                ),
+                              ],
+                            ),
+                            // subtitle: Text(
+                            //   "${routesToDisplay[i]["time"] ?? 'Unknown time'} · ${routesToDisplay[i]["price"] ?? 'Unknown price'}",
+                            // ),
+                            leading: Radio<int>(
+                              value: i,
+                              groupValue: selected,
+                              onChanged: (int? value) {
+                                setState(() {
+                                  selected = value!;
+                                  currentChoice =
+                                      routesToDisplay[i]["mode"] ??
+                                      'Unknown mode';
+                                  widget.pastChoice = currentChoice;
+                                });
+                              },
+                            ),
                           ),
-                          // subtitle: Text(
-                          //   "${routesToDisplay[i]["time"] ?? 'Unknown time'} · ${routesToDisplay[i]["price"] ?? 'Unknown price'}",
-                          // ),
-                          leading: Radio<int>(
-                            value: i,
-                            groupValue: selected,
-                            onChanged: (int? value) {
-                              setState(() {
-                                selected = value!;
-                                currentChoice =
-                                    routesToDisplay[i]["mode"] ??
-                                    'Unknown mode';
-                                widget.pastChoice = currentChoice;
-                              });
-                            },
-                          ),
-                        ),
 
-                        AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    LucideIcons.footprints,
-                                    color: AppColors.black,
-                                    size: 16,
-                                  ),
-                                  const SizedBox(width: 2),
-                                  Tag(
-                                    text: "Walk",
-                                    textColor: AppColors.white,
-                                    tagColor: AppColors.orange_950,
-                                    textSize: 6,
-                                    height: 10,
-                                    borderRadius: 2,
-                                    width: 20,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  CustomText(
-                                    text: "Walk to MRT Huai Kwang",
-                                    type: TextType.subHeading,
-                                    textSize: 10,
-                                    color: AppColors.black,
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 2),
-                              Row(
-                                children: [
-                                  Icon(
-                                    LucideIcons.trainFront,
-                                    color: AppColors.black,
-                                    size: 16,
-                                  ),
-                                  const SizedBox(width: 2),
-                                  Tag(
-                                    text: "BL 18",
-                                    textColor: AppColors.white,
-                                    tagColor: AppColors.mrtBlue,
-                                    textSize: 6,
-                                    height: 10,
-                                    borderRadius: 2,
-                                    width: 22,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  CustomText(
-                                    text:
-                                        "Ratchada Market - Subway Station BTS Silom",
-                                    type: TextType.subHeading,
-                                    textSize: 10,
-                                    color: AppColors.black,
-                                  ),
-                                ],
-                              ),
-                            ],
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 40.0,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      LucideIcons.footprints,
+                                      color: AppColors.black,
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 2),
+                                    Tag(
+                                      text: "Walk",
+                                      textColor: AppColors.white,
+                                      tagColor: AppColors.orange_950,
+                                      textSize: 6,
+                                      height: 10,
+                                      borderRadius: 2,
+                                      width: 20,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    CustomText(
+                                      text: "Walk to MRT Huai Kwang",
+                                      type: TextType.subHeading,
+                                      textSize: 10,
+                                      color: AppColors.black,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 2),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      LucideIcons.trainFront,
+                                      color: AppColors.black,
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 2),
+                                    Tag(
+                                      text: "BL 18",
+                                      textColor: AppColors.white,
+                                      tagColor: AppColors.mrtBlue,
+                                      textSize: 6,
+                                      height: 10,
+                                      borderRadius: 2,
+                                      width: 22,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    CustomText(
+                                      text:
+                                          "Ratchada Market - Subway Station BTS Silom",
+                                      type: TextType.subHeading,
+                                      textSize: 10,
+                                      color: AppColors.black,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  }),
+                        ],
+                      );
+                    }),
+          ),
         ),
       ),
     );
