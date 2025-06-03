@@ -131,14 +131,14 @@ class _PlaceCardState extends State<PlaceCard> {
                       ),
 
                       const SizedBox(height: 3),
-                      Tag(
-                        text: "hotel",
-                        textSize: 10,
-                        textColor: AppColors.black,
-                        tagColor: AppColors.gray,
-                        height: 18,
+                      // Tag(
+                      //   text: "hotel",
+                      //   textSize: 10,
+                      //   textColor: AppColors.black,
+                      //   tagColor: AppColors.gray,
+                      //   height: 18,
                         
-                      ),
+                      // ),
                       const SizedBox(height: 3),
                       Row(
                         children: [
@@ -174,10 +174,9 @@ class _PlaceCardState extends State<PlaceCard> {
                 ),
               ],
             ),
-            const SizedBox(height: 5),
             Column(
               children: [
-                const SizedBox(height: 3),
+                // const SizedBox(height: 3),
                 Row(
                   children: [
                     CustomText(
@@ -186,7 +185,6 @@ class _PlaceCardState extends State<PlaceCard> {
                       type: TextType.subHeading,
                       color: AppColors.black,
                     ),
-                    const SizedBox(width: 5),
                     IconButton(
                       icon: Icon(
                         isActivityExpanded
@@ -204,6 +202,12 @@ class _PlaceCardState extends State<PlaceCard> {
                         iconSize: 14,
                         foregroundColor: AppColors.black,
                       ),
+                      constraints: const BoxConstraints(
+                        minWidth: 24,
+                        minHeight: 24,
+                      ),
+                      visualDensity: VisualDensity.compact, // ↓ tighter layout
+
                     ),
                   ],
                 ),
@@ -216,7 +220,6 @@ class _PlaceCardState extends State<PlaceCard> {
                     children: isActivityExpanded ? List.generate((itemsToShow.length / 2).ceil(), (
                       i,
                     ) {
-                      
                       final left = itemsToShow[i * 2];
                       final right =
                           (i * 2 + 1 < itemsToShow.length)

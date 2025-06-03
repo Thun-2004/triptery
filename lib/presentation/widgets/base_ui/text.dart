@@ -9,18 +9,18 @@ enum TextType{
 
 class CustomText extends StatelessWidget {
   final String text;
-  final int? textSize; 
   final Color color;
   final TextType type;
   final overflow = TextOverflow.ellipsis;
+  final int? textSize; 
   final int? maxLines;
   
   const CustomText({
     super.key,
     required this.text,
-    this.textSize,
     required this.type, 
     required this.color,
+    this.textSize,
     this.maxLines,
   });
 
