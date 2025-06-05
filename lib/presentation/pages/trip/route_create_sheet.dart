@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
+import 'package:triptery/presentation/widgets/tag.dart';
 import 'package:triptery/presentation/widgets/trip/components/transport_card.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
@@ -15,13 +16,15 @@ class CreateTransportWindow extends StatefulWidget {
 }
 
 class _CreateTransportWindowState extends State<CreateTransportWindow> {
+
   @override
   Widget build(BuildContext context) {
+
     return Align(
       alignment: Alignment.bottomCenter,
       child: Container(
         width: double.infinity,
-        height: MediaQuery.of(context).size.height * 0.7,
+        height: MediaQuery.of(context).size.height.toInt() * 0.7,
         padding: const EdgeInsets.symmetric(vertical: 30),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -66,7 +69,64 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
-
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  LucideIcons.footprints,
+                                  color: AppColors.black,
+                                  size: 16,
+                                ),
+                                const SizedBox(width: 2),
+                                Tag(
+                                  text: "Walk",
+                                  textColor: AppColors.white,
+                                  tagColor: AppColors.orange_950,
+                                  textSize: 6,
+                                  height: 10,
+                                  borderRadius: 2,
+                                  width: 20,
+                                ),
+                                const SizedBox(width: 4),
+                                CustomText(
+                                  text: "Walk to MRT Huai Kwang",
+                                  type: TextType.subHeading,
+                                  textSize: 10,
+                                  color: AppColors.black,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 2),
+                            Row(
+                              children: [
+                                Icon(
+                                  LucideIcons.trainFront,
+                                  color: AppColors.black,
+                                  size: 16,
+                                ),
+                                const SizedBox(width: 2),
+                                Tag(
+                                  text: "BL 18",
+                                  textColor: AppColors.white,
+                                  tagColor: AppColors.mrtBlue,
+                                  textSize: 6,
+                                  height: 10,
+                                  borderRadius: 2,
+                                  width: 22,
+                                ),
+                                const SizedBox(width: 4),
+                                CustomText(
+                                  text:
+                                      "Ratchada Market - Subway Station",
+                                  type: TextType.subHeading,
+                                  textSize: 10,
+                                  color: AppColors.black,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,

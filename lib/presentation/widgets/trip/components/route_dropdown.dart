@@ -8,6 +8,7 @@ import 'package:triptery/presentation/widgets/tag.dart';
 
 //TODO : Fix overflow issue with long text in dropdown
 //TODO : Add currency converter for price
+//TODO : AnimatedContainer, DropDown2, use contentPadding, Textformfield
 
 class RouteDropdown extends StatefulWidget {
   RouteDropdown({

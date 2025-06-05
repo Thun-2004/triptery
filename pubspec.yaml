@@ -51,6 +51,7 @@ dependencies:
   lucide_icons_flutter: ^3.0.3
   dotted_border: ^3.0.1
   timeline_tile: ^2.0.0
+  dropdown_button2: ^2.3.9
 
 dev_dependencies:
   flutter_test:

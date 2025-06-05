@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/widgets/trip/components/note.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 class TransportCard extends StatefulWidget {
   const TransportCard({super.key});
@@ -29,6 +30,8 @@ class _TransportCardState extends State<TransportCard> {
 
   @override
   Widget build(BuildContext context) {
+    int temp_width = MediaQuery.of(context).size.width.toInt();
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -44,7 +47,7 @@ class _TransportCardState extends State<TransportCard> {
               Row(
                 children: [
                   Container(
-                    width: 32, 
+                    width: 32,
                     height: 32,
                     margin: const EdgeInsets.only(right: 6), 
                     decoration: BoxDecoration(
@@ -104,8 +107,6 @@ class _TransportCardState extends State<TransportCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              // Text("Distance:"),
-              // const SizedBox(width: 8),
               TextEditable(
                 width: 95,
                 height: 32,
@@ -219,23 +220,8 @@ class TextEditable extends StatelessWidget {
                     ),
                   ),
                 ),
-                // child: DropdownMenu<String>(
-                //   initialSelection: values.first,
-                //   onSelected: (String? value) {
-                //     if (value != null) setValue(value);
-                //   },
-                //   dropdownMenuEntries:
-                //       values
-                //           .map(
-                //             (value) => DropdownMenuEntry<String>(
-                //               value: value,
-                //               label: value,
-                //             ),
-                //           )
-                //           .toList(),
-                // ),
-                
-                child: DropdownButton<String>(
+             
+                child: DropdownButton2<String>(
                   value: values.first,
                   isExpanded: true,
                   onChanged: (String? newValue) {
@@ -251,12 +237,31 @@ class TextEditable extends StatelessWidget {
                           ),
                         );
                       }).toList(),
-                  icon: const Padding(
-                    padding: EdgeInsets.only(
-                      right: 8,
-                    ), // 👈 custom icon padding
-                    child: Icon(Icons.arrow_drop_down),
+                
+                  iconStyleData: const IconStyleData(
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                    ),
+                    iconSize: 14,
+                    iconEnabledColor: AppColors.black,
+                    iconDisabledColor: AppColors.black,
                   ),
+                dropdownStyleData: DropdownStyleData(
+                  maxHeight: 200,
+                  width: width.toDouble(),
+
+                  // width: width.toDouble() / 2,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14),
+                    color: AppColors.white,
+                  ),
+                  offset: const Offset(-0, 0),
+                  scrollbarTheme: ScrollbarThemeData(
+                    radius: const Radius.circular(40),
+                    thickness: MaterialStateProperty.all<double>(6),
+                    thumbVisibility: MaterialStateProperty.all<bool>(true),
+                  ),
+                ),
                   underline: SizedBox(), // removes underline
                 ),
                 
