@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
+import 'package:triptery/presentation/pages/trip/route_create_sheet.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/drop_down_area.dart';
 import 'package:triptery/presentation/widgets/tag.dart';
@@ -32,6 +33,15 @@ class _RouteDropdownState extends State<RouteDropdown> {
     setState(() {
       isSelected = !isSelected;
     });
+  }
+
+  void _openCreateTransportModal() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => CreateTransportWindow(),
+    );
   }
 
   @override
@@ -280,6 +290,38 @@ class _RouteDropdownState extends State<RouteDropdown> {
                   },
                 ),
               ),
+              ListTile(
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    //TODO: Add text field for note
+                    Text(
+                      "Add Note...",
+                      style: TextStyle(
+                        color: AppColors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                // subtitle: Text(
+                //   "${routesToDisplay[i]["time"] ?? 'Unknown time'} · ${routesToDisplay[i]["price"] ?? 'Unknown price'}",
+                // ),
+                leading: Radio<int>(
+                  value: routesToDisplay.length + 2,
+                  groupValue: selected,
+                  onChanged: (int? value) {
+                    setState(() {
+                      selected = value!;
+                      currentChoice =
+                          "Add Note"; // Update current choice to Google Maps
+                      widget.pastChoice = currentChoice;
+                    });
+                  },
+                ),
+              ),
 
               const Divider(
                 height: 3,
@@ -300,7 +342,8 @@ class _RouteDropdownState extends State<RouteDropdown> {
                   ),
                   IconButton(
                     onPressed: () {
-                      // Handle create route action
+                      _openCreateTransportModal(); 
+                      
                     },
                     icon: Icon(
                       LucideIcons.chevronRight,
@@ -310,39 +353,39 @@ class _RouteDropdownState extends State<RouteDropdown> {
                   ),
                 ],
               ),
+
               //FIXME: wrap by expanded to avoid overflow
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      LucideIcons.notepadText,
-                      color: AppColors.darkGray,
-                      size: 16,
-                    ),
-                    prefixIconConstraints: BoxConstraints(
-                      minWidth: 30,
-                      minHeight: 30,
-                    ),
+              // Container(
+              //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              //   child: TextField(
+              //     decoration: InputDecoration(
+              //       prefixIcon: Icon(
+              //         LucideIcons.notepadText,
+              //         color: AppColors.darkGray,
+              //         size: 16,
+              //       ),
+              //       prefixIconConstraints: BoxConstraints(
+              //         minWidth: 30,
+              //         minHeight: 30,
+              //       ),
 
-                    hintText: "Add note",
-                    filled: true,
-                    fillColor: AppColors.lightGray,
-                    isDense: true,
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 5,
-                      horizontal: 8,
-                    ),
+              //       hintText: "Add note",
+              //       filled: true,
+              //       fillColor: AppColors.lightGray,
+              //       isDense: true,
+              //       contentPadding: EdgeInsets.symmetric(
+              //         vertical: 5,
+              //         horizontal: 8,
+              //       ),
 
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                  style: TextStyle(color: AppColors.black, fontSize: 12),
-                ),
-              ),
-
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(8),
+              //         borderSide: BorderSide.none,
+              //       ),
+              //     ),
+              //     style: TextStyle(color: AppColors.black, fontSize: 12),
+              //   ),
+              // ),
               //note
             ],
           ),

@@ -12,7 +12,7 @@ class CustomText extends StatelessWidget {
   final Color color;
   final TextType type;
   final overflow = TextOverflow.ellipsis;
-  final int? textSize; 
+  final int? textSize;
   final int? maxLines;
   
   const CustomText({
