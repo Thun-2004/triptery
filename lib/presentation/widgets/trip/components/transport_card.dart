@@ -4,6 +4,7 @@ import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/widgets/trip/components/note.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
+//FIXME: replace fixed height with Expanded for responsiveness
 class TransportCard extends StatefulWidget {
   const TransportCard({super.key});
 
@@ -16,7 +17,6 @@ class _TransportCardState extends State<TransportCard> {
   String transitMode = 'Subway';
 
   List<String> modes = []; 
-
   List<String> get distanceValues => ['A', 'B', 'C'];
   List<String> get transitModes => ['N5', 'N6', 'N7'];
 
@@ -77,30 +77,16 @@ class _TransportCardState extends State<TransportCard> {
                 ),
                 width: 100,
                 height: 32,
-                child: DropdownButton<String>(
-                  value: transitModes.first,
-                  isExpanded: true,
-                  onChanged: (String? newValue) {
-                    if (newValue != null) setTransitValue(newValue);
-                  },
-                  items:
-                      transitModes.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: Text(value),
-                          ),
-                        );
-                      }).toList(),
-                  icon: const Padding(
-                    padding: EdgeInsets.only(
-                      right: 8,
-                    ), // 👈 custom icon padding
-                    child: Icon(Icons.arrow_drop_down),
+                child: 
+                  TextFormField(
+                    showCursor: true, 
+                    decoration: const InputDecoration(
+                      hintText: 'station...',
+                      border: UnderlineInputBorder(),
+                      contentPadding: EdgeInsets.all(8),
+                    ),
                   ),
-                  underline: SizedBox(), // removes underline
-                ))
+                )
             ],
           ),
           const SizedBox(height: 12),
@@ -128,6 +114,7 @@ class _TransportCardState extends State<TransportCard> {
               ),
             ],
           ),
+
           const SizedBox(height: 12),
           Note(placeholderText: "Note", controller: TextEditingController(), onChanged: (value) {}),
         ],
@@ -147,6 +134,7 @@ class TimeEdit extends StatelessWidget {
     );
   }
 }
+
 
 class TextEditable extends StatelessWidget {
   final List<String> values;
@@ -274,3 +262,6 @@ class TextEditable extends StatelessWidget {
     );
   }
 }
+
+
+

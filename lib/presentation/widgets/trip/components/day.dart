@@ -10,6 +10,8 @@ import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+//FIXME : change to DraggableScrollableSheet class
+
 class Day extends StatefulWidget {
   Day({super.key, required this.day});
   final int day;

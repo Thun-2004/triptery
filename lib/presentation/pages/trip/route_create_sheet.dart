@@ -22,7 +22,8 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
 
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Container(
+      child: 
+       Container(
         width: double.infinity,
         height: MediaQuery.of(context).size.height.toInt() * 0.7,
         padding: const EdgeInsets.symmetric(vertical: 30),
@@ -33,7 +34,8 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
             topRight: Radius.circular(20),
           ),
         ),
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
@@ -150,37 +152,121 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                   ),
 
                   Column(
-                    children: [ TimelineTile(
-                      alignment: TimelineAlign.start,
-                      lineXY: 0.1,
-                      isFirst: true,
-                      beforeLineStyle: LineStyle(
-                          color: AppColors.orange_800,
-                          thickness: 2,
-                      ),
-                      afterLineStyle: LineStyle(
-                          color: AppColors.orange_800,
-                          thickness: 2,
-                      ),
-                      indicatorStyle: IndicatorStyle(
-                        width: 20,
-                        color: AppColors.orange_800,
-                        iconStyle: IconStyle(
-                          iconData: Icons.remove,
-                          color: Colors.white,
-                          fontSize: 16,
+                    children: [ 
+                      TimelineTile(
+                        alignment: TimelineAlign.start,
+                        lineXY: 0.1,
+                        isFirst: true,
+                        beforeLineStyle: LineStyle(
+                            color: AppColors.orange_800,
+                            thickness: 2,
                         ),
+                        afterLineStyle: LineStyle(
+                            color: AppColors.orange_800,
+                            thickness: 2,
+                        ),
+                        indicatorStyle: IndicatorStyle(
+                          width: 20,
+                          color: AppColors.orange_800,
+                          iconStyle: IconStyle(
+                            iconData: Icons.remove,
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        endChild: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: TransportCard()
+                        )
                       ),
-                      endChild: TransportCard()
-                    ),
+                      TimelineTile(
+                        alignment: TimelineAlign.start,
+                        lineXY: 0.1,
+                        isFirst: false,
+                        beforeLineStyle: LineStyle(
+                            color: AppColors.orange_800,
+                            thickness: 2,
+                        ),
+                        afterLineStyle: LineStyle(
+                            color: AppColors.orange_800,
+                            thickness: 2,
+                        ),
+                        indicatorStyle: IndicatorStyle(
+                          width: 20,
+                          color: AppColors.orange_800,
+                          iconStyle: IconStyle(
+                            iconData: Icons.remove,
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        endChild: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: TransportCard()
+                        )
+                      ), 
+                      TimelineTile(
+                        alignment: TimelineAlign.start,
+                        lineXY: 0.1,
+                        isFirst: false,
+                        beforeLineStyle: LineStyle(
+                            color: AppColors.orange_800,
+                            thickness: 2,
+                        ),
+                        afterLineStyle: LineStyle(
+                            color: AppColors.orange_800,
+                            thickness: 2,
+                        ),
+                        indicatorStyle: IndicatorStyle(
+                          width: 20,
+                          color: AppColors.orange_800,
+                          iconStyle: IconStyle(
+                            iconData: Icons.remove,
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        endChild: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: TransportCard()
+                        )
+                      ), 
+                      TimelineTile(
+                        alignment: TimelineAlign.start,
+                        lineXY: 0.1,
+                        isFirst: false,
+                        isLast: true,
+                        beforeLineStyle: LineStyle(
+                            color: AppColors.orange_800,
+                            thickness: 2,
+                        ),
+                        afterLineStyle: LineStyle(
+                            color: AppColors.orange_800,
+                            thickness: 2,
+                        ),
+                        indicatorStyle: IndicatorStyle(
+                          width: 20,
+                          color: AppColors.orange_800,
+                          iconStyle: IconStyle(
+                            iconData: Icons.remove,
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        endChild: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: TransportCard()
+                        )
+                      )
+
                     ]
                   )
                 ],
               ),
             ),
           ],
-        ),
-      ),
+        ))
+      )
     );
   }
 }
