@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
+import 'package:triptery/constant/transport_modes.dart';
 import 'package:triptery/presentation/widgets/trip/components/note.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 //FIXME: replace fixed height with Expanded for responsiveness
 class TransportCard extends StatefulWidget {
-  const TransportCard({super.key});
+  final TransportMode mode;
+
+  const TransportCard({super.key, required this.mode});
 
   @override
   State<TransportCard> createState() => _TransportCardState();
@@ -16,7 +19,6 @@ class _TransportCardState extends State<TransportCard> {
   int distance = 0;
   String transitMode = 'Subway';
 
-  List<String> modes = []; 
   List<String> get distanceValues => ['A', 'B', 'C'];
   List<String> get transitModes => ['N5', 'N6', 'N7'];
 
@@ -60,8 +62,20 @@ class _TransportCardState extends State<TransportCard> {
                       color: AppColors.white,
                     ),
                   ), 
-                  const Text("Subway",
-                    style: TextStyle(
+                  Text(
+                    TransportMode.bus == widget.mode ? 'Bus' : 
+                    TransportMode.train == widget.mode ? 'Train' :
+                    TransportMode.car == widget.mode ? 'Car' :
+                    TransportMode.carRent == widget.mode ? 'Car Rent' :
+                    TransportMode.taxi == widget.mode ? 'Taxi' :
+                    TransportMode.skyTrain == widget.mode ? 'Sky Train' :
+                    TransportMode.subway == widget.mode ? 'Subway' :
+                    TransportMode.boat == widget.mode ? 'Boat' :
+                    TransportMode.airplane == widget.mode ? 'Airplane' :
+                    TransportMode.walk == widget.mode ? 'Walk' :
+                    'Unknown',
+
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       color: AppColors.black,
@@ -78,15 +92,17 @@ class _TransportCardState extends State<TransportCard> {
                 width: 100,
                 height: 32,
                 child: 
-                  TextFormField(
-                    showCursor: true, 
-                    decoration: const InputDecoration(
-                      hintText: 'station...',
-                      border: UnderlineInputBorder(),
-                      contentPadding: EdgeInsets.all(8),
-                    ),
-                  ),
-                )
+                  TransportMode.subway == widget.mode ?
+                    TextFormField(
+                      showCursor: true, 
+                      decoration: const InputDecoration(
+                        hintText: 'station...',
+                        border: UnderlineInputBorder(),
+                        contentPadding: EdgeInsets.all(8),
+                      ),
+                    ) : 
+                    const SizedBox()
+              )
             ],
           ),
           const SizedBox(height: 12),
