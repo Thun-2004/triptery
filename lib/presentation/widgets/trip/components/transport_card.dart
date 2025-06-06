@@ -224,13 +224,13 @@ class _TransportCardState extends State<TransportCard> {
 
               Container(
                 decoration: BoxDecoration(
-                  color: AppColors.lightGray,
+                  color: TransportMode.subway == transportMode ? AppColors.lightGray :  Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 width: 100,
                 height: 32,
                 child:
-                    TransportMode.subway == widget.mode
+                    TransportMode.subway == transportMode
                         ? TextFormField(
                           showCursor: true,
                           decoration: const InputDecoration(
@@ -239,7 +239,7 @@ class _TransportCardState extends State<TransportCard> {
                             contentPadding: EdgeInsets.all(8),
                           ),
                         )
-                        : const SizedBox(),
+                        : const SizedBox(width: 0, height: 0),
               ),
             ],
           ),
