@@ -20,11 +20,18 @@ class CreateTransportWindow extends StatefulWidget {
 class _CreateTransportWindowState extends State<CreateTransportWindow> {
 
   List<TransportMode> modes = [TransportMode.subway, TransportMode.subway]; 
+  bool displayTransport = false;
 
   void addMode(TransportMode mode) {
     setState((){
       modes.add(mode);
     }); 
+  }
+
+  void onChangeIcon() {
+    setState((){
+      displayTransport = !displayTransport;
+    });
   }
 
   @override
@@ -162,7 +169,6 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
 
                   Column(
                     children: [ 
-
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -192,70 +198,18 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                             ),
                             endChild: Padding(
                               padding: index == modes.length - 1 ? EdgeInsets.only(bottom: 0) : EdgeInsets.only(bottom: 16),
-                              child: TransportCard(mode: modes[index])
+                              child: TransportCard(mode: modes[index], onChangeIcon: onChangeIcon)
                             )
                           ); 
                         }
                       ),
-                      // TimelineTile(
-                      //   alignment: TimelineAlign.start,
-                      //   lineXY: 0.1,
-                      //   isFirst: true,
-                      //   beforeLineStyle: LineStyle(
-                      //       color: AppColors.orange_800,
-                      //       thickness: 2,
-                      //   ),
-                      //   afterLineStyle: LineStyle(
-                      //       color: AppColors.orange_800,
-                      //       thickness: 2,
-                      //   ),
-                      //   indicatorStyle: IndicatorStyle(
-                      //     width: 20,
-                      //     color: AppColors.orange_800,
-                      //     iconStyle: IconStyle(
-                      //       iconData: Icons.remove,
-                      //       color: Colors.white,
-                      //       fontSize: 16,
-                      //     ),
-                      //   ),
-                      //   endChild: Padding(
-                      //     padding: const EdgeInsets.only(bottom: 16),
-                      //     child: TransportCard()
-                      //   )
-                      // ),
-                      // TimelineTile(
-                      //   alignment: TimelineAlign.start,
-                      //   lineXY: 0.1,
-                      //   isFirst: false,
-                      //   beforeLineStyle: LineStyle(
-                      //       color: AppColors.orange_800,
-                      //       thickness: 2,
-                      //   ),
-                      //   afterLineStyle: LineStyle(
-                      //       color: AppColors.orange_800,
-                      //       thickness: 2,
-                      //   ),
-                      //   indicatorStyle: IndicatorStyle(
-                      //     width: 20,
-                      //     color: AppColors.orange_800,
-                      //     iconStyle: IconStyle(
-                      //       iconData: Icons.remove,
-                      //       color: Colors.white,
-                      //       fontSize: 16,
-                      //     ),
-                      //   ),
-                      //   endChild: Padding(
-                      //     padding: const EdgeInsets.only(bottom: 16),
-                      //     child: TransportCard()
-                      //   )
-                      // ), 
-                     
+                   
                       //add element here
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
                         child: AddButton(
                           onPressed: () {
-                            addMode(TransportMode.subway); 
+                            addMode(TransportMode.unSelected); 
                           },
                           text: "Add transport",
                           textColor: AppColors.orange_950,

@@ -10,6 +10,7 @@ enum TransportMode {
   subway, 
   boat,
   airplane, 
-  walk
+  walk, 
+  unSelected
 }
 
