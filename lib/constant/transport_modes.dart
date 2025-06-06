@@ -4,13 +4,13 @@ enum TransportMode {
   bus,
   train,
   car,
-  carRent, 
+  carRent,
   taxi,
-  skyTrain, 
-  subway, 
+  skyTrain,
+  subway,
   boat,
-  airplane, 
-  walk, 
+  airplane,
+  walk,
   unSelected
 }
 

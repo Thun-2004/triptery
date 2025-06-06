@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -22,7 +21,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
   List<TransportMode> modes = [TransportMode.subway, TransportMode.subway]; 
   bool displayTransport = false;
 
-  void addMode(TransportMode mode) {
+  void addMode(TransportMode mode){
     setState((){
       modes.add(mode);
     }); 

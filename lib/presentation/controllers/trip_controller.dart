@@ -9,7 +9,6 @@ class TripController extends GetxController{
   final Rx<bool> _isEditingPlaceOrder = Rx<bool>(false); 
   bool get isEditingPlaceOrder => _isEditingPlaceOrder.value; 
 
-
   void toggleEditTripInfo() {
     _isEditingTripInfo.value = !_isEditingTripInfo.value;
   }
@@ -18,4 +17,5 @@ class TripController extends GetxController{
     _isEditingPlaceOrder.value = !_isEditingPlaceOrder.value;
      print("isEditingPlaceOrder: ${_isEditingPlaceOrder.value}"); 
   }
+  
 }

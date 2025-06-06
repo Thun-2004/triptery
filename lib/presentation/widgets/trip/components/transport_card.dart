@@ -148,6 +148,7 @@ class _TransportCardState extends State<TransportCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                     width: 32,
@@ -238,7 +239,6 @@ class _TransportCardState extends State<TransportCard> {
                   ),
                   Text(
                     getTransportModeName(transportMode),
-
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -248,25 +248,25 @@ class _TransportCardState extends State<TransportCard> {
                 ],
               ),
 
-              Container(
-                decoration: BoxDecoration(
-                  color: TransportMode.subway == transportMode || TransportMode.bus == transportMode || TransportMode.train == transportMode || TransportMode.skyTrain == transportMode || TransportMode.boat == transportMode || TransportMode.airplane == transportMode ? AppColors.white :  Colors.transparent,
-                  borderRadius: BorderRadius.circular(8),
+              if(TransportMode.subway == transportMode || TransportMode.bus == transportMode || TransportMode.train == transportMode || TransportMode.skyTrain == transportMode || TransportMode.boat == transportMode || TransportMode.airplane == transportMode)
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  width: 170,
+                  height: 32,
+                  child:
+                    TextFormField(
+                      showCursor: true,
+                      decoration: const InputDecoration(
+                        hintText: 'station...',
+                        border: UnderlineInputBorder(),
+                        contentPadding: EdgeInsets.all(8),
+                      ),
+                    )
+                          
                 ),
-                width: 170,
-                height: 32,
-                child:
-                    TransportMode.subway == transportMode || TransportMode.bus == transportMode || TransportMode.train == transportMode || TransportMode.skyTrain == transportMode || TransportMode.boat == transportMode || TransportMode.airplane == transportMode
-                        ? TextFormField(
-                          showCursor: true,
-                          decoration: const InputDecoration(
-                            hintText: 'station...',
-                            border: UnderlineInputBorder(),
-                            contentPadding: EdgeInsets.all(8),
-                          ),
-                        )
-                        : const SizedBox(width: 0, height: 0),
-              ),
             ],
           ),
           const SizedBox(height: 12),
@@ -304,7 +304,6 @@ class _TransportCardState extends State<TransportCard> {
         ],
       ),
     );
-    ;
   }
 }
 
