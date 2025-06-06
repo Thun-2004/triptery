@@ -188,12 +188,24 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                 thickness: 2,
                             ),
                             indicatorStyle: IndicatorStyle(
-                              width: 20,
-                              color: AppColors.orange_800,
-                              iconStyle: IconStyle(
-                                iconData: Icons.remove,
-                                color: Colors.white,
-                                fontSize: 16,
+                              
+                              indicator: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    modes.removeAt(index);
+                                  });
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: AppColors.orange_800,
+                                    shape: BoxShape.circle,
+                                
+                                  ),
+                                  child: Icon(
+                                    LucideIcons.minus,
+                                    color: Colors.white,
+                                    size: 16,
+                                )),
                               ),
                             ),
                             endChild: Padding(

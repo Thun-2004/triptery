@@ -27,7 +27,7 @@ class _TransportCardState extends State<TransportCard> {
 
   List<String> get distanceValues => ['A', 'B', 'C'];
   List<String> get transitModes => ['N5', 'N6', 'N7'];
-  List<String> get transportModes => ['car', 'bus', 'bike', 'train', 'car rent', 'taxi', 'sky train', 'subway', 'boat', 'airplane'];
+  List<String> get transportModes => ['Car', 'Bus', 'Train', 'Car Rent', 'Taxi', 'Sky Train', 'Subway', 'Boat', 'Airplane', 'Walk'];
 
   IconData _getIconForMode(TransportMode mode) {
     switch (mode) {
@@ -80,6 +80,35 @@ class _TransportCardState extends State<TransportCard> {
         return 'Select Transport';
     }
   }
+
+  TransportMode getTransportModeFromName(String name) {
+    switch (name) {
+      case 'Bus':
+        return TransportMode.bus;
+      case 'Train':
+        return TransportMode.train;
+      case 'Car':
+        return TransportMode.car;
+      case 'Car Rent':
+        return TransportMode.carRent;
+      case 'Taxi':
+        return TransportMode.taxi;
+      case 'Sky Train':
+        return TransportMode.skyTrain;
+      case 'Subway':
+        return TransportMode.subway;
+      case 'Boat':
+        return TransportMode.boat;
+      case 'Airplane':
+        return TransportMode.airplane;
+      case 'Walk':
+        return TransportMode.walk;
+      default:
+        return TransportMode.subway;
+    }
+  }
+
+
 
   void setDistanceValue(String value) {
     distance = int.tryParse(value) ?? 0;
@@ -137,10 +166,7 @@ class _TransportCardState extends State<TransportCard> {
                         isExpanded: true,
                         onChanged: (String? newValue) {
                           if (newValue != null) {
-                            final mode = TransportMode.values.firstWhere(
-                              (m) => m.name.toLowerCase() == newValue.toLowerCase(),
-                              orElse: () => TransportMode.unSelected,
-                            );
+                            final mode = getTransportModeFromName(newValue);
                             setTransportModeValue(mode);
                           }
                         },
@@ -224,13 +250,13 @@ class _TransportCardState extends State<TransportCard> {
 
               Container(
                 decoration: BoxDecoration(
-                  color: TransportMode.subway == transportMode ? AppColors.lightGray :  Colors.transparent,
+                  color: TransportMode.subway == transportMode || TransportMode.bus == transportMode || TransportMode.train == transportMode || TransportMode.skyTrain == transportMode || TransportMode.boat == transportMode || TransportMode.airplane == transportMode ? AppColors.white :  Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                width: 100,
+                width: 170,
                 height: 32,
                 child:
-                    TransportMode.subway == transportMode
+                    TransportMode.subway == transportMode || TransportMode.bus == transportMode || TransportMode.train == transportMode || TransportMode.skyTrain == transportMode || TransportMode.boat == transportMode || TransportMode.airplane == transportMode
                         ? TextFormField(
                           showCursor: true,
                           decoration: const InputDecoration(
