@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:provider/provider.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/widgets/add_button.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
@@ -147,8 +145,11 @@ class _TripBodyState extends State<TripBody> {
               ),
             ),
           ),
-
-          dayMode,
+          Container(
+            height: 845, // Adjust height as needed
+            child: dayMode, 
+          ), 
+          // dayMode,
           const SizedBox(height: 16),
 
           // Add your trip details here

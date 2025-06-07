@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
@@ -48,8 +49,8 @@ class _TripPageState extends State<TripPage> {
                     child: const Map(),
                   ),
                 ),
-              ), 
-              TripBody(), 
+              ),
+              TripBody(),
             ],
           ),
         ),
