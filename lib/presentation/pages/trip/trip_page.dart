@@ -31,6 +31,7 @@ class _TripPageState extends State<TripPage> {
     return Scaffold(
       body: SafeArea(
         top: false, //elimiate top margin
+        bottom: false, 
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

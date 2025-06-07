@@ -9,6 +9,8 @@ import 'package:triptery/presentation/widgets/tag.dart';
 import 'package:triptery/presentation/widgets/trip/components/transport_card.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
+//NOTE: save to cache when user not focus then to db
+
 class CreateTransportWindow extends StatefulWidget {
   const CreateTransportWindow({super.key});
 
@@ -36,37 +38,38 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.bottomCenter,
-      child: 
-       Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height.toInt() * 0.7,
-        padding: const EdgeInsets.symmetric(vertical: 30),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        child: SingleChildScrollView(
+      alignment: Alignment.topCenter,
+      child: SingleChildScrollView(
           child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(""),
+                      TextButton(
+                        onPressed: () {
+                          //TODO: clear all transport modes
+                        },
+                        child: const Text("Clear")
+                      ),
                       CustomText(
                         text: 'Create transport',
                         type: TextType.heading,
                         color: Colors.black,
                       ),
-                      Icon(LucideIcons.x),
+                      TextButton(
+                        onPressed: () {
+                          //TODO: clear all transport modes
+                        },
+                        child: Icon(LucideIcons.x),
+                      ),
+                      
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -76,7 +79,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                     color: Colors.black,
                   ),
                   Container(
-                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    margin: const EdgeInsets.only(bottom: 16, top: 4),
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: AppColors.lightGray,
@@ -211,7 +214,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                               padding: index == modes.length - 1 ? EdgeInsets.only(bottom: 0) : EdgeInsets.only(bottom: 16),
                               child: TransportCard(mode: modes[index], onChangeIcon: onChangeIcon)
                             )
-                          ); 
+                          );
                         }
                       ),
                    
@@ -237,7 +240,6 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
             ),
           ],
         ))
-      )
     );
   }
 }

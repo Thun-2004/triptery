@@ -67,6 +67,7 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
     super.dispose();
   }
 
+  //TODO : adjust alignment of bottom sheet so that drag handle is shown
   @override
   Widget build(BuildContext context) {
     return GestureDetector (

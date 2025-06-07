@@ -40,8 +40,14 @@ class _RouteDropdownState extends State<RouteDropdown> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => CreateTransportWindow(),
+      backgroundColor: Colors.white,
+      showDragHandle: true,
+      builder: (context) { 
+        return FractionallySizedBox(
+          heightFactor: 0.7,
+          child: CreateTransportWindow(),
+        ); 
+      },
     );
   }
 

@@ -22,7 +22,13 @@ class _HeaderSectionState extends State<HeaderSection> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => TripSummaryWindow(),
+      showDragHandle: true,
+      builder: (context){
+        return FractionallySizedBox(
+          heightFactor: 0.9,
+          child: TripSummaryWindow(),
+        ); 
+      }
     );
   }
 
@@ -78,9 +84,10 @@ class _HeaderSectionState extends State<HeaderSection> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 20,
+                padding: const EdgeInsets.only(
+                  right: 16,
+                  left: 16,
+                  top: 40,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
