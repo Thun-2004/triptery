@@ -24,9 +24,27 @@ class _DayListState extends State<DayList> {
 
   @override
   Widget build(BuildContext context) {
+    // return Container(
+    //   height: 800,
+    //   width: double.infinity,
+    //   child: ListView.builder(
+    //     physics: const BouncingScrollPhysics(),
+    //     itemCount: days.length,
+    //     itemBuilder: (context, index) {
+    //       return Day(
+    //         day: days[index],
+    //       );
+    //     },
+    //   ),
+    // );
     return Container(
-      height: 900,
+      height: 845,
       width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(16), 
+          bottomRight: Radius.circular(16)),
+      ),
       child: ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemCount: days.length,
