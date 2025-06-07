@@ -33,7 +33,7 @@ class _DayListState extends State<DayList> {
           bottomRight: Radius.circular(16)),
       ),
       child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+        padding: const EdgeInsets.symmetric(vertical: 0),
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
         itemCount: days.length,

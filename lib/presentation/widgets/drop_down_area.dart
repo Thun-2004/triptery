@@ -42,6 +42,7 @@ class _DropDownAreaState extends State<DropDownArea> {
           mainAxisSize: MainAxisSize.min, 
           children : [
             InkWell(
+              splashColor: Colors.transparent,
               onTap: (){
                 widget.toggleExpand();
               },

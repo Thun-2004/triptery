@@ -63,21 +63,22 @@ class _RouteDropdownState extends State<RouteDropdown> {
     final routesToDisplay = routes.isNotEmpty ? routes : [];
 
     return DropDownArea(
-      elevation: 0,
-      verticalMargin: 7,
+      elevation: 2,
+      verticalMargin: 10,
       isExpanded: isSelected,
       toggleExpand: toggleExpand,
       header: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.orange_900 : AppColors.gray,
+          color: isSelected ? AppColors.orange_900 : const Color.fromARGB(255, 252, 252, 252),
           borderRadius:
               isSelected
                   ? BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    topRight: Radius.circular(8),
+                    topLeft: Radius.circular(16),
+                    topRight: Radius.circular(16),
                   )
-                  : BorderRadius.circular(8),
+                  : BorderRadius.circular(16),
+          
         ),
         width: double.infinity,
         height: 40,
@@ -126,8 +127,16 @@ class _RouteDropdownState extends State<RouteDropdown> {
           ],
         ),
       ),
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.only(bottom: 15.0),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+         
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(16), 
+            bottomRight: Radius.circular(16),
+          ),
+        ), 
         child: SizedBox(
           width: double.infinity,
           // decoration: BoxDecoration(
@@ -139,7 +148,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
               if (routesToDisplay.isEmpty)
                 const Text("No routes available")
               else
-                ...List.generate(routesToDisplay.length, (i) {
+                ...List.generate(routesToDisplay.length, (i) { 
                   return Column(
                     children: [
                       ListTile(
