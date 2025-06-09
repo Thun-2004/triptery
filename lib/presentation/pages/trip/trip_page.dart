@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
+import 'package:triptery/presentation/pages/trip/edit_route_page.dart';
 import 'package:triptery/presentation/widgets/trip/header_section.dart';
 import 'package:triptery/presentation/widgets/trip/trip_body.dart';
 import 'package:triptery/presentation/widgets/trip/components/map.dart';
@@ -57,7 +58,14 @@ class _TripPageState extends State<TripPage> {
       ),
      
       floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() => tripController.toggleEditPlaceOrder()),
+        // onPressed: () => setState(() => tripController.toggleEditPlaceOrder()),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => EditRoutePage()),
+          );
+        }, 
+
         elevation: 4,
         shape: const CircleBorder(),
         child: Container(

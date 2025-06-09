@@ -16,7 +16,6 @@ class PlaceDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 🔺 Top image with overlay
             Stack(
               children: [
                 Image.network(

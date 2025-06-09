@@ -36,6 +36,7 @@ class _DayState extends State<Day> {
       "time": "21mins",
       "price": "100THB",
     },
+    
     {
       //dest : placeId
       "Dest1": "1",
@@ -146,6 +147,210 @@ class _DayState extends State<Day> {
       "price": "10THB",
     },
   ];
+  // List<Map<String, String>> routeChoices = [
+  //   {
+  //     // 1- 2
+  //     //dest : placeId
+  //     "Dest1": "1",
+  //     "Dest2": "2",
+  //     "mode": "Car",
+  //     "time": "21mins",
+  //     "price": "100THB",
+  //     "suggestBy": "PPP"
+  //   },
+  //   {
+  //     // 1- 2
+  //     //dest : placeId
+  //     "Dest1": "1",
+  //     "Dest2": "2",
+  //     "mode": "Train",
+  //     "time": "21mins",
+  //     "price": "100THB",
+  //     "suggestBy": "PPP"
+  //   },
+  //   {
+  //     // 1- 2
+  //     //dest : placeId
+  //     "Dest1": "1",
+  //     "Dest2": "2",
+  //     "mode": "Bus",
+  //     "time": "21mins",
+  //     "price": "100THB",
+  //     "suggestBy": "PPP"
+  //   },
+    
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "1",
+  //     "Dest2": "2",
+  //     "mode": "Bus",
+  //     "time": "16mins",
+  //     "price": "140THB",
+  //     "suggestBy": "Spoon"
+  //   },
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "1",
+  //     "Dest2": "2",
+  //     "mode": "Train",
+  //     "time": "16mins",
+  //     "price": "140THB",
+  //     "suggestBy": "Spoon"
+  //   },
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "1",
+  //     "Dest2": "2",
+  //     "mode": "Train",
+  //     "time": "22mins",
+  //     "price": "130THB",
+  //     "suggestBy": "June"
+  //   },
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "1",
+  //     "Dest2": "2",
+  //     "mode": "Walk",
+  //     "time": "22mins",
+  //     "price": "130THB",
+  //     "suggestBy": "June"
+  //   },
+  //   //2 -> 1
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "2",
+  //     "Dest2": "1",
+  //     "mode": "Bus",
+  //     "time": "30mins",
+  //     "price": "140THB",
+  //     "suggestBy": "June1"
+  //   },
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "2",
+  //     "Dest2": "1",
+  //     "mode": "Train",
+  //     "time": "30mins",
+  //     "price": "140THB",
+  //     "suggestBy": "June1"
+  //   },
+
+  //   // 2 - 3
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "2",
+  //     "Dest2": "3",
+  //     "mode": "Walk",
+  //     "time": "40mins",
+  //     "price": "130THB",
+  //     "suggestBy": "June2"
+  //   },
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "2",
+  //     "Dest2": "3",
+  //     "mode": "Train",
+  //     "time": "40mins",
+  //     "price": "130THB",
+  //     "suggestBy": "June2"
+  //   },
+  //   // 3 - 2
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "3",
+  //     "Dest2": "2",
+  //     "mode": "Train",
+  //     "time": "2mins",
+  //     "price": "130THB",
+  //     "suggestBy": "June2"
+  //   },
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "3",
+  //     "Dest2": "2",
+  //     "mode": "Walk",
+  //     "time": "2mins",
+  //     "price": "130THB",
+  //     "suggestBy": "June2"
+  //   },
+  //   // 3 - 1
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "3",
+  //     "Dest2": "1",
+  //     "mode": "Train",
+  //     "time": "25mins",
+  //     "price": "130THB",
+  //     "suggestBy": "June2"
+  //   },
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "3",
+  //     "Dest2": "1",
+  //     "mode": "Bus",
+  //     "time": "25mins",
+  //     "price": "130THB",
+  //     "suggestBy": "June2"
+  //   },
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "1",
+  //     "Dest2": "3",
+  //     "mode": "Walk -> Bus",
+  //     "time": "2mins",
+  //     "price": "10THB",
+  //     "suggestBy": "June2"
+  //   },
+  //   {
+  //     //dest : placeId
+  //     "Dest1": "1",
+  //     "Dest2": "3",
+  //     "mode": "Walk -> Bus",
+  //     "time": "2mins",
+  //     "price": "10THB",
+  //     "suggestBy": "June2"
+  //   },
+  //   // {
+  //   //   //dest : placeId
+  //   //   "Dest1": "1",
+  //   //   "Dest2": "5",
+  //   //   "mode": "Walk -> Bus",
+  //   //   "time": "2mins",
+  //   //   "price": "10THB",
+  //   // },
+  //   // {
+  //   //   //dest : placeId
+  //   //   "Dest1": "5",
+  //   //   "Dest2": "2",
+  //   //   "mode": "Walk -> Bus",
+  //   //   "time": "2mins",
+  //   //   "price": "10THB",
+  //   // },
+  //   // {
+  //   //   //dest : placeId
+  //   //   "Dest1": "2",
+  //   //   "Dest2": "5",
+  //   //   "mode": "Walk -> Bus",
+  //   //   "time": "2mins",
+  //   //   "price": "10THB",
+  //   // },
+  //   // {
+  //   //   //dest : placeId
+  //   //   "Dest1": "5",
+  //   //   "Dest2": "3",
+  //   //   "mode": "Walk -> Bus",
+  //   //   "time": "2mins",
+  //   //   "price": "10THB",
+  //   // },
+  //   // {
+  //   //   //dest : placeId
+  //   //   "Dest1": "3",
+  //   //   "Dest2": "5",
+  //   //   "mode": "Walk -> Bus",
+  //   //   "time": "2mins",
+  //   //   "price": "10THB",
+  //   // },
+  // ];
 
   void _onCardSelected(int index) {
     setState(() {
@@ -436,14 +641,14 @@ class _DayState extends State<Day> {
                                                 places2[index].placeId != null)
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.end,
-                                                children : [                                             
+                                                children : [
                                                   Icon(LucideIcons.clock, color: AppColors.orange_950, size: 16),
                                                   CustomText(
                                                     text: places2[index].arrivalTime!,                                               
                                                     type: TextType.body,
                                                     color: AppColors.orange_950,), 
                                                 ]
-                                              ), 
+                                              ),
                                             // const SizedBox(height: 4),
 
                                             if (places2[index].day ==

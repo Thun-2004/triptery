@@ -95,6 +95,7 @@ class _PlaceCardState extends State<PlaceCard> {
                                 type: TextType.subHeading,
                                 color: AppColors.black,
                               ),
+                              
                               // if (isEdit)
                               //   Checkbox(
                               //     isError: true,
