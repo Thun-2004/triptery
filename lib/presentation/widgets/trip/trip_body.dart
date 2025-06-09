@@ -74,59 +74,46 @@ class _TripBodyState extends State<TripBody> {
               ],
             ),
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               decoration: BoxDecoration(color: AppColors.white),
-              child: Row(
-                children: [
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: SizedBox(
-                      height: 40,
-                      width: double.infinity,
-                      // padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                      child: SizedBox(
-                        height: 40,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            DayButton(
-                              text: 'All',
-                              onPressed: () => _selectDay(0),
-                              index: 0,
-                              selectedDay: selectedDay,
-                            ),
-                            const SizedBox(width: 10),
-                            ...days.map(
-                              (day) => Row(
-                                children: [
-                                  DayButton(
-                                    text: 'Day $day',
-                                    onPressed: () => _selectDay(day),
-                                    index: day,
-                                    selectedDay: selectedDay,
-                                  ),
-                                  const SizedBox(width: 10),
-                                ],
-                              ),
-                            ),
-                           
-                            AddButton(
-                              onPressed: () {
-                                // Your logic here
-                              },
-                              text: '+',
-                              textSize: 16,
-                              textColor: AppColors.orange_950,
-                              width: 50,
-                              height: 28,
-                            ),
-                          ],
-                        ),
+              child: SizedBox(
+                height: 40,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    DayButton(
+                      text: 'All',
+                      onPressed: () => _selectDay(0),
+                      index: 0,
+                      selectedDay: selectedDay,
+                    ),
+                    const SizedBox(width: 10),
+                    ...days.map(
+                      (day) => Row(
+                        children: [
+                          DayButton(
+                            text: 'Day $day',
+                            onPressed: () => _selectDay(day),
+                            index: day,
+                            selectedDay: selectedDay,
+                          ),
+                          const SizedBox(width: 10),
+                        ],
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                ],
+
+                    AddButton(
+                      onPressed: () {
+                        // Your logic here
+                      },
+                      text: '+',
+                      textSize: 16,
+                      textColor: AppColors.orange_950,
+                      width: 50,
+                      height: 28,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
