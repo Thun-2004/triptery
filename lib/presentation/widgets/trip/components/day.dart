@@ -395,6 +395,7 @@ class _DayState extends State<Day> {
               duration: const Duration(milliseconds: 300),
               height: _isExpanded ? 600 : 0,
               color: AppColors.white,
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child:
                   _isExpanded
                       ? ReorderableListView.builder(
