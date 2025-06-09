@@ -38,9 +38,12 @@ class _DayListState extends State<DayList> {
         physics: const BouncingScrollPhysics(),
         itemCount: days.length,
         itemBuilder: (context, index) {
-          return Day(
-            day: days[index],
-          );
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Day(
+              day: days[index],
+            )
+          ); 
         },
       ),
     );

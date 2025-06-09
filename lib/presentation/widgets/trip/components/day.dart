@@ -333,21 +333,7 @@ class _DayState extends State<Day> {
 
     return Obx(() {
       _isEditing = tripController.isEditingPlaceOrder;
-      return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.black.withOpacity(0.1),
-              offset: const Offset(0, 2),
-              blurRadius: 1,
-              spreadRadius: 0,
-            ),
-          ],
-        ),
-        child: Column(
+      return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             // Header section (always visible)
@@ -359,7 +345,7 @@ class _DayState extends State<Day> {
                   topRight: Radius.circular(16),
                 ) : BorderRadius.all(Radius.circular(16)),
               ),
-              margin: _isExpanded ? const EdgeInsets.only(bottom: 20) : const EdgeInsets.all(0),
+              margin: const EdgeInsets.all(0),
 
               child: InkWell(
                 onTap: () {
@@ -408,6 +394,7 @@ class _DayState extends State<Day> {
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               height: _isExpanded ? 600 : 0,
+              color: AppColors.white,
               child:
                   _isExpanded
                       ? ReorderableListView.builder(
@@ -587,8 +574,7 @@ class _DayState extends State<Day> {
                       : const SizedBox.shrink(),
             ),
           ],
-        ),
-      );
+        ); 
     });
   }
 }

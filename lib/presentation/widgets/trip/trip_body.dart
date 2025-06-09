@@ -148,8 +148,8 @@ class _TripBodyState extends State<TripBody> {
           Container(
             height: 845,
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-            child: dayMode, 
-          ), 
+            child: dayMode,
+          ),
           // dayMode,
           const SizedBox(height: 16),
 
