@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:triptery/l10n/support_locale.dart';
 import 'package:provider/provider.dart';
 import 'package:triptery/presentation/controllers/language_controller.dart';
-import 'package:triptery/presentation/pages/trip/trip_page.dart'; 
+import 'package:triptery/presentation/pages/trip_page.dart'; 
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:get/get.dart';
 import 'package:triptery/utils/ui.dart' show NoBounceScrollBehavior;

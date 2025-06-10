@@ -137,7 +137,21 @@ class TripService {
   }
 
   void init() {
-    
+     if (places.isEmpty && trips.isNotEmpty) {
+      places = trips.where((trip) => trip.type == TripType.dest).toList();
+    }
+
+    if (trips.isNotEmpty) {
+      routes = trips.where((trip) => trip.type == TripType.route).toList();
+    }
+  }
+
+  List<Trip> getPlaces() {
+    return places;
+  }
+
+  List<Trip> getRoutes() {
+    return routes;
   }
 
   List<Map<String, String>> findRouteOptions(String placeId1, String placeId2) {
@@ -156,7 +170,7 @@ class TripService {
     }
   }
 
-  void handleReorder(int oldIndex, int newIndex, int selectedIndex, int day) {
+  void handleReorder(int oldIndex, int newIndex, int selectedIndex) {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
@@ -171,11 +185,11 @@ class TripService {
 
     //recalculate routes
     selectedIndex = -1;
-    _recalculateAllRoutes(day);
+    recalculateAllRoutes();
     print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
   }
 
-  void _recalculateAllRoutes(int day) {
+  void recalculateAllRoutes() {
     // Calculate how many routes we should have based on places
     int expectedRouteCount = 0;
     for (int i = 0; i < places.length - 1; i++) {
@@ -250,7 +264,7 @@ class TripService {
     }
   }
 
-  void addPlace(index, int day) {
+  void addPlace(index) {
     Trip newPlace = Trip(
       id: "1",
       planId: "1",
@@ -273,12 +287,12 @@ class TripService {
     );
 
     places.insert(index + 1, newPlace);
-    _recalculateAllRoutes(day);
+    recalculateAllRoutes();
   }
 
-  void deleteCard(index, day) {
+  void deleteCard(index) {
     places.removeAt(index);
-    _recalculateAllRoutes(day);
+    recalculateAllRoutes();
   }
 
 }

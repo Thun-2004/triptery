@@ -9,349 +9,29 @@ import 'package:triptery/data/mock/mock_trips.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:triptery/services/core/trip/trip_service.dart';
 
 //FIXME : change to DraggableScrollableSheet class
 
 class Day extends StatefulWidget {
   Day({super.key, required this.day});
   final int day;
+
   @override
   State<Day> createState() => _DayState();
 }
 
 class _DayState extends State<Day> {
   final tripController = Get.find<TripController>();
-  late bool _isEditing;
-
+  bool isExpanded = false;
   bool _isExpanded = false;
   int _selectedIndex = 0;
-  List<Trip> trips = mockTrips;
-  List<Map<String, String>> routeChoices = [
-    {
-      // 1- 2
-      //dest : placeId
-      "Dest1": "1",
-      "Dest2": "2",
-      "mode": "Car -> Train -> Bus",
-      "time": "21mins",
-      "price": "100THB",
-    },
-    
-    {
-      //dest : placeId
-      "Dest1": "1",
-      "Dest2": "2",
-      "mode": "Bus -> Train",
-      "time": "16mins",
-      "price": "140THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "1",
-      "Dest2": "2",
-      "mode": "Train -> Walk",
-      "time": "22mins",
-      "price": "130THB",
-    },
-    //2 -> 1
-    {
-      //dest : placeId
-      "Dest1": "2",
-      "Dest2": "1",
-      "mode": "Bus -> Train",
-      "time": "30mins",
-      "price": "140THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "2",
-      "Dest2": "1",
-      "mode": "Train -> Walk",
-      "time": "2mins",
-      "price": "130THB",
-    },
-
-    // 2 - 3
-    {
-      //dest : placeId
-      "Dest1": "2",
-      "Dest2": "3",
-      "mode": "Walk -> Train",
-      "time": "40mins",
-      "price": "130THB",
-    },
-    // 3 - 2
-    {
-      //dest : placeId
-      "Dest1": "3",
-      "Dest2": "2",
-      "mode": "Train -> Walk",
-      "time": "2mins",
-      "price": "130THB",
-    },
-    // 3 - 1
-    {
-      //dest : placeId
-      "Dest1": "3",
-      "Dest2": "1",
-      "mode": "Train -> Bus",
-      "time": "25mins",
-      "price": "130THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "1",
-      "Dest2": "3",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "1",
-      "Dest2": "5",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "5",
-      "Dest2": "2",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "2",
-      "Dest2": "5",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "5",
-      "Dest2": "3",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "3",
-      "Dest2": "5",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-  ];
-  // List<Map<String, String>> routeChoices = [
-  //   {
-  //     // 1- 2
-  //     //dest : placeId
-  //     "Dest1": "1",
-  //     "Dest2": "2",
-  //     "mode": "Car",
-  //     "time": "21mins",
-  //     "price": "100THB",
-  //     "suggestBy": "PPP"
-  //   },
-  //   {
-  //     // 1- 2
-  //     //dest : placeId
-  //     "Dest1": "1",
-  //     "Dest2": "2",
-  //     "mode": "Train",
-  //     "time": "21mins",
-  //     "price": "100THB",
-  //     "suggestBy": "PPP"
-  //   },
-  //   {
-  //     // 1- 2
-  //     //dest : placeId
-  //     "Dest1": "1",
-  //     "Dest2": "2",
-  //     "mode": "Bus",
-  //     "time": "21mins",
-  //     "price": "100THB",
-  //     "suggestBy": "PPP"
-  //   },
-    
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "1",
-  //     "Dest2": "2",
-  //     "mode": "Bus",
-  //     "time": "16mins",
-  //     "price": "140THB",
-  //     "suggestBy": "Spoon"
-  //   },
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "1",
-  //     "Dest2": "2",
-  //     "mode": "Train",
-  //     "time": "16mins",
-  //     "price": "140THB",
-  //     "suggestBy": "Spoon"
-  //   },
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "1",
-  //     "Dest2": "2",
-  //     "mode": "Train",
-  //     "time": "22mins",
-  //     "price": "130THB",
-  //     "suggestBy": "June"
-  //   },
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "1",
-  //     "Dest2": "2",
-  //     "mode": "Walk",
-  //     "time": "22mins",
-  //     "price": "130THB",
-  //     "suggestBy": "June"
-  //   },
-  //   //2 -> 1
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "2",
-  //     "Dest2": "1",
-  //     "mode": "Bus",
-  //     "time": "30mins",
-  //     "price": "140THB",
-  //     "suggestBy": "June1"
-  //   },
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "2",
-  //     "Dest2": "1",
-  //     "mode": "Train",
-  //     "time": "30mins",
-  //     "price": "140THB",
-  //     "suggestBy": "June1"
-  //   },
-
-  //   // 2 - 3
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "2",
-  //     "Dest2": "3",
-  //     "mode": "Walk",
-  //     "time": "40mins",
-  //     "price": "130THB",
-  //     "suggestBy": "June2"
-  //   },
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "2",
-  //     "Dest2": "3",
-  //     "mode": "Train",
-  //     "time": "40mins",
-  //     "price": "130THB",
-  //     "suggestBy": "June2"
-  //   },
-  //   // 3 - 2
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "3",
-  //     "Dest2": "2",
-  //     "mode": "Train",
-  //     "time": "2mins",
-  //     "price": "130THB",
-  //     "suggestBy": "June2"
-  //   },
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "3",
-  //     "Dest2": "2",
-  //     "mode": "Walk",
-  //     "time": "2mins",
-  //     "price": "130THB",
-  //     "suggestBy": "June2"
-  //   },
-  //   // 3 - 1
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "3",
-  //     "Dest2": "1",
-  //     "mode": "Train",
-  //     "time": "25mins",
-  //     "price": "130THB",
-  //     "suggestBy": "June2"
-  //   },
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "3",
-  //     "Dest2": "1",
-  //     "mode": "Bus",
-  //     "time": "25mins",
-  //     "price": "130THB",
-  //     "suggestBy": "June2"
-  //   },
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "1",
-  //     "Dest2": "3",
-  //     "mode": "Walk -> Bus",
-  //     "time": "2mins",
-  //     "price": "10THB",
-  //     "suggestBy": "June2"
-  //   },
-  //   {
-  //     //dest : placeId
-  //     "Dest1": "1",
-  //     "Dest2": "3",
-  //     "mode": "Walk -> Bus",
-  //     "time": "2mins",
-  //     "price": "10THB",
-  //     "suggestBy": "June2"
-  //   },
-  //   // {
-  //   //   //dest : placeId
-  //   //   "Dest1": "1",
-  //   //   "Dest2": "5",
-  //   //   "mode": "Walk -> Bus",
-  //   //   "time": "2mins",
-  //   //   "price": "10THB",
-  //   // },
-  //   // {
-  //   //   //dest : placeId
-  //   //   "Dest1": "5",
-  //   //   "Dest2": "2",
-  //   //   "mode": "Walk -> Bus",
-  //   //   "time": "2mins",
-  //   //   "price": "10THB",
-  //   // },
-  //   // {
-  //   //   //dest : placeId
-  //   //   "Dest1": "2",
-  //   //   "Dest2": "5",
-  //   //   "mode": "Walk -> Bus",
-  //   //   "time": "2mins",
-  //   //   "price": "10THB",
-  //   // },
-  //   // {
-  //   //   //dest : placeId
-  //   //   "Dest1": "5",
-  //   //   "Dest2": "3",
-  //   //   "mode": "Walk -> Bus",
-  //   //   "time": "2mins",
-  //   //   "price": "10THB",
-  //   // },
-  //   // {
-  //   //   //dest : placeId
-  //   //   "Dest1": "3",
-  //   //   "Dest2": "5",
-  //   //   "mode": "Walk -> Bus",
-  //   //   "time": "2mins",
-  //   //   "price": "10THB",
-  //   // },
-  // ];
-
+  late TripService tripService;
+  late bool _isEditing;
+  //NOTE :getter type = dynamic type 
+  List<Trip> get _places => tripService.getPlaces();
+  List<Trip> get _routes => tripService.getRoutes();
+  
   void _onCardSelected(int index) {
     setState(() {
       if (_selectedIndex == index) {
@@ -359,182 +39,47 @@ class _DayState extends State<Day> {
       } else {
         _selectedIndex = index;
       }
-      _handleReorder;
     });
   }
 
-  void _handleReorder(int oldIndex, int newIndex) {
+  void handleReorder(int oldIndex, int newIndex) {
     setState(() {
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
-      }
-      //swap place
-      final Trip item = places2.removeAt(oldIndex);
-      places2.insert(newIndex, item);
-
-      //swap time
-      String tempTime = places2[newIndex].arrivalTime ?? '';
-      places2[newIndex].arrivalTime = places2[oldIndex].arrivalTime;
-      places2[oldIndex].arrivalTime = tempTime;
-
-      //recalculate routes
-      _selectedIndex = -1;
-      _recalculateAllRoutes();
-      print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
+      tripService.handleReorder(oldIndex, newIndex, _selectedIndex);
     });
   }
 
-  void _recalculateAllRoutes() {
-    // Calculate how many routes we should have based on places
-    int expectedRouteCount = 0;
-    for (int i = 0; i < places2.length - 1; i++) {
-      if (places2[i].placeId != null && places2[i + 1].placeId != null) {
-        expectedRouteCount++;
-      }
-    }
-
-    // Resize routes list if needed
-    if (routes.length > expectedRouteCount) {
-      routes = routes.sublist(0, expectedRouteCount);
-    }
-
-    // Update existing routes or add new ones
-    int routeIndex = 0;
-    for (int i = 0; i < places2.length - 1; i++) {
-      if (places2[i].placeId != null && places2[i + 1].placeId != null) {
-        // Create or update route
-        if (routeIndex < routes.length) {
-          // Update existing route
-          routes[routeIndex] = Trip(
-            id: routes[routeIndex].id,
-            planId: routes[routeIndex].planId,
-            day: widget.day,
-            type: TripType.route,
-            placeId: null,
-            placeName: null,
-            placeDescription: null,
-            placeImageUrl: null,
-            arrivalTime: null,
-            routeMode: routes[routeIndex].routeMode ?? RouteMode.unselected,
-            routeFrom: places2[i].placeId,
-            routeTo: places2[i + 1].placeId,
-            routeTotalTime: routes[routeIndex].routeTotalTime,
-            routeTotalCost: routes[routeIndex].routeTotalCost,
-            routeTotalDistance: routes[routeIndex].routeTotalDistance,
-            routeDistance: routes[routeIndex].routeDistance,
-            routeNote: routes[routeIndex].routeNote,
-            note: routes[routeIndex].note,
-          );
-        } else {
-          // Add new route
-          routes.add(
-            Trip(
-              id: places2[i].id,
-              planId: places2[i].planId,
-              day: widget.day,
-              type: TripType.route,
-              placeId: null,
-              placeName: null,
-              placeDescription: null,
-              placeImageUrl: null,
-              arrivalTime: null,
-              routeMode: RouteMode.unselected,
-              routeFrom: places2[i].placeId,
-              routeTo: places2[i + 1].placeId,
-              routeTotalTime: null,
-              routeTotalCost: null,
-              routeTotalDistance: null,
-              routeDistance: null,
-              routeNote: null,
-              note: null,
-            ),
-          );
-        }
-        routeIndex++;
-      }
-
-      print(
-        'route options: ${findRouteOptions(places2[i].id, places2[i + 1].id)}',
-      );
-    }
+  void recalculateAllRoutes() {
+    tripService.recalculateAllRoutes();
   }
 
   void addPlace(index) {
-    Trip newPlace = Trip(
-      id: "1",
-      planId: "1",
-      day: 1,
-      type: TripType.dest,
-      placeId: "5",
-      placeName: "Pattaya Floating Market",
-      placeDescription:
-          "Established since 2008, Pattaya Floating Market is riverside attraction in Pattaya displaying and showcasing the beautiful ancient Thai riverside living community and authentic ways of life",
-      placeImageUrl:
-          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/53/6d/b7/pattaya-floating-market.jpg?w=1400&h=-1&s=1",
-      arrivalTime: null,
-      routeMode: null,
-      routeTotalTime: null,
-      routeTotalCost: null,
-      routeTotalDistance: null,
-      routeDistance: null,
-      routeNote: null,
-      note: null,
-    );
-
-    places2.insert(index + 1, newPlace);
-    _recalculateAllRoutes();
-
+    tripService.addPlace(index); 
     setState(() {});
   }
 
   void deleteCard(index) {
     setState(() {
-      places2.removeAt(index);
-      _recalculateAllRoutes();
+      tripService.deleteCard(index);
     });
   }
 
-  final List<Map<String, String>> places = [
-    {"name": "Place 1", "description": "Description 1", "image": ""},
-    {"name": "Place 2", "description": "Description 2", "image": ""},
-  ];
-
-  List<Trip> places2 = [];
-  List<Trip> routes = [];
-
-  bool isExpanded = false;
   isExtended() {
     setState(() {
       isExpanded = !isExpanded;
     });
   }
 
-  List<Map<String, String>> findRouteOptions(String placeId1, String placeId2) {
-    return routeChoices
-        .where(
-          (route) => (route["Dest1"] == placeId1 && route["Dest2"] == placeId2),
-        )
-        .toList();
-  }
-
   @override
   void initState() {
     super.initState();
+    tripService = TripService(widget.day);
+    tripService.init(); 
     _isEditing = tripController.isEditingPlaceOrder;
-    places2 = trips.where((trip) => trip.type == TripType.dest).toList();
-    routes = trips.where((trip) => trip.type == TripType.route).toList();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    if (places2.isEmpty && trips.isNotEmpty) {
-      places2 = trips.where((trip) => trip.type == TripType.dest).toList();
-    }
-
-    if (trips.isEmpty) {
-      routes = trips.where((trip) => trip.type == TripType.route).toList();
-    }
-
     return Obx(() {
       _isEditing = tripController.isEditingPlaceOrder;
       return Column(
@@ -607,18 +152,18 @@ class _DayState extends State<Day> {
                         scrollDirection: Axis.vertical,
                         // shrinkWrap: true,
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        itemCount: places2.length,
+                        itemCount: _places.length,
 
-                        onReorder: _handleReorder,
+                        onReorder: handleReorder,
                         itemBuilder: (context, index) {
                           List<Map<String, String>> routeOptions =
-                              index < places2.length - 1 &&
-                                      places2[index].placeId != null &&
-                                      places2[index + 1].placeId != null
-                                  ? findRouteOptions(
-                                    places2[index].placeId!,
-                                    places2[index + 1].placeId!,
-                                  )
+                              index < _places.length - 1 &&
+                                      _places[index].placeId != null &&
+                                      _places[index + 1].placeId != null
+                                  ? tripService.findRouteOptions(
+                                      _places[index].placeId!,
+                                      _places[index + 1].placeId!,
+                                    )
                                   : [];
                           return Padding(
                             key: ValueKey('place-$index'),
@@ -628,36 +173,27 @@ class _DayState extends State<Day> {
                                 Expanded(
                                   child: Column(
                                     children: [
-
                                       Container(
                                         margin: EdgeInsets.all(0),
                                         child: Column(
                                           children: [
                                             const SizedBox(height: 4),
-                                            if (places2[index].day ==
-                                                    widget.day &&
-                                                index <= places2.length - 1 &&
-                                                places2[index].placeId != null)
+                                            if (_places[index].day == widget.day && index <= _places.length - 1 &&_places[index].placeId != null)
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.end,
                                                 children : [
                                                   Icon(LucideIcons.clock, color: AppColors.orange_950, size: 16),
                                                   CustomText(
-                                                    text: places2[index].arrivalTime!,                                               
+                                                    text: _places[index].arrivalTime!,
                                                     type: TextType.body,
                                                     color: AppColors.orange_950,), 
                                                 ]
                                               ),
-                                            // const SizedBox(height: 4),
 
-                                            if (places2[index].day ==
-                                                    widget.day &&
-                                                index <= places2.length - 1 &&
-                                                places2[index].placeId != null)
+                                            if (_places[index].day == widget.day && index <= _places.length - 1 && _places[index].placeId != null)
                                               GestureDetector(
                                                 onTap:
-                                                    () =>
-                                                        _onCardSelected(index),
+                                                    () =>_onCardSelected(index),
                                                 child: Container(
                                                   decoration: BoxDecoration(
                                                     border: Border.all(
@@ -676,18 +212,18 @@ class _DayState extends State<Day> {
                                                   ),
                                                   child: PlaceCard(
                                                     placeId:
-                                                        places2[index].placeId!,
+                                                        _places[index].placeId!,
                                                     placeName:
-                                                        places2[index]
+                                                        _places[index]
                                                             .placeName!,
                                                     placeDescription:
-                                                        places2[index]
+                                                        _places[index]
                                                             .placeDescription!,
                                                     placeImage:
-                                                        places2[index]
+                                                        _places[index]
                                                             .placeImageUrl!,
                                                     arrivalTime:
-                                                        places2[index]
+                                                        _places[index]
                                                             .arrivalTime!,
                                                     onClick:
                                                         () => deleteCard(index),
@@ -696,35 +232,35 @@ class _DayState extends State<Day> {
                                                 ),
                                               ),
 
-                                            if (index == places2.length - 1)
+                                            if (index == _places.length - 1)
                                               const SizedBox(height: 10)
                                             else if (index <
-                                                    places2.length - 1 &&
-                                                index < routes.length &&
-                                                routes[index].day ==
+                                                    _places.length - 1 &&
+                                                index < _routes.length &&
+                                                _routes[index].day ==
                                                     widget.day &&
-                                                places2[index].placeId !=
+                                                _places[index].placeId !=
                                                     null &&
-                                                places2[index + 1].placeId !=
+                                                _places[index + 1].placeId !=
                                                     null &&
                                                 routeOptions.isNotEmpty)
                                              
                                               RouteDropdown(
                                                 key: ValueKey(
-                                                  'route-${places2[index].placeId}-${places2[index + 1].placeId}-$index',
+                                                  'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
                                                 ),
 
                                                 choices: routeOptions,
                                                 pastChoice:
                                                     _selectedIndex == index
                                                         ? "Select route mode"
-                                                        : routes[index]
+                                                        : _routes[index]
                                                             .routeMode
                                                             .toString(),
                                               ),
 
                                             if (_isEditing &&
-                                                index < places2.length - 1)
+                                                index < _places.length - 1)
                                               AddButton(
                                                 text: "+ Add Place",
                                                 textSize: 14, 
