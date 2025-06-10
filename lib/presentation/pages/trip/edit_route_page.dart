@@ -239,172 +239,165 @@ class _EditRoutePageState extends State<EditRoutePage> {
 
           //scrollable content
           Expanded(
-            child: SingleChildScrollView(
-              child: Container(
-                height: 900, 
-                child: ReorderableListView.builder(
-                buildDefaultDragHandles: true,
-                scrollDirection: Axis.vertical,
-                // shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: _places.length,
+            child: ReorderableListView.builder( //NOTE reorderable list view is scrollable on its own
+              buildDefaultDragHandles: true,
+              scrollDirection: Axis.vertical,
+              // shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: _places.length,
 
-                onReorder: handleReorder,
-                itemBuilder: (context, index) {
-                  List<Map<String, String>> routeOptions =
-                      index < _places.length - 1 &&
-                              _places[index].placeId != null &&
-                              _places[index + 1].placeId != null
-                          ? tripService.findRouteOptions(
-                            _places[index].placeId!,
-                            _places[index + 1].placeId!,
-                          )
-                          : [];
-                  return Padding(
-                    key: ValueKey('place-$index'),
-                    padding: const EdgeInsets.only(bottom: 0.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.all(0),
-                                child: Column(
-                                  children: [
-                                    const SizedBox(height: 4),
-                                    if (_places[index].day == widget.day &&
-                                        index <= _places.length - 1 &&
-                                        _places[index].placeId != null)
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Icon(
-                                            LucideIcons.clock,
-                                            color: AppColors.orange_950,
-                                            size: 16,
-                                          ),
-                                          CustomText(
-                                            text: _places[index].arrivalTime!,
-                                            type: TextType.body,
-                                            color: AppColors.orange_950,
-                                          ),
-                                        ],
-                                      ),
+              onReorder: handleReorder,
+              itemBuilder: (context, index) {
+                List<Map<String, String>> routeOptions =
+                    index < _places.length - 1 &&
+                            _places[index].placeId != null &&
+                            _places[index + 1].placeId != null
+                        ? tripService.findRouteOptions(
+                          _places[index].placeId!,
+                          _places[index + 1].placeId!,
+                        )
+                        : [];
+                return Padding(
+                  key: ValueKey('place-$index'),
+                  padding: const EdgeInsets.only(bottom: 0.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.all(0),
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 4),
+                                  if (_places[index].day == widget.day &&
+                                      index <= _places.length - 1 &&
+                                      _places[index].placeId != null)
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Icon(
+                                          LucideIcons.clock,
+                                          color: AppColors.orange_950,
+                                          size: 16,
+                                        ),
+                                        CustomText(
+                                          text: _places[index].arrivalTime!,
+                                          type: TextType.body,
+                                          color: AppColors.orange_950,
+                                        ),
+                                      ],
+                                    ),
 
-                                    if (_places[index].day == widget.day &&
-                                        index <= _places.length - 1 &&
-                                        _places[index].placeId != null)
-                                      GestureDetector(
-                                        onTap: () => _onCardSelected(index),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color:
-                                                  _selectedIndex == index
-                                                      ? Colors.blue
-                                                      : Colors.transparent,
-                                              width: 2,
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
+                                  if (_places[index].day == widget.day &&
+                                      index <= _places.length - 1 &&
+                                      _places[index].placeId != null)
+                                    GestureDetector(
+                                      onTap: () => _onCardSelected(index),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color:
+                                                _selectedIndex == index
+                                                    ? Colors.blue
+                                                    : Colors.transparent,
+                                            width: 2,
                                           ),
-                                          child: PlaceCard(
-                                            placeId: _places[index].placeId!,
-                                            placeName:
-                                                _places[index].placeName!,
-                                            placeDescription:
-                                                _places[index]
-                                                    .placeDescription!,
-                                            placeImage:
-                                                _places[index].placeImageUrl!,
-                                            arrivalTime:
-                                                _places[index].arrivalTime!,
-                                            onClick: () => deleteCard(index),
-                                            isEdit: _isEditing,
+                                          borderRadius: BorderRadius.circular(
+                                            8,
                                           ),
                                         ),
-                                      ),
-
-                                    if (index == _places.length - 1)
-                                      const SizedBox(height: 10)
-                                    else if (index < _places.length - 1 &&
-                                        index < _routes.length &&
-                                        _routes[index].day == widget.day &&
-                                        _places[index].placeId != null &&
-                                        _places[index + 1].placeId != null &&
-                                        routeOptions.isNotEmpty)
-                                      RouteDropdown(
-                                        key: ValueKey(
-                                          'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
+                                        child: PlaceCard(
+                                          placeId: _places[index].placeId!,
+                                          placeName: _places[index].placeName!,
+                                          placeDescription:
+                                              _places[index].placeDescription!,
+                                          placeImage:
+                                              _places[index].placeImageUrl!,
+                                          arrivalTime:
+                                              _places[index].arrivalTime!,
+                                          onClick: () => deleteCard(index),
+                                          isEdit: _isEditing,
                                         ),
+                                      ),
+                                    ),
 
-                                        choices: routeOptions,
-                                        pastChoice:
-                                            _selectedIndex == index
-                                                ? "Select route mode"
-                                                : _routes[index].routeMode
-                                                    .toString(),
+                                  if (index == _places.length - 1)
+                                    const SizedBox(height: 10)
+                                  else if (index < _places.length - 1 &&
+                                      index < _routes.length &&
+                                      _routes[index].day == widget.day &&
+                                      _places[index].placeId != null &&
+                                      _places[index + 1].placeId != null &&
+                                      routeOptions.isNotEmpty)
+                                    RouteDropdown(
+                                      key: ValueKey(
+                                        'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
                                       ),
 
-                                    if (_isEditing &&
-                                        index < _places.length - 1)
-                                      AddButton(
-                                        text: "+ Add Place",
-                                        textSize: 14,
-                                        textColor: AppColors.orange_950,
-                                        width: double.infinity,
-                                        height: 30,
-                                        onPressed: () => addPlace(index),
-                                      ),
-                                    // ElevatedButton(
-                                    //   onPressed:
-                                    //       () => addPlace(index),
-                                    //   style: ElevatedButton.styleFrom(
-                                    //     backgroundColor:
-                                    //         Color.fromARGB(
-                                    //           255,
-                                    //           250,
-                                    //           98,
-                                    //           47,
-                                    //         ),
-                                    //     shape: RoundedRectangleBorder(
-                                    //       borderRadius:
-                                    //           BorderRadius.circular(
-                                    //             15,
-                                    //           ),
-                                    //     ),
-                                    //     padding:
-                                    //         const EdgeInsets.symmetric(
-                                    //           vertical: 10,
-                                    //           horizontal: 10,
-                                    //         ),
-                                    //   ),
-                                    //   child: Text(
-                                    //     "Add Place",
-                                    //     style: TextStyle(
-                                    //       color: AppColors.white,
-                                    //       fontSize: 14,
-                                    //       fontWeight: FontWeight.bold,
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
+                                      choices: routeOptions,
+                                      pastChoice:
+                                          _selectedIndex == index
+                                              ? "Select route mode"
+                                              : _routes[index].routeMode
+                                                  .toString(),
+                                    ),
+
+                                  if (_isEditing && index < _places.length - 1)
+                                    AddButton(
+                                      text: "+ Add Place",
+                                      textSize: 14,
+                                      textColor: AppColors.orange_950,
+                                      width: double.infinity,
+                                      height: 30,
+                                      onPressed: () => addPlace(index),
+                                    ),
+                                  // ElevatedButton(
+                                  //   onPressed:
+                                  //       () => addPlace(index),
+                                  //   style: ElevatedButton.styleFrom(
+                                  //     backgroundColor:
+                                  //         Color.fromARGB(
+                                  //           255,
+                                  //           250,
+                                  //           98,
+                                  //           47,
+                                  //         ),
+                                  //     shape: RoundedRectangleBorder(
+                                  //       borderRadius:
+                                  //           BorderRadius.circular(
+                                  //             15,
+                                  //           ),
+                                  //     ),
+                                  //     padding:
+                                  //         const EdgeInsets.symmetric(
+                                  //           vertical: 10,
+                                  //           horizontal: 10,
+                                  //         ),
+                                  //   ),
+                                  //   child: Text(
+                                  //     "Add Place",
+                                  //     style: TextStyle(
+                                  //       color: AppColors.white,
+                                  //       fontSize: 14,
+                                  //       fontWeight: FontWeight.bold,
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                },
-              )),
-              //FIX ME: add day info
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
+
+          //FIX ME: add day info
         ],
       ),
     );
