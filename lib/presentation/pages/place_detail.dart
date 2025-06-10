@@ -5,6 +5,8 @@ import '../widgets/place_detail_page/place_review_section.dart';
 import '../widgets/dash_divider.dart';
 import '../../domain/usecases/get_review_groups_by_place_id.dart';
 import '../../domain/repositories/place_repository_impl.dart'; // or Mock
+import 'package:get/get.dart';
+
 
 class PlaceDetailPage extends StatefulWidget {
   final Place place;
@@ -72,7 +74,9 @@ class _PlaceDetailPageState extends State<PlaceDetailPage> {
                   left: 16,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () => Navigator.pop(context),
+                    // onPressed: () => Navigator.pop(context),
+                    onPressed: () => Get.back(),
+
                   ),
                 ),
                 Positioned(
