@@ -59,19 +59,18 @@ class _TripCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8,
-            offset: Offset(0, 2),
-          ),
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 2)),
         ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Trip image
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image.network(
@@ -81,53 +80,113 @@ class _TripCard extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 12),
+
+          // Info & actions
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    trip['title'],
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(Icons.location_on, size: 16, color: Colors.orange),
-                      const SizedBox(width: 4),
-                      Text(
-                        trip['location'],
-                        style: const TextStyle(fontSize: 13, color: Colors.black54),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Title + more button
+                // Title + more button
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        trip['title'],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      const Icon(Icons.calendar_today, size: 16, color: Colors.orange),
-                      const SizedBox(width: 4),
-                      Text(trip['duration'], style: const TextStyle(fontSize: 13)),
-                      const SizedBox(width: 12),
-                      const Icon(Icons.person, size: 16, color: Colors.orange),
-                      const SizedBox(width: 4),
-                      Text('${trip['people']}', style: const TextStyle(fontSize: 13)),
-                      const SizedBox(width: 12),
-                      const Icon(Icons.attach_money, size: 16, color: Colors.orange),
-                      const SizedBox(width: 2),
-                      Text(trip['price'], style: const TextStyle(fontSize: 13)),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    Transform.translate(
+                      offset: const Offset(0, -4), // shift upward
+                      child: PopupMenuButton<String>(
+                        icon: const Icon(Icons.more_horiz, size: 20),
+                        onSelected: (value) {
+                          // TODO: handle actions like Edit, Delete
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Selected: $value')),
+                          );
+                        },
+                        itemBuilder:
+                            (context) => [
+                              const PopupMenuItem(
+                                value: 'edit',
+                                child: Text('Edit'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'delete',
+                                child: Text('Delete'),
+                              ),
+                            ],
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 4),
+
+                // Location
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.location_on,
+                      size: 16,
+                      color: Colors.orange,
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      child: Text(
+                        trip['location'],
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.black54,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+
+                // Duration, people, price
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.calendar_today,
+                      size: 16,
+                      color: Colors.orange,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      trip['duration'],
+                      style: const TextStyle(fontSize: 13),
+                    ),
+                    const SizedBox(width: 12),
+                    const Icon(Icons.person, size: 16, color: Colors.orange),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${trip['people']}',
+                      style: const TextStyle(fontSize: 13),
+                    ),
+                    const SizedBox(width: 12),
+                    const Icon(
+                      Icons.attach_money,
+                      size: 16,
+                      color: Colors.orange,
+                    ),
+                    const SizedBox(width: 2),
+                    Text(trip['price'], style: const TextStyle(fontSize: 13)),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
       ),
     );
   }
-} 
+}
