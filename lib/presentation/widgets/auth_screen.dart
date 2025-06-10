@@ -5,7 +5,7 @@ import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:triptery/data/datasources/supabase_client.dart';
-import 'package:triptery/services/social_auth.dart';
+import 'package:triptery/services/external/social_auth.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 

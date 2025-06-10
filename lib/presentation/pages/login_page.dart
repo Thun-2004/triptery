@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:triptery/presentation/widgets/auth_screen.dart';
-import 'package:triptery/services/social_auth.dart';
+import 'package:triptery/services/external/social_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:triptery/presentation/controllers/language_controller.dart';
 import 'package:get/get.dart';

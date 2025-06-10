@@ -377,7 +377,6 @@ class _DayState extends State<Day> {
       places2[newIndex].arrivalTime = places2[oldIndex].arrivalTime;
       places2[oldIndex].arrivalTime = tempTime;
 
-
       //recalculate routes
       _selectedIndex = -1;
       _recalculateAllRoutes();
