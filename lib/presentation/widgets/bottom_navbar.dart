@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../pages/search_page.dart';
+import '../pages/user_profile.dart';
 import '../../domain/repositories/place_repository_impl.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -22,6 +23,12 @@ class BottomNavBar extends StatelessWidget {
               builder:
                   (context) => SearchPage(repository: PlaceRepositoryImpl()),
             ),
+          );
+        } else if (index == 3) {
+          // User profile icon index
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const UserProfilePage()),
           );
         }
       },

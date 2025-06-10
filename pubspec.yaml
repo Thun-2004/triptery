@@ -89,6 +89,7 @@ flutter:
     - assets/images/adventure.png
     - assets/images/camping.png
     - assets/images/salmonjuseyo.png
+    - assets/images/goldenspoon.png
     - lib/data/mock/mock_response.json
 
     
