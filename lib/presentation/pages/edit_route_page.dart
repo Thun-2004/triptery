@@ -14,6 +14,7 @@ import 'package:triptery/presentation/widgets/trip/components/route_dropdown.dar
 import 'package:triptery/presentation/widgets/trip/trip_body.dart';
 import 'package:triptery/services/core/trip/trip_service.dart';
 
+//FIXME: implement clean architecture
 class EditRoutePage extends StatefulWidget {
   const EditRoutePage({super.key, required this.day});
   final int day;
@@ -25,16 +26,18 @@ class EditRoutePage extends StatefulWidget {
 class _EditRoutePageState extends State<EditRoutePage> {
   final tripController = Get.find<TripController>();
   bool isExpanded = false;
-  bool _isExpanded = false;
+  bool _isDeleting = false; 
   int _selectedIndex = 0;
   late TripService tripService;
   late bool _isEditing;
   int selectedDay = 0;
   List<Trip> trips = mockTrips;
   late Widget dayMode;
+
   //NOTE :getter type = dynamic type
   List<Trip> get _places => tripService.getPlaces();
   List<Trip> get _routes => tripService.getRoutes();
+  List<int> get _deletedItems => tripService.getDeletedItems(); 
 
   List<int> get days {
     return trips
@@ -82,7 +85,13 @@ class _EditRoutePageState extends State<EditRoutePage> {
 
   void deleteCard(index) {
     setState(() {
-      tripService.deleteCard(index);
+      tripService.addDeletedPlaceCards(index);
+    });
+  }
+
+  void addDeletedPlaceCards(int index) {
+    setState(() {
+      tripService.addDeletedPlaceCards(index);
     });
   }
 
@@ -98,6 +107,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
     tripService = TripService(widget.day);
     tripService.init();
     _isEditing = tripController.isEditingPlaceOrder;
+    _isDeleting = tripController.isEditingPlaceOrder;
   }
 
   @override
@@ -150,13 +160,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        DayButton(
-                          text: 'All',
-                          onPressed: () => (),
-                          index: 0,
-                          selectedDay: 1,
-                        ),
-                        const SizedBox(width: 10),
+                       
                         ...days.map(
                           (day) => Row(
                             children: [
@@ -190,52 +194,55 @@ class _EditRoutePageState extends State<EditRoutePage> {
           ),
 
           //selected deletion
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            alignment: Alignment.bottomCenter,
-            height: 50,
-            // height: isExpanded ? 50 : 0,
-            padding: const EdgeInsets.only(right: 16, left: 30),
-            decoration: BoxDecoration(color: AppColors.red),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(
-                  text: "Select All",
-                  type: TextType.subHeading,
-                  color: AppColors.darkBlue,
-                ),
-                CustomText(
-                  text: "2 Selected",
-                  type: TextType.subHeading,
-                  color: AppColors.white,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: const Icon(
-                        LucideIcons.trash2,
-                        color: AppColors.darkBlue,
+          if(_deletedItems.isNotEmpty)
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              alignment: Alignment.bottomCenter,
+              height: 50,
+              // height: isExpanded ? 50 : 0,
+              padding: const EdgeInsets.only(right: 16, left: 30),
+              decoration: BoxDecoration(color: AppColors.red),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    text: "Select All",
+                    type: TextType.subHeading,
+                    color: AppColors.darkBlue,
+                  ),
+                  CustomText(
+                    text: "2 Selected",
+                    type: TextType.subHeading,
+                    color: AppColors.white,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          LucideIcons.trash2,
+                          color: AppColors.darkBlue,
+                        ),
+                        onPressed: () {
+                          
+                        },
                       ),
-                      onPressed: () {
-                        // Your delete logic here
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(
-                        LucideIcons.x,
-                        color: AppColors.darkBlue,
+                      IconButton(
+                        icon: const Icon(
+                          LucideIcons.x,
+                          color: AppColors.darkBlue,
+                        ),
+                        onPressed: (() {
+                          setState(() {
+                            _isDeleting = !_isDeleting;
+                          });
+                        })
                       ),
-                      onPressed: () {
-                        // Your confirm logic here
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
 
           //scrollable content
           Expanded(
@@ -308,6 +315,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                           ),
                                         ),
                                         child: PlaceCard(
+                                          index: index, 
                                           placeId: _places[index].placeId!,
                                           placeName: _places[index].placeName!,
                                           placeDescription:
@@ -316,7 +324,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                               _places[index].placeImageUrl!,
                                           arrivalTime:
                                               _places[index].arrivalTime!,
-                                          onClick: () => deleteCard(index),
+                                          addDeletedItem: addDeletedPlaceCards,
                                           isEdit: _isEditing,
                                         ),
                                       ),
@@ -397,8 +405,39 @@ class _EditRoutePageState extends State<EditRoutePage> {
             ),
           ),
 
-          //FIX ME: add day info
+          //FIXME: add day info
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: ((){
+          tripController.toggleEditPlaceOrder(); 
+          setState(() {
+            _isEditing = tripController.isEditingPlaceOrder;
+          });
+        }),
+       
+        elevation: 4,
+        shape: const CircleBorder(),
+        child: Container(
+          width: 56,
+          height: 56,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                const Color(0xFFFEB755), // Light orange
+                const Color(0xFFFE7D57), // Darker orange
+              ],
+            ),
+          ),
+          child:  Icon(
+              LucideIcons.pencilLine,
+              color: Colors.white,
+              size: 28,
+            ),
+        ),
       ),
     );
   }

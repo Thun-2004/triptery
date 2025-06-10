@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
-import 'package:triptery/presentation/widgets/tag.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:triptery/presentation/widgets/trip/trip_body.dart';
 
 class PlaceCard extends StatefulWidget {
   const PlaceCard({
     super.key,
+    required this.index,
     required this.placeId,
     required this.placeName,
     required this.placeDescription,
     required this.placeImage,
     required this.arrivalTime,
-    required this.onClick,
-    required this.isEdit,
+    this.addDeletedItem,
+    this.isEdit,
   });
 
+  final int index;
   final String placeId;
   final String placeName;
   final String placeDescription;
   final String placeImage;
   final String arrivalTime;
-  final VoidCallback onClick;
-  final bool isEdit;
+  final Function(int)? addDeletedItem;
+  final bool? isEdit;
 
   @override
   State<PlaceCard> createState() => _PlaceCardState();
@@ -32,6 +31,7 @@ class PlaceCard extends StatefulWidget {
 
 class _PlaceCardState extends State<PlaceCard> {
   bool isActivityExpanded = false;
+  bool isChecked = false; 
   List<String> itemsToShow = [
     "Not Ping pong show",
     "Martini at the bar",
@@ -96,18 +96,21 @@ class _PlaceCardState extends State<PlaceCard> {
                                 color: AppColors.black,
                               ),
                               
-                              // if (isEdit)
-                              //   Checkbox(
-                              //     isError: true,
-                              //     tristate: true,
-                              //     value: isChecked,
-                              //     onChanged: (bool? value) {
-                              //       isChecked = !isChecked;
-                              //       // setState(() {
-                              //       //   isChecked = !isChecked;
-                              //       // });
-                              //     },
-                              //   ),
+                              if (widget.isEdit == true) //NOTE : check if isEdit is true
+                                Checkbox(
+                                  isError: true,
+                                  tristate: true,
+                                  value: isChecked,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      isChecked = value ?? false;
+                                      if(widget.addDeletedItem != null){
+                                        widget.addDeletedItem!(widget.index);
+                                      }
+                                    });
+                                   
+                                  },
+                                ),
                             ],
                           ),
 

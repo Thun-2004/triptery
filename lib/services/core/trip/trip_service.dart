@@ -6,6 +6,10 @@ import 'dart:developer';
 class TripService {
 
   //state var
+  int day = 0; 
+  List<Trip> places = [];
+  List<Trip> routes = [];
+  List<int> deletedItems = []; 
   List<Trip> trips = mockTrips; 
   List<Map<String, String>> routeChoices = [
       {
@@ -128,9 +132,6 @@ class TripService {
         "price": "10THB",
       },
     ];
-  int day = 0; 
-  List<Trip> places = [];
-  List<Trip> routes = [];
 
   TripService(this.day) { //label day 
     log("TripService initialized");
@@ -152,6 +153,10 @@ class TripService {
 
   List<Trip> getRoutes() {
     return routes;
+  }
+
+  List<int> getDeletedItems() {
+    return deletedItems;
   }
 
   List<Map<String, String>> findRouteOptions(String placeId1, String placeId2) {
@@ -290,9 +295,26 @@ class TripService {
     recalculateAllRoutes();
   }
 
-  void deleteCard(index) {
-    places.removeAt(index);
+  void deletePlaceCards() {
+    for(int ind in deletedItems) {
+      if (ind < 0 || ind >= places.length) {
+        log("Index $ind is out of bounds for places list.");
+        continue;
+      }else{
+        places.removeAt(ind);
+      }
+    }
+    deletedItems.clear();
     recalculateAllRoutes();
+  }
+
+  void addDeletedPlaceCards(int selectedIndex) {
+    if (!deletedItems.contains(selectedIndex)) {
+      deletedItems.add(selectedIndex);
+    }else{
+      deletedItems.remove(selectedIndex);
+    }
+    log("Deleted items: $deletedItems");
   }
 
 }
