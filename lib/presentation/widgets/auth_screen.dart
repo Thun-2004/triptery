@@ -13,6 +13,8 @@ import 'package:get/get.dart';
 import 'dart:io';
 
 class AuthScreen extends StatefulWidget {
+  const AuthScreen({super.key});
+
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
@@ -21,7 +23,7 @@ class _AuthScreenState extends State<AuthScreen> {
   String mode = "login";
 
   var status = {"status": "", "message": ""};
-  var _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var passwordCheckController = TextEditingController();
@@ -65,7 +67,7 @@ class _AuthScreenState extends State<AuthScreen> {
       final password = passwordController.text;
       _formKey.currentState!.save();
       try {
-        final res = await await supabase.auth.signUp(
+        final res = await supabase.auth.signUp(
           email: email,
           password: password,
         );
@@ -354,7 +356,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () async {
@@ -370,16 +372,14 @@ class _AuthScreenState extends State<AuthScreen> {
                           );
                         } else {
                           var res = _login();
-                          if (res != null) {
-                            // Handle successful sign-up
-                            showTopSnackBar(
-                              Overlay.of(context),
-                              CustomSnackBar.info(
-                                message: await res,
-                              ),
-                            );
-                          }
-                        }
+                          // Handle successful sign-up
+                          showTopSnackBar(
+                            Overlay.of(context),
+                            CustomSnackBar.info(
+                              message: await res,
+                            ),
+                          );
+                                                }
                       },
 
                       //q: sizebox vs container

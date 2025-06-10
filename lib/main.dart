@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:triptery/presentation/pages/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:triptery/services/social_auth.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
 import 'package:triptery/l10n/support_locale.dart';
-import 'package:provider/provider.dart';
 import 'package:triptery/presentation/controllers/language_controller.dart';
 import 'package:get/get.dart';
 
@@ -36,6 +31,7 @@ class MyApp extends StatelessWidget {
 
     return 
         GetMaterialApp(
+          scrollBehavior: NoBounceScrollBehavior(),
           //like MaterialApp but with GetX features
           title: 'Global Design Example',
           localizationsDelegates: [
@@ -72,7 +68,7 @@ class MyApp extends StatelessWidget {
             // bodyMedium: TextStyle(color: Colors.black54, fontSize: 14),
             // headlineSmall: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
             // ),
-            textTheme: GoogleFonts.montserratTextTheme(),
+            textTheme: GoogleFonts.notoSansTextTheme(),
             // Default card style
             cardTheme: CardTheme(
               elevation: 4,
@@ -82,8 +78,15 @@ class MyApp extends StatelessWidget {
               margin: const EdgeInsets.all(8),
             ),
           ),
-          home: const LoginPage(),
+          home: const HomePage(),
         );
       
+  }
+}
+
+class NoBounceScrollBehavior extends ScrollBehavior {
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const ClampingScrollPhysics();
   }
 }

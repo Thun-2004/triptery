@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import '../destination_card.dart'; // Adjust path if needed
+import '../../../domain/entities/place/place.dart';
+import '../destination_card.dart';
 
 class HorizontalCardList extends StatelessWidget {
   final String title;
-  final List<DestinationCard> cards;
+  final List<Place> cards; // ✅ still called cards, but it's List<Place>
   final String actionLabel;
   final VoidCallback? onActionTap;
 
   const HorizontalCardList({
     super.key,
     required this.title,
-    required this.cards,
+    required this.cards, // ✅ keeping param name for compatibility
     this.actionLabel = 'SEE ALL',
     this.onActionTap,
   });
@@ -52,7 +53,7 @@ class HorizontalCardList extends StatelessWidget {
 
           const SizedBox(height: 8),
 
-          // 🔸 Horizontal scroll of DestinationCards
+          // 🔸 Horizontal scroll of DestinationCards (generated from Place)
           SizedBox(
             height: 200,
             child: ListView.separated(
@@ -60,7 +61,10 @@ class HorizontalCardList extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               itemCount: cards.length,
               separatorBuilder: (_, __) => const SizedBox(width: 12),
-              itemBuilder: (context, index) => cards[index],
+              itemBuilder: (context, index) {
+                final place = cards[index]; // ✅ still called cards internally
+                return DestinationCard(place: place);
+              },
             ),
           ),
         ],

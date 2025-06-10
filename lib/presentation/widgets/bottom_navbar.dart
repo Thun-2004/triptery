@@ -1,15 +1,37 @@
 import 'package:flutter/material.dart';
+import '../pages/search_page.dart';
+import '../pages/user_profile.dart';
+import '../../domain/repositories/place_repository_impl.dart';
 
 class BottomNavBar extends StatelessWidget {
-  const BottomNavBar({Key? key}) : super(key: key);
+  const BottomNavBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      backgroundColor: Color(0xff1c1c27),
-      selectedItemColor : Colors.white,
-      unselectedItemColor : Colors.white,
+      backgroundColor: const Color(0xff1c1c27),
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white,
+      currentIndex: 0,
+      onTap: (index) {
+        if (index == 2) {
+          // Search icon index
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => SearchPage(repository: PlaceRepositoryImpl()),
+            ),
+          );
+        } else if (index == 3) {
+          // User profile icon index
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const UserProfilePage()),
+          );
+        }
+      },
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
         BottomNavigationBarItem(icon: Icon(Icons.explore), label: ''),

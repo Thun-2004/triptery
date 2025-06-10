@@ -43,10 +43,13 @@ dependencies:
   supabase_flutter: ^2.9.0
   flutter_dotenv: ^5.2.1
   top_snackbar_flutter: ^3.2.0
+  uuid: ^3.0.7
+  http: ^1.4.0
   
   intl: ^0.19.0
   provider: ^6.1.5
   get: ^4.7.2
+  smooth_page_indicator: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +83,14 @@ flutter:
     - assets/images/header_image.png
     - assets/images/google_icon.png
     - assets/images/tripadvisor_icon.png
+    - assets/images/island.png
+    - assets/images/hills.png
+    - assets/images/cruise.png
+    - assets/images/adventure.png
+    - assets/images/camping.png
+    - assets/images/salmonjuseyo.png
+    - assets/images/goldenspoon.png
+    - lib/data/mock/mock_response.json
 
     
 

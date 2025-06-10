@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import '../../../domain/repositories/place_repository_impl.dart';
+import '../../../domain/entities/place/place.dart';
 
 class CustomSearchBar extends StatelessWidget {
-  final Function(String)? onSearch;
+  final PlaceRepositoryImpl repository;
+  final Function(String) onSearch;
 
-  const CustomSearchBar({super.key, this.onSearch});
+  const CustomSearchBar({
+    super.key,
+    required this.repository,
+    required this.onSearch,
+  });
+
+  Future<void> _handleSearch(String input, BuildContext context) async {
+    if (input.trim().isEmpty) return;
+    onSearch(input);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,28 +23,23 @@ class CustomSearchBar extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
             blurRadius: 8,
-            offset: const Offset(0, 2),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: TextField(
-        onChanged: onSearch,
-        decoration: InputDecoration(
-          hintText: 'Enter destination (Country,Region,City)',
-          prefixIcon: const Icon(
-            Icons.location_on_outlined,
-            color: Colors.grey,
-          ),
+        onSubmitted: (value) => _handleSearch(value, context),
+        decoration: const InputDecoration(
+          hintText: 'Where would you like to go?',
+          prefixIcon: Icon(Icons.menu, color: Colors.grey),
+          suffixIcon: Icon(Icons.search, color: Colors.grey),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 14,
-          ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
       ),
     );

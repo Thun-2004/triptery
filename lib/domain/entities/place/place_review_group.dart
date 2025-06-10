@@ -1,13 +1,14 @@
-import 'place_review.dart';
 
 class PlaceReviewGroup {
-  final String sourceName; // e.g., "Google", "Tripadvisor"
-  final String sourceLogo; // logo image url or asset path
-  final List<PlaceReview> reviews;
+  final String id;
+  final String companyName; // e.g., "Google", "Tripadvisor"
+  final String companyLogo; // logo image url or asset path
+  final String placeId;
 
   PlaceReviewGroup({
-    required this.sourceName,
-    required this.sourceLogo,
-    required this.reviews,
+    required this.id,
+    required this.companyName,
+    required this.companyLogo,
+    required this.placeId,
   });
 }
