@@ -5,6 +5,7 @@ import 'package:triptery/constant/colors.dart';
 import 'package:triptery/data/mock/mock_trips.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
+import 'package:triptery/presentation/pages/trip/add_place_sheet.dart';
 import 'package:triptery/presentation/widgets/add_button.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/day.dart';
@@ -14,7 +15,7 @@ import 'package:triptery/presentation/widgets/trip/components/route_dropdown.dar
 import 'package:triptery/presentation/widgets/trip/trip_body.dart';
 import 'package:triptery/services/core/trip/trip_service.dart';
 
-//FIXME: implement clean architecture
+//FIXME: change reorderable to widget
 class EditRoutePage extends StatefulWidget {
   const EditRoutePage({super.key, required this.day});
   final int day;
@@ -26,7 +27,6 @@ class EditRoutePage extends StatefulWidget {
 class _EditRoutePageState extends State<EditRoutePage> {
   final tripController = Get.find<TripController>();
   bool isExpanded = false;
-  bool _isDeleting = false; 
   int _selectedIndex = 0;
   late TripService tripService;
   late bool _isEditing;
@@ -37,7 +37,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
   //NOTE :getter type = dynamic type
   List<Trip> get _places => tripService.getPlaces();
   List<Trip> get _routes => tripService.getRoutes();
-  List<int> get _deletedItems => tripService.getDeletedItems(); 
+  List<int> get _deletedItems => tripService.getDeletedItems();
 
   List<int> get days {
     return trips
@@ -79,8 +79,20 @@ class _EditRoutePageState extends State<EditRoutePage> {
   }
 
   void addPlace(index) {
-    tripService.addPlace(index);
-    setState(() {});
+    // tripService.addPlace(index);
+    // setState(() {});
+    showModalBottomSheet(
+      context: context, 
+      isScrollControlled: true,
+      showDragHandle: true,
+      backgroundColor: AppColors.white,
+      builder: (context) {
+        return FractionallySizedBox(
+          heightFactor: 0.7, 
+          child: AddPlaceSheet()
+        ); 
+      }
+    ); 
   }
 
   void deleteCard(index) {
@@ -107,7 +119,6 @@ class _EditRoutePageState extends State<EditRoutePage> {
     tripService = TripService(widget.day);
     tripService.init();
     _isEditing = tripController.isEditingPlaceOrder;
-    _isDeleting = tripController.isEditingPlaceOrder;
   }
 
   @override
@@ -160,7 +171,6 @@ class _EditRoutePageState extends State<EditRoutePage> {
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                       
                         ...days.map(
                           (day) => Row(
                             children: [
@@ -194,7 +204,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
           ),
 
           //selected deletion
-          if(_deletedItems.isNotEmpty)
+          if (_deletedItems.isNotEmpty)
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               alignment: Alignment.bottomCenter,
@@ -211,7 +221,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                     color: AppColors.darkBlue,
                   ),
                   CustomText(
-                    text: "2 Selected",
+                    text: "${_deletedItems.length} Selected",
                     type: TextType.subHeading,
                     color: AppColors.white,
                   ),
@@ -224,20 +234,20 @@ class _EditRoutePageState extends State<EditRoutePage> {
                           color: AppColors.darkBlue,
                         ),
                         onPressed: () {
-                          
+                          tripService.deleteAllPlaceCards();
                         },
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          LucideIcons.x,
-                          color: AppColors.darkBlue,
-                        ),
-                        onPressed: (() {
-                          setState(() {
-                            _isDeleting = !_isDeleting;
-                          });
-                        })
-                      ),
+                      // IconButton(
+                      //   icon: const Icon(
+                      //     LucideIcons.x,
+                      //     color: AppColors.darkBlue,
+                      //   ),
+                      //   onPressed: (() {
+                      //     setState(() {
+                      //       _isDeleting = !_isDeleting;
+                      //     });
+                      //   }),
+                      // ),
                     ],
                   ),
                 ],
@@ -246,7 +256,8 @@ class _EditRoutePageState extends State<EditRoutePage> {
 
           //scrollable content
           Expanded(
-            child: ReorderableListView.builder( //NOTE reorderable list view is scrollable on its own
+            child: ReorderableListView.builder(
+              //NOTE reorderable list view is scrollable on its own
               buildDefaultDragHandles: true,
               scrollDirection: Axis.vertical,
               // shrinkWrap: true,
@@ -315,7 +326,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                           ),
                                         ),
                                         child: PlaceCard(
-                                          index: index, 
+                                          index: index,
                                           placeId: _places[index].placeId!,
                                           placeName: _places[index].placeName!,
                                           placeDescription:
@@ -361,27 +372,23 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                       onPressed: () => addPlace(index),
                                     ),
                                   // ElevatedButton(
-                                  //   onPressed:
-                                  //       () => addPlace(index),
+                                  //   onPressed: () => addPlace(index),
                                   //   style: ElevatedButton.styleFrom(
-                                  //     backgroundColor:
-                                  //         Color.fromARGB(
-                                  //           255,
-                                  //           250,
-                                  //           98,
-                                  //           47,
-                                  //         ),
-                                  //     shape: RoundedRectangleBorder(
-                                  //       borderRadius:
-                                  //           BorderRadius.circular(
-                                  //             15,
-                                  //           ),
+                                  //     backgroundColor: Color.fromARGB(
+                                  //       255,
+                                  //       250,
+                                  //       98,
+                                  //       47,
                                   //     ),
-                                  //     padding:
-                                  //         const EdgeInsets.symmetric(
-                                  //           vertical: 10,
-                                  //           horizontal: 10,
-                                  //         ),
+                                  //     shape: RoundedRectangleBorder(
+                                  //       borderRadius: BorderRadius.circular(
+                                  //         15,
+                                  //       ),
+                                  //     ),
+                                  //     padding: const EdgeInsets.symmetric(
+                                  //       vertical: 10,
+                                  //       horizontal: 10,
+                                  //     ),
                                   //   ),
                                   //   child: Text(
                                   //     "Add Place",
@@ -409,13 +416,13 @@ class _EditRoutePageState extends State<EditRoutePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ((){
-          tripController.toggleEditPlaceOrder(); 
+        onPressed: (() {
+          tripController.toggleEditPlaceOrder();
           setState(() {
             _isEditing = tripController.isEditingPlaceOrder;
           });
         }),
-       
+
         elevation: 4,
         shape: const CircleBorder(),
         child: Container(
@@ -432,11 +439,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
               ],
             ),
           ),
-          child:  Icon(
-              LucideIcons.pencilLine,
-              color: Colors.white,
-              size: 28,
-            ),
+          child: Icon(LucideIcons.pencilLine, color: Colors.white, size: 28),
         ),
       ),
     );

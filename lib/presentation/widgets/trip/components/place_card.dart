@@ -31,7 +31,7 @@ class PlaceCard extends StatefulWidget {
 
 class _PlaceCardState extends State<PlaceCard> {
   bool isActivityExpanded = false;
-  bool isChecked = false; 
+  bool isChecked = false;
   List<String> itemsToShow = [
     "Not Ping pong show",
     "Martini at the bar",
@@ -83,54 +83,33 @@ class _PlaceCardState extends State<PlaceCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomText(
-                                text: widget.placeName,
-                                textSize: 13,
-                                type: TextType.subHeading,
-                                color: AppColors.black,
-                              ),
-                              
-                              if (widget.isEdit == true) //NOTE : check if isEdit is true
-                                Checkbox(
-                                  isError: true,
-                                  tristate: true,
-                                  value: isChecked,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      isChecked = value ?? false;
-                                      if(widget.addDeletedItem != null){
-                                        widget.addDeletedItem!(widget.index);
-                                      }
-                                    });
-                                   
-                                  },
-                                ),
-                            ],
+                          CustomText(
+                            text: widget.placeName,
+                            textSize: 13,
+                            type: TextType.subHeading,
+                            color: AppColors.black,
                           ),
 
-                          // if (isEdit)
-                          //   Container(
-                          //     decoration: BoxDecoration(
-                          //       color: Colors.red,
-                          //       shape: BoxShape.circle,
-                          //     ),
-                          //     child: IconButton(
-                          //       icon: Icon(Icons.remove, color: Colors.white),
-                          //       padding: EdgeInsets.all(0),
-                          //       constraints: BoxConstraints(
-                          //         minWidth: 24,
-                          //         minHeight: 24,
-                          //       ),
-                          //       iconSize: 18,
-                          //       onPressed: onClick,
-                          //     ),
-                          //   ),
+                          if (widget.isEdit ==
+                              true) //NOTE : check if isEdit is true
+                            Checkbox(
+                              isError: true,
+                              tristate: true,
+                              value: isChecked,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isChecked = value ?? false;
+                                  if (widget.addDeletedItem != null) {
+                                    widget.addDeletedItem!(widget.index);
+                                  }
+                                });
+                              },
+                            ),
                         ],
                       ),
 
@@ -141,7 +120,6 @@ class _PlaceCardState extends State<PlaceCard> {
                       //   textColor: AppColors.black,
                       //   tagColor: AppColors.gray,
                       //   height: 18,
-                        
                       // ),
                       const SizedBox(height: 3),
                       Row(
@@ -200,7 +178,7 @@ class _PlaceCardState extends State<PlaceCard> {
                           isActivityExpanded = !isActivityExpanded;
                         });
                       },
-                     
+
                       style: IconButton.styleFrom(
                         padding: EdgeInsets.zero,
                         iconSize: 14,
@@ -211,68 +189,71 @@ class _PlaceCardState extends State<PlaceCard> {
                         minHeight: 24,
                       ),
                       visualDensity: VisualDensity.compact, // ↓ tighter layout
-
                     ),
                   ],
                 ),
 
                 AnimatedSize(
                   duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut, 
+                  curve: Curves.easeInOut,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: isActivityExpanded ? List.generate((itemsToShow.length / 2).ceil(), (
-                      i,
-                    ) {
-                      final left = itemsToShow[i * 2];
-                      final right =
-                          (i * 2 + 1 < itemsToShow.length)
-                              ? itemsToShow[i * 2 + 1]
-                              : null;
+                    children:
+                        isActivityExpanded
+                            ? List.generate((itemsToShow.length / 2).ceil(), (
+                              i,
+                            ) {
+                              final left = itemsToShow[i * 2];
+                              final right =
+                                  (i * 2 + 1 < itemsToShow.length)
+                                      ? itemsToShow[i * 2 + 1]
+                                      : null;
 
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "• $left",
-                            style: const TextStyle(fontSize: 12),
-                          ),
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "• $left",
+                                    style: const TextStyle(fontSize: 12),
+                                  ),
 
-                          if (right != null) 
-                            Text(
-                              "• $right",
-                              style: const TextStyle(fontSize: 12),
-                            )
-                          else 
-                            const SizedBox(width: 20),
-                          const SizedBox(width: 20),
-                        ],
-                      );
-                    }) 
-                    : [
-                      if (itemsToShow.isEmpty) 
-                        const SizedBox.shrink() 
-                      else
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "• ${itemsToShow[0]}",
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                            if (itemsToShow[1] != null) 
-                              Text(
-                                "• ${itemsToShow[1]}",
-                                style: const TextStyle(fontSize: 12),
-                              )
-                            else 
-                              const SizedBox(width: 20),
-                            const SizedBox(width: 20),
-                          ]
-                        )
-                    ],
-                  ) 
-                ), 
+                                  if (right != null)
+                                    Text(
+                                      "• $right",
+                                      style: const TextStyle(fontSize: 12),
+                                    )
+                                  else
+                                    const SizedBox(width: 20),
+                                  const SizedBox(width: 20),
+                                ],
+                              );
+                            })
+                            : [
+                              if (itemsToShow.isEmpty)
+                                const SizedBox.shrink()
+                              else
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "• ${itemsToShow[0]}",
+                                      style: const TextStyle(fontSize: 12),
+                                    ),
+                                    if (itemsToShow[1] != null)
+                                      Text(
+                                        "• ${itemsToShow[1]}",
+                                        style: const TextStyle(fontSize: 12),
+                                      )
+                                    else
+                                      const SizedBox(width: 20),
+                                    const SizedBox(width: 20),
+                                  ],
+                                ),
+                            ],
+                  ),
+                ),
                 const SizedBox(height: 3),
               ],
             ),

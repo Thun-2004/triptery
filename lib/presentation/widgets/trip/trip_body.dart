@@ -101,17 +101,6 @@ class _TripBodyState extends State<TripBody> {
                         ],
                       ),
                     ),
-
-                    AddButton(
-                      onPressed: () {
-                        // Your logic here
-                      },
-                      text: '+',
-                      textSize: 16,
-                      textColor: AppColors.orange_950,
-                      width: 50,
-                      height: 28,
-                    ),
                   ],
                 ),
               ),
@@ -122,10 +111,10 @@ class _TripBodyState extends State<TripBody> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: dayMode,
           ),
-          // dayMode,
+          //dayMode,
           const SizedBox(height: 16),
 
-          // Add your trip details here
+          //Add your trip details here
         ],
       ),
     );

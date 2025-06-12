@@ -1,12 +1,11 @@
+
+import 'package:flutter/material.dart';
 import 'package:triptery/data/mock/mock_trips.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'dart:developer';
 
-//NOTE: _varname = private variable
-//FIXME: change to provider
-class TripService {
-  //state var
-  int day = 0;
+class TripProvider with ChangeNotifier {
+  int day = 1; // Default day, can be changed later
   List<Trip> places = [];
   List<Trip> routes = [];
   List<int> deletedItems = [];
@@ -21,7 +20,6 @@ class TripService {
       "time": "21mins",
       "price": "100THB",
     },
-
     {
       //dest : placeId
       "Dest1": "1",
@@ -133,7 +131,7 @@ class TripService {
     },
   ];
 
-  TripService(this.day) {
+  TripService() {
     //label day
     log("TripService initialized");
   }
@@ -148,17 +146,17 @@ class TripService {
     }
   }
 
-  List<Trip> getPlaces() {
-    return places;
-  }
+  // List<Trip> getPlaces() {
+  //   return places;
+  // }
 
-  List<Trip> getRoutes() {
-    return routes;
-  }
+  // List<Trip> getRoutes() {
+  //   return routes;
+  // }
 
-  List<int> getDeletedItems() {
-    return deletedItems;
-  }
+  // List<int> getDeletedItems() {
+  //   return deletedItems;
+  // }
 
   List<Map<String, String>> findRouteOptions(String placeId1, String placeId2) {
     return routeChoices
