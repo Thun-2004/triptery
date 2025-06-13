@@ -1,11 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:triptery/data/mock/mock_places.dart';
-import 'package:triptery/domain/entities/place/place.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/controllers/place_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/add_place_card.dart';
-import 'package:triptery/presentation/widgets/trip/components/trip_search_bar.dart';
 
 class AddPlaceSheet extends StatefulWidget {
   const AddPlaceSheet({super.key});
@@ -17,21 +18,10 @@ class AddPlaceSheet extends StatefulWidget {
 class AddPlaceSheetState extends State<AddPlaceSheet> {
   final PlaceController placeController = Get.put(PlaceController());
 
-  // bool isAdded = false;
-  // void toggleIsAdded(int placeId) {
-  //   for (var place in placeController.selectedPlaces) {
-  //     if (place.id == placeId.toString()) {
-  //       isAdded = true;
-  //       break;
-  //     }
-  //   }
-  //   if (!isAdded) {
-  //     isAdded = false;
-  //   }
-  //   setState(() {
-
-  //   });
-  // }
+  //temp 
+  void onSearch(String query) {
+    log("Search query: $query");
+  }
 
   @override
   void initState() {
@@ -77,7 +67,41 @@ class AddPlaceSheetState extends State<AddPlaceSheet> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  children: [Expanded(child: TripSearchBar()), Text("Cancel")],
+                  children: [
+                    Expanded(
+                      //search bar
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 1,
+                          vertical: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.lightGray,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: TextField(
+                          onChanged: onSearch,
+                          decoration: InputDecoration(
+                            hintText: 'Search',
+                            prefixIcon: const Icon(
+                              LucideIcons.search,
+                              color: Colors.grey,
+                            ),
+                            suffixIcon: const Icon(
+                              LucideIcons.x,
+                              color: Colors.grey,
+                            ),
+                            border: InputBorder.none,
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Text("Cancel"),
+                  ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

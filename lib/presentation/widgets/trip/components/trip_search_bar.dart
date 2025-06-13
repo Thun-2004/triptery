@@ -4,7 +4,6 @@ import 'package:triptery/constant/colors.dart';
 
 class TripSearchBar extends StatelessWidget {
   final Function(String)? onSearch;
-
   const TripSearchBar({super.key, this.onSearch});
 
   @override
