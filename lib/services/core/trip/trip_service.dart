@@ -21,7 +21,6 @@ class TripService {
       "time": "21mins",
       "price": "100THB",
     },
-
     {
       //dest : placeId
       "Dest1": "1",

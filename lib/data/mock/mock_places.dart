@@ -8,7 +8,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla non suscipit mass
 
 final List<Place> mockPlaces = [
   Place(
-    id: '1',
+    id: '5',
     googlePlaceId: 'mock_google_place_id_1',
     name: 'Place 1 in Phuket',
     description: placeholderDescription,
@@ -49,7 +49,7 @@ final List<Place> mockPlaces = [
   ),
 
   Place(
-    id: '2',
+    id: '6',
     googlePlaceId: 'mock_google_place_id_2',
     name: 'Chiang Mai Old Town',
     description: placeholderDescription,
@@ -82,7 +82,7 @@ final List<Place> mockPlaces = [
   ),
 
   Place(
-    id: '3',
+    id: '7',
     googlePlaceId: 'mock_google_place_id_3',
     name: 'Ayutthaya Historical Park',
     description: placeholderDescription,
@@ -115,7 +115,7 @@ final List<Place> mockPlaces = [
   ),
 
   Place(
-    id: '4',
+    id: '8',
     googlePlaceId: 'mock_google_place_id_4',
     name: 'Wat Arun',
     description: placeholderDescription,
@@ -155,7 +155,7 @@ final List<Place> mockPlaces = [
   ),
 
   Place(
-    id: '5',
+    id: '9',
     googlePlaceId: 'mock_google_place_id_5',
     name: 'Railay Beach',
     description: placeholderDescription,
@@ -188,7 +188,7 @@ final List<Place> mockPlaces = [
   ),
 
   Place(
-    id: '6',
+    id: '10',
     googlePlaceId: 'mock_google_place_id_6',
     name: 'Doi Inthanon National Park',
     description: placeholderDescription,
@@ -221,7 +221,7 @@ final List<Place> mockPlaces = [
   ),
 
   Place(
-    id: '7',
+    id: '11',
     googlePlaceId: 'mock_google_place_id_7',
     name: 'Damnoen Saduak Floating Market',
     description: placeholderDescription,
