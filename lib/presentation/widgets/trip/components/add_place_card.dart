@@ -43,8 +43,7 @@ class AddPlaceCardState extends State<AddPlaceCard> {
       currentOrder =
           placeController.selectedPlaces.indexWhere(
             (place) => int.parse(place.id) == widget.placeId,
-          ) +
-          1;
+          ) + 1;
 
       return GestureDetector(
         onTap: ((){
@@ -55,7 +54,7 @@ class AddPlaceCardState extends State<AddPlaceCard> {
           Navigator.push(
             context, 
             MaterialPageRoute(builder: (context) => PlaceDetailPage(place: place) )
-          ); 
+          );
         }), 
         child: Container(
           width: 300,

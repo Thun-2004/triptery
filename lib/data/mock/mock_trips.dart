@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../../domain/entities/trip/trip.dart';
 
 
@@ -23,7 +21,7 @@ final List<Trip> mockTrips = [
     note: "Teemy's fav",
   ), 
   Trip(
-    id: "1",
+    id: "2",
     planId: "1",
     day: 1,
     type: TripType.route,
@@ -43,7 +41,7 @@ final List<Trip> mockTrips = [
     note: null,
   ),
   Trip(
-    id: "1",
+    id: "3",
     planId: "1",
     day: 1,
     type: TripType.dest,
@@ -61,7 +59,7 @@ final List<Trip> mockTrips = [
     note: "Teemy's fav",
   ), 
   Trip(
-    id: "1",
+    id: "4",
     planId: "1",
     day: 1,
     type: TripType.route,
@@ -81,7 +79,7 @@ final List<Trip> mockTrips = [
     note: "Note for place 1",
   ), 
   Trip(
-    id: "1",
+    id: "5",
     planId: "1",
     day: 1,
     type: TripType.dest,
@@ -100,7 +98,7 @@ final List<Trip> mockTrips = [
   ), 
   
   Trip(
-    id: "1",
+    id: "6",
     planId: "1",
     day: 2,
     type: TripType.dest,

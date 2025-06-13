@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 
 class PlaceDetailPage extends StatelessWidget {
   final Place place;
-
   const PlaceDetailPage({super.key, required this.place});
 
   @override

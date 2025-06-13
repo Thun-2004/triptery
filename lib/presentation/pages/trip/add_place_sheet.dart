@@ -18,7 +18,7 @@ class AddPlaceSheet extends StatefulWidget {
 class AddPlaceSheetState extends State<AddPlaceSheet> {
   final PlaceController placeController = Get.put(PlaceController());
 
-  //temp 
+  //temp
   void onSearch(String query) {
     log("Search query: $query");
   }
@@ -43,10 +43,18 @@ class AddPlaceSheetState extends State<AddPlaceSheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomText(
-                    text: 'Clear',
-                    type: TextType.subHeading,
-                    color: Colors.black,
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      overlayColor: AppColors.lightGray,
+                    ),
+                    onPressed: () {
+                      placeController.clearSelectedPlaces();
+                    },
+                    child: const CustomText(
+                      text: 'Clear',
+                      type: TextType.subHeading,
+                      color: Colors.black,
+                    ),
                   ),
                   CustomText(
                     text: 'Select a place',
