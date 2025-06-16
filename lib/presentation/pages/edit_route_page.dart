@@ -30,7 +30,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
   int _selectedIndex = 0;
   late TripService tripService;
   late bool _isEditing;
-  int selectedDay = 0;
+  int selectedDay = 1;
   List<Trip> trips = mockTrips;
   late Widget dayMode;
 
@@ -82,17 +82,14 @@ class _EditRoutePageState extends State<EditRoutePage> {
     // tripService.addPlace(index);
     // setState(() {});
     showModalBottomSheet(
-      context: context, 
+      context: context,
       isScrollControlled: true,
       showDragHandle: true,
       backgroundColor: AppColors.white,
       builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.7, 
-          child: AddPlaceSheet()
-        ); 
-      }
-    ); 
+        return FractionallySizedBox(heightFactor: 0.7, child: AddPlaceSheet());
+      },
+    );
   }
 
   void deleteCard(index) {
@@ -158,9 +155,16 @@ class _EditRoutePageState extends State<EditRoutePage> {
                       type: TextType.heading,
                       color: AppColors.black,
                     ),
-                    IconButton(
-                      icon: const Icon(LucideIcons.x, color: Colors.black),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        overlayColor: AppColors.lightGray,
+                      ),
                       onPressed: () => Navigator.pop(context),
+                      child: const CustomText(
+                        text: 'Done',
+                        type: TextType.subHeading,
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 ),

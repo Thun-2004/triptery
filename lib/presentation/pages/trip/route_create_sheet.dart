@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
@@ -19,18 +18,17 @@ class CreateTransportWindow extends StatefulWidget {
 }
 
 class _CreateTransportWindowState extends State<CreateTransportWindow> {
-
-  List<TransportMode> modes = [TransportMode.subway, TransportMode.subway]; 
+  List<TransportMode> modes = [TransportMode.subway, TransportMode.subway];
   bool displayTransport = false;
 
-  void addMode(TransportMode mode){
-    setState((){
+  void addMode(TransportMode mode) {
+    setState(() {
       modes.add(mode);
-    }); 
+    });
   }
 
   void onChangeIcon() {
-    setState((){
+    setState(() {
       displayTransport = !displayTransport;
     });
   }
@@ -40,7 +38,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
     return Align(
       alignment: Alignment.topCenter,
       child: SingleChildScrollView(
-          child: Column(
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
@@ -48,15 +46,20 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      
                       TextButton(
-                        onPressed: () {
-                          //TODO: clear all transport modes
-                        },
-                        child: const Text("Clear")
+                        style: TextButton.styleFrom(
+                          overlayColor: AppColors.lightGray,
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child: const CustomText(
+                          text: 'Clear',
+                          type: TextType.subHeading,
+                          color: Colors.black,
+                        ),
                       ),
                       CustomText(
                         text: 'Create transport',
@@ -64,12 +67,16 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                         color: Colors.black,
                       ),
                       TextButton(
-                        onPressed: () {
-                          //TODO: clear all transport modes
-                        },
-                        child: Icon(LucideIcons.x),
+                        style: TextButton.styleFrom(
+                          overlayColor: AppColors.lightGray,
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child: const CustomText(
+                          text: 'Done',
+                          type: TextType.subHeading,
+                          color: Colors.black,
+                        ),
                       ),
-                      
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -138,8 +145,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                 ),
                                 const SizedBox(width: 4),
                                 CustomText(
-                                  text:
-                                      "Ratchada Market - Subway Station",
+                                  text: "Ratchada Market - Subway Station",
                                   type: TextType.subHeading,
                                   textSize: 10,
                                   color: AppColors.black,
@@ -170,7 +176,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                   ),
 
                   Column(
-                    children: [ 
+                    children: [
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -182,15 +188,14 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                             isFirst: index == 0 ? true : false,
                             isLast: index == modes.length - 1 ? true : false,
                             beforeLineStyle: LineStyle(
-                                color: AppColors.orange_800,
-                                thickness: 2,
+                              color: AppColors.orange_800,
+                              thickness: 2,
                             ),
                             afterLineStyle: LineStyle(
-                                color: AppColors.orange_800,
-                                thickness: 2,
+                              color: AppColors.orange_800,
+                              thickness: 2,
                             ),
                             indicatorStyle: IndicatorStyle(
-                              
                               indicator: GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -201,29 +206,35 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                   decoration: BoxDecoration(
                                     color: AppColors.orange_800,
                                     shape: BoxShape.circle,
-                                
                                   ),
                                   child: Icon(
                                     LucideIcons.minus,
                                     color: Colors.white,
                                     size: 16,
-                                )),
+                                  ),
+                                ),
                               ),
                             ),
                             endChild: Padding(
-                              padding: index == modes.length - 1 ? EdgeInsets.only(bottom: 0) : EdgeInsets.only(bottom: 16),
-                              child: TransportCard(mode: modes[index], onChangeIcon: onChangeIcon)
-                            )
+                              padding:
+                                  index == modes.length - 1
+                                      ? EdgeInsets.only(bottom: 0)
+                                      : EdgeInsets.only(bottom: 16),
+                              child: TransportCard(
+                                mode: modes[index],
+                                onChangeIcon: onChangeIcon,
+                              ),
+                            ),
                           );
-                        }
+                        },
                       ),
-                   
+
                       //add element here
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
                         child: AddButton(
                           onPressed: () {
-                            addMode(TransportMode.unSelected); 
+                            addMode(TransportMode.unSelected);
                           },
                           text: "Add transport",
                           textColor: AppColors.orange_950,
@@ -231,15 +242,16 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                           // borderRadius: 8,
                           width: double.infinity,
                           height: 40,
-                        )
-                      )
-                    ]
-                  )
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
           ],
-        ))
+        ),
+      ),
     );
   }
 }

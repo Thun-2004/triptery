@@ -42,11 +42,11 @@ class _RouteDropdownState extends State<RouteDropdown> {
       isScrollControlled: true,
       backgroundColor: Colors.white,
       showDragHandle: true,
-      builder: (context) { 
+      builder: (context) {
         return FractionallySizedBox(
           heightFactor: 0.7,
           child: CreateTransportWindow(),
-        ); 
+        );
       },
     );
   }
@@ -70,7 +70,10 @@ class _RouteDropdownState extends State<RouteDropdown> {
       header: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.orange_900 : const Color.fromARGB(255, 252, 252, 252),
+          color:
+              isSelected
+                  ? AppColors.orange_900
+                  : const Color.fromARGB(255, 252, 252, 252),
           borderRadius:
               isSelected
                   ? BorderRadius.only(
@@ -78,7 +81,6 @@ class _RouteDropdownState extends State<RouteDropdown> {
                     topRight: Radius.circular(16),
                   )
                   : BorderRadius.circular(16),
-          
         ),
         width: double.infinity,
         height: 40,
@@ -131,12 +133,12 @@ class _RouteDropdownState extends State<RouteDropdown> {
         padding: const EdgeInsets.only(bottom: 15.0),
         decoration: BoxDecoration(
           color: AppColors.white,
-         
+
           borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(16), 
+            bottomLeft: Radius.circular(16),
             bottomRight: Radius.circular(16),
           ),
-        ), 
+        ),
         child: SizedBox(
           width: double.infinity,
           // decoration: BoxDecoration(
@@ -148,7 +150,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
               if (routesToDisplay.isEmpty)
                 const Text("No routes available")
               else
-                ...List.generate(routesToDisplay.length, (i) { 
+                ...List.generate(routesToDisplay.length, (i) {
                   return Column(
                     children: [
                       ListTile(
@@ -287,7 +289,11 @@ class _RouteDropdownState extends State<RouteDropdown> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Icon(LucideIcons.squareArrowOutUpRight, size: 16, color: AppColors.black),
+                    Icon(
+                      LucideIcons.squareArrowOutUpRight,
+                      size: 16,
+                      color: AppColors.black,
+                    ),
                   ],
                 ),
                 // subtitle: Text(
@@ -311,20 +317,23 @@ class _RouteDropdownState extends State<RouteDropdown> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    //TODO: Add text field for note
-                    Text(
-                      "Add Note...",
-                      style: TextStyle(
-                        color: AppColors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                   
+                    Expanded(
+                      child: TextFormField(
+                        showCursor: true,
+                        decoration: const InputDecoration(
+                          hintText: 'Add Note..',
+                          border: OutlineInputBorder(
+                            // borderRadius: BorderRadius.all(Radius.circular(8)),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: EdgeInsets.all(8),
+                        ),
                       ),
                     ),
                   ],
                 ),
-                // subtitle: Text(
-                //   "${routesToDisplay[i]["time"] ?? 'Unknown time'} · ${routesToDisplay[i]["price"] ?? 'Unknown price'}",
-                // ),
+               
                 leading: Radio<int>(
                   value: routesToDisplay.length + 2,
                   groupValue: selected,
@@ -358,8 +367,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
                   ),
                   IconButton(
                     onPressed: () {
-                      _openCreateTransportModal(); 
-                      
+                      _openCreateTransportModal();
                     },
                     icon: Icon(
                       LucideIcons.chevronRight,

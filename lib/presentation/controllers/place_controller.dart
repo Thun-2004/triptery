@@ -5,7 +5,6 @@ import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:get/get.dart';
 import 'dart:developer';
 
-//
 class PlaceController extends GetxController {
   RxList<Place> selectedPlaces = <Place>[].obs;
   RxList<Place> recommendedPlaces = <Place>[].obs;
@@ -60,6 +59,7 @@ class PlaceController extends GetxController {
         routeNote: null,
         note: "Added to trip",
       );
+      
       Trip route = Trip(
         id: (allRoutes.length + 2).toString(),
         planId: "1",

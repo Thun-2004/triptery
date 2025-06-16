@@ -16,5 +16,7 @@ class TripController extends GetxController{
     _isEditingPlaceOrder.value = !_isEditingPlaceOrder.value;
     print("isEditingPlaceOrder: ${_isEditingPlaceOrder.value}"); 
   }
+
+  //FIXME: create day flow(add button -> add new route -> if no route/trip exists = add button)
   
 }

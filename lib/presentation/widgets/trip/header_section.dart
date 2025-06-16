@@ -16,19 +16,19 @@ class HeaderSection extends StatefulWidget {
 
 class _HeaderSectionState extends State<HeaderSection> {
   bool isClicked = false;
-  
+
   void _openBottomModal() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       showDragHandle: true,
-      builder: (context){
+      builder: (context) {
         return FractionallySizedBox(
           heightFactor: 0.9,
           child: TripSummaryWindow(),
-        ); 
-      }
+        );
+      },
     );
   }
 
@@ -84,11 +84,7 @@ class _HeaderSectionState extends State<HeaderSection> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                  right: 16,
-                  left: 16,
-                  top: 40,
-                ),
+                padding: const EdgeInsets.only(right: 16, left: 16, top: 40),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -159,7 +155,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                 ),
                                 Row(
                                   children: [
-                                    Text("by  "), 
+                                    Text("by  "),
                                     CircleAvatar(
                                       backgroundImage: AssetImage(
                                         "assets/images/user.jpg",
@@ -221,6 +217,29 @@ class _HeaderSectionState extends State<HeaderSection> {
                               children: [
                                 Row(
                                   children: [
+                                    Icon(
+                                      Icons.person,
+                                      size: 20,
+                                      color: AppColors.black,
+                                    ),
+                                    const CustomText(
+                                      text: '2',
+                                      type: TextType.body,
+                                      color: AppColors.black,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Row(
+                                      children: List.generate(
+                                        3,
+                                        (_) => const Icon(
+                                          LucideIcons.dollarSign,
+                                          size: 16,
+                                          color: AppColors.black,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 4),
+
                                     Tag(
                                       text: '5.0 (986)',
                                       textSize: 12,
@@ -229,8 +248,13 @@ class _HeaderSectionState extends State<HeaderSection> {
                                       height: 22,
                                       borderRadius: 4,
                                       borderColor: AppColors.gray,
-                                      icon: LucideIcons.star,
-                                      iconColor: AppColors.black,
+                                      icon: Icons.star,
+                                      iconColor: const Color.fromARGB(
+                                        255,
+                                        255,
+                                        193,
+                                        59,
+                                      ),
                                     ),
                                     const SizedBox(width: 5),
                                     Tag(
@@ -241,7 +265,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                       height: 22,
                                       borderRadius: 4,
                                       borderColor: AppColors.gray,
-                                      icon: LucideIcons.eye,
+                                      icon: LucideIcons.heart,
                                       iconColor: AppColors.black,
                                     ),
                                     const SizedBox(width: 5),
@@ -262,28 +286,40 @@ class _HeaderSectionState extends State<HeaderSection> {
                                 ),
 
                                 Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 0,
+                                    horizontal: 0,
+                                  ),
                                   width: 32,
                                   height: 32,
                                   decoration: BoxDecoration(
-                                    color: isClicked ? AppColors.orange_950 : AppColors.white,
+                                    color:
+                                        isClicked
+                                            ? AppColors.orange_950
+                                            : AppColors.white,
                                     borderRadius: BorderRadius.circular(8),
                                     border: Border.all(
-                                      color: isClicked ? AppColors.orange_950 : AppColors.darkGray,
+                                      color:
+                                          isClicked
+                                              ? AppColors.orange_950
+                                              : AppColors.darkGray,
                                       width: 1,
                                     ),
                                   ),
                                   child: IconButton(
                                     icon: Icon(LucideIcons.map),
                                     iconSize: 16,
-                                    color: isClicked ? AppColors.white : AppColors.black,
-                                    onPressed: ((){
+                                    color:
+                                        isClicked
+                                            ? AppColors.white
+                                            : AppColors.black,
+                                    onPressed: (() {
                                       // Toggle map view
                                       widget.toggleMap();
                                       setState(() {
                                         isClicked = !isClicked;
                                       });
-                                    })
+                                    }),
                                   ),
                                 ),
                               ],

@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
+import 'package:triptery/presentation/widgets/time_picker.dart';
 import 'package:triptery/presentation/widgets/trip/components/place_card.dart';
 import 'package:triptery/presentation/widgets/trip/components/route_dropdown.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
@@ -12,7 +14,7 @@ import 'package:triptery/services/core/trip/trip_service.dart';
 //FIXME : change to DraggableScrollableSheet class
 
 class Day extends StatefulWidget {
-  Day({super.key, required this.day});
+  const Day({super.key, required this.day});
   final int day;
 
   @override
@@ -25,6 +27,7 @@ class _DayState extends State<Day> {
   bool _isExpanded = false;
   int _selectedIndex = 0;
   late TripService tripService;
+  var selectedTime = Duration(hours: 9, minutes: 41);
   //NOTE :getter type = dynamic type
   List<Trip> get _places => tripService.getPlaces();
   List<Trip> get _routes => tripService.getRoutes();
@@ -52,6 +55,21 @@ class _DayState extends State<Day> {
   void addPlace(int index) {
     tripService.addPlace(index);
     setState(() {});
+  }
+
+  void showTimePicker() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      backgroundColor: AppColors.white,
+      builder: (context) {
+        return FractionallySizedBox(
+          heightFactor: 0.3,
+          child: TimePickerCupertino(),
+        );
+      },
+    );
   }
 
   isExtended() {
@@ -184,11 +202,16 @@ class _DayState extends State<Day> {
                                                 color: AppColors.orange_950,
                                                 size: 16,
                                               ),
-                                              CustomText(
-                                                text:
-                                                    _places[index].arrivalTime!,
-                                                type: TextType.body,
-                                                color: AppColors.orange_950,
+                                              TextButton(
+                                                onPressed: (() {
+                                                  showTimePicker();
+                                                }),
+                                                child: Text(
+                                                  _places[index].arrivalTime!,
+                                                  style: TextStyle(
+                                                    color: AppColors.orange_950,
+                                                  ),
+                                                ),
                                               ),
                                             ],
                                           ),
