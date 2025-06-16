@@ -12,7 +12,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/services/core/trip/trip_service.dart';
 
 //FIXME : change to DraggableScrollableSheet class
-
 class Day extends StatefulWidget {
   const Day({super.key, required this.day});
   final int day;
@@ -203,6 +202,13 @@ class _DayState extends State<Day> {
                                                 size: 16,
                                               ),
                                               TextButton(
+                                                style: TextButton.styleFrom(
+                                                  padding: EdgeInsets.zero,
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  minimumSize: Size(0, 0),
+                                                ),
                                                 onPressed: (() {
                                                   showTimePicker();
                                                 }),

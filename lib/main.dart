@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triptery/presentation/DI/init_plan.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:triptery/presentation/pages/login_page.dart';
@@ -86,7 +87,14 @@ class MyApp extends StatelessWidget {
             ),
           ),
           // home: const LoginPage(),
-          home: const TripPage(),
+          getPages: [ 
+            GetPage(
+            name: '/trip',
+              page: () => const TripPage(), 
+              binding: BindingsBuilder(() {
+                PlanDI.init(); 
+              }),
+          )]
         );  
   }
 }
