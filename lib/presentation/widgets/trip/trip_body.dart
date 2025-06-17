@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:triptery/constant/colors.dart';
-import 'package:triptery/presentation/widgets/add_button.dart';
+import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/day.dart';
 import 'package:triptery/presentation/widgets/trip/components/day_list.dart';
@@ -78,31 +79,39 @@ class _TripBodyState extends State<TripBody> {
               decoration: BoxDecoration(color: AppColors.white),
               child: SizedBox(
                 height: 40,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    DayButton(
-                      text: 'All',
-                      onPressed: () => _selectDay(0),
-                      index: 0,
-                      selectedDay: selectedDay,
-                    ),
-                    const SizedBox(width: 10),
-                    ...days.map(
-                      (day) => Row(
-                        children: [
-                          DayButton(
-                            text: 'Day $day',
-                            onPressed: () => _selectDay(day),
-                            index: day,
-                            selectedDay: selectedDay,
-                          ),
-                          const SizedBox(width: 10),
-                        ],
+                child: Obx(() {
+                  final plan = Get.find<PlanController>().plan.value;
+
+                  return ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      DayButton(
+                        text: 'All',
+                        onPressed: () => _selectDay(0),
+                        index: 0,
+                        selectedDay: selectedDay,
                       ),
-                    ),
-                  ],
-                ),
+                      const SizedBox(width: 10),
+
+                      ...List.generate(plan!.dayCount ?? 0, (index) {
+                        final day = index + 1;
+                        return Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: DayButton(
+                                text: 'Day $day',
+                                onPressed: () => _selectDay(day),
+                                index: day,
+                                selectedDay: selectedDay,
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                    ],
+                  );
+                }),
               ),
             ),
           ),
@@ -172,10 +181,6 @@ class DayButtonState extends State<DayButton> {
                 ? AppColors.white
                 : AppColors.black,
       ),
-      // )Text(
-      //   widget.text,
-      //   style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: widget.index == widget.selectedDay ? Colors.white : Colors.black),
-      // ),
     );
   }
 }

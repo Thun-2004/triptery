@@ -14,6 +14,8 @@ class Plan {
   final int totalLikes;
   final DateTime dayStart;
   final DateTime dayEnd;
+  final int dayCount; 
+  final String location; 
   final String note;
   final PlanVisibility visibility; 
   final int budget; 
@@ -30,6 +32,8 @@ class Plan {
     required this.totalLikes,
     required this.dayStart,
     required this.dayEnd,
+    required this.dayCount, 
+    required this.location, 
     required this.note,
     required this.visibility,
     required this.budget,

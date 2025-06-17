@@ -1,12 +1,11 @@
 enum TripType { route, dest }
-enum RouteMode { car, motorcycle, publicTransit, unselected }
+enum RouteMode { car, bus, train, carRent, taxi, skyTrain, subway, boat, airplan, walk, motorcycle, publicTransit, unselected }
 
 class Trip {
   final String id;
   final String planId;
   final int day;
   final TripType type;
-
   final String? placeId;
   final String? placeName;
   final String? placeDescription;
@@ -21,8 +20,7 @@ class Trip {
   final int? routeTotalDistance;
   final String? routeDistance;
   final String? routeNote;
-
-  final String? note;
+  final String? note; //NOTE: allow null
 
   Trip({
     required this.id,

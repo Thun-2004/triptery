@@ -11,6 +11,8 @@ class PlanModel {
   final int totalLikes;
   final DateTime dayStart;
   final DateTime dayEnd;
+  final int dayCount; 
+  final String location;
   final String note;
   final PlanVisibility visibility; 
   final int budget; 
@@ -27,6 +29,8 @@ class PlanModel {
     required this.totalLikes,
     required this.dayStart,
     required this.dayEnd,
+    required this.dayCount, 
+    required this.location, 
     required this.note,
     required this.visibility,
     required this.budget,
@@ -46,6 +50,8 @@ class PlanModel {
       totalLikes: json['totalLikes'],
       dayStart: DateTime.parse(json['dayStart']),
       dayEnd: DateTime.parse(json['dayEnd']),
+      dayCount: json['dayCount'], 
+      location: json['location'], 
       note: json['note'],
       visibility: PlanVisibility.values.firstWhere(
         (e) => e.toString().split('.').last == json['visibility'],
@@ -67,6 +73,8 @@ class PlanModel {
       totalLikes: totalLikes,
       dayStart: dayStart,
       dayEnd: dayEnd,
+      dayCount: dayCount,
+      location: location,
       note: note,
       visibility: visibility,
       budget: budget,

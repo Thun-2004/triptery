@@ -20,8 +20,7 @@ class TripPage extends StatefulWidget {
 class _TripPageState extends State<TripPage> {
   bool showMap = false; 
   Mode mode = Mode.normal;
-  final tripController = Get.find<TripController>();
-
+  
   void toggleMap() {
     setState(() {
       showMap = !showMap;

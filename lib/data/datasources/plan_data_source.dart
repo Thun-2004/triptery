@@ -20,11 +20,13 @@ class PlanDataSource {
       "ownerId" : "1",
       "ownerName": "Levi",
       "ownerProfilePictureUrl" : "assets/images/user.jpg",
-      "coverImageUrl" : "assets/images/sea.jpeg",
+      "coverImageUrl" : "https://i.pinimg.com/736x/b5/ea/78/b5ea78bc0bac20e8bda063b4f168aeda.jpg",
       "totalCopied" : 50,
       "totalLikes" : 20,
       "dayStart" : "2025-02-01T00:00:00.000",
       "dayEnd": "2025-02-02T00:00:00.000",
+      "dayCount": 2,
+      "location": "Pattaya, Thailand",  
       "note" : "A fun trip to Pattaya with friends.",
       "visibility": "public",
       "budget": 0,
@@ -33,7 +35,7 @@ class PlanDataSource {
     return mock_response;
   }
 
-   List<Map<String, Object>> getPlanReviews() {
+  List<Map<String, Object>> getPlanReviews() {
     final mock_response = [
       {
         "id": "1",

@@ -29,7 +29,7 @@ class _DayListState extends State<DayList> {
       decoration: BoxDecoration(
         color: AppColors.grayBg,
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(16), 
+          bottomLeft: Radius.circular(16),
           bottomRight: Radius.circular(16)),
       ),
       child: ListView.builder(

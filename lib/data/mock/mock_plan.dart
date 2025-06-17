@@ -15,6 +15,8 @@ final Plan mockPlans = Plan(
   totalLikes: 20,
   dayStart: DateTime(2025, 2, 1), 
   dayEnd: DateTime(2025, 2, 2), 
+  dayCount: 2, 
+  location: "Pattaya, Thailand",
   note: "A fun trip to Pattaya with friends.",
   visibility: PlanVisibility.public,
   budget: 0,

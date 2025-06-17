@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/DI/init_plan.dart';
+import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:triptery/presentation/pages/login_page.dart';
@@ -12,11 +15,12 @@ import 'package:flutter/material.dart';
 import 'package:triptery/l10n/support_locale.dart';
 import 'package:provider/provider.dart';
 import 'package:triptery/presentation/controllers/language_controller.dart';
-import 'package:triptery/presentation/pages/trip_page.dart'; 
+import 'package:triptery/presentation/pages/trip_page.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:get/get.dart';
 import 'package:triptery/utils/ui.dart' show NoBounceScrollBehavior;
 
+//NOTE: add middleware every time you add a new page in case bypassing 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await dotenv.load(fileName: ".env");
@@ -38,64 +42,71 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final languageController = Get.find<LanguageController>();
 
-    return 
-        GetMaterialApp(
-          title: 'Global Design Example',
-          scrollBehavior: NoBounceScrollBehavior(),
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: L10n.support,
-          locale:
-              languageController.lang ??
-              const Locale('en', ''), // Set default locale
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            scaffoldBackgroundColor: Colors.white,
-            fontFamily: GoogleFonts.notoSansThai().fontFamily, // Set default font
-            // Default button style
-            elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                textStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+    return GetMaterialApp(
+      title: 'Global Design Example',
+      scrollBehavior: NoBounceScrollBehavior(),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: L10n.support,
+      locale:
+          languageController.lang ??
+          const Locale('en', ''), // Set default locale
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+        fontFamily: GoogleFonts.notoSansThai().fontFamily, // Set default font
+        // Default button style
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blueAccent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
-
-            // Default text style
-            // textTheme: const TextTheme(
-            // bodyLarge: TextStyle(color: Colors.black87, fontSize: 16),
-            // bodyMedium: TextStyle(color: Colors.black54, fontSize: 14),
-            // headlineSmall: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-            // ),
-            textTheme: GoogleFonts.notoSansTextTheme(),
-            // Default card style
-            cardTheme: CardTheme(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              margin: const EdgeInsets.all(8),
+            textStyle: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          // home: const LoginPage(),
-          getPages: [ 
-            GetPage(
-            name: '/trip',
-              page: () => const TripPage(), 
-              binding: BindingsBuilder(() {
-                PlanDI.init(); 
-              }),
-          )]
-        );  
+        ),
+
+        // Default text style
+        // textTheme: const TextTheme(
+        // bodyLarge: TextStyle(color: Colors.black87, fontSize: 16),
+        // bodyMedium: TextStyle(color: Colors.black54, fontSize: 14),
+        // headlineSmall: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+        // ),
+        textTheme: GoogleFonts.notoSansTextTheme(),
+        // Default card style
+        cardTheme: CardTheme(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          margin: const EdgeInsets.all(8),
+        ),
+      ),
+      // home: const LoginPage(),
+      // home: const TripPage(),
+
+      initialRoute: '/trip', //NOTE: works because it defines the entry point
+      getPages: [
+        GetPage(
+        name: '/trip',
+          page: () => const TripPage(),
+          binding: BindingsBuilder(() {
+            if (!Get.isRegistered<PlanController>()) {
+              log("🔍 PlanController not registered yet, initializing...");
+              PlanDI.init();
+            }else{
+              log("✅ PlanController already registered");
+            }
+          }),
+      )]
+    );
   }
 }
 
