@@ -11,7 +11,7 @@ class Trip {
   final String? placeDescription;
   final String? placeImageUrl;
   String? arrivalTime;
-
+  
   final RouteMode? routeMode;
   final String? routeFrom; 
   final String? routeTo; 

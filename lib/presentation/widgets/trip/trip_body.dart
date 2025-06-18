@@ -5,8 +5,7 @@ import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/day.dart';
 import 'package:triptery/presentation/widgets/trip/components/day_list.dart';
-import 'package:triptery/data/mock/mock_trips.dart';
-import 'package:triptery/domain/entities/trip/trip.dart';
+// import 'package:triptery/data/mock/mock_trips.dart';
 
 class TripState extends ChangeNotifier {
   bool showDelete = false;
@@ -27,15 +26,6 @@ class TripBody extends StatefulWidget {
 class _TripBodyState extends State<TripBody> {
   int selectedDay = 0;
   late Widget dayMode;
-  List<Trip> trips = mockTrips;
-
-  List<int> get days {
-    return trips
-        .where((trip) => trip.day > 0)
-        .map((trip) => trip.day)
-        .toSet()
-        .toList();
-  }
 
   void _selectDay(int day) {
     setState(() {

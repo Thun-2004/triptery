@@ -9,7 +9,7 @@ import 'package:triptery/presentation/widgets/trip/components/route_dropdown.dar
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:triptery/services/core/trip/trip_service.dart';
+import 'package:triptery/services/core/trip/trip_service2.dart';
 
 //FIXME : change to DraggableScrollableSheet class
 class Day extends StatefulWidget {
@@ -28,8 +28,9 @@ class _DayState extends State<Day> {
   late TripService tripService;
   var selectedTime = Duration(hours: 9, minutes: 41);
   //NOTE :getter type = dynamic type
-  List<Trip> get _places => tripService.getPlaces();
-  List<Trip> get _routes => tripService.getRoutes();
+  List<Trip> get temp_routes => tripService.getEntireRoutes(); 
+  // List<Trip> get _places => tripService.getPlaces();
+  // List<Trip> get _routes => tripService.getRoutes();
 
   void _onCardSelected(int index) {
     setState(() {

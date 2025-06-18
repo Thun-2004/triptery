@@ -10,6 +10,7 @@ class TripService {
   int day = 0;
   List<Trip> places = [];
   List<Trip> routes = [];
+  List<Trip> temp_routes = []; 
   List<int> deletedItems = [];
   List<Trip> trips = mockTrips;
   List<Map<String, String>> routeChoices = [
@@ -139,31 +140,21 @@ class TripService {
   }
 
   void init() {
-    if (places.isEmpty && trips.isNotEmpty) {
-      places = trips.where((trip) => trip.type == TripType.dest).toList();
-    }
     if (trips.isNotEmpty) {
-      routes = trips.where((trip) => trip.type == TripType.route).toList();
+      temp_routes = List<Trip>.from(trips);
     }
-    //  if (trips.isNotEmpty) {
-    //   for(Trip _trip in trips){
-    //     places.add(
-    //       Trip(
-            
-    //       )
-    //     )
-    //     routes = 
-    //   }
-    // }
-   
   }
 
-  List<Trip> getPlaces() {
-    return places;
-  }
+  // List<Trip> getPlaces() {
+  //   return places;
+  // }
 
-  List<Trip> getRoutes() {
-    return routes;
+  // List<Trip> getRoutes() {
+  //   return routes;
+  // }
+
+  List<Trip> getEntireRoutes(){
+    return temp_routes; 
   }
 
   List<int> getDeletedItems() {
@@ -191,77 +182,67 @@ class TripService {
       newIndex -= 1;
     }
     //swap place
-    final Trip item = places.removeAt(oldIndex);
-    places.insert(newIndex, item);
+    final Trip item = temp_routes.removeAt(oldIndex);
+    temp_routes.insert(newIndex, item);
 
     //swap time
-    String tempTime = places[newIndex].arrivalTime ?? '';
-    places[newIndex].arrivalTime = places[oldIndex].arrivalTime;
-    places[oldIndex].arrivalTime = tempTime;
+    String tempTime = temp_routes[newIndex].arrivalTime ?? '';
+    temp_routes[newIndex].arrivalTime = temp_routes[oldIndex].arrivalTime;
+    temp_routes[oldIndex].arrivalTime = tempTime;
 
     //recalculate routes
     selectedIndex = -1;
     recalculateAllRoutes();
-    print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
+    print('Updated route: ${routes[0].routeMode} , ${temp_routes[1].routeMode}');
   }
 
   void recalculateAllRoutes() {
-    // Calculate how many routes we should have based on places
+    // Calculate how many routes we should have based on temp_routes
     int expectedRouteCount = 0;
-    for (int i = 0; i < places.length - 1; i++) {
-      if (places[i].placeId != null && places[i + 1].placeId != null) {
+    for (int i = 0; i < temp_routes.length - 1; i++) {
+      if (temp_routes[i].placeId != null && temp_routes[i + 1].placeId != null) {
         expectedRouteCount++;
       }
     }
 
     // Resize routes list if needed
-    if (routes.length > expectedRouteCount) {
-      routes = routes.sublist(0, expectedRouteCount);
+    if (temp_routes.length > expectedRouteCount) {
+      temp_routes = temp_routes.sublist(0, expectedRouteCount);
     }
 
     // Update existing routes or add new ones
     int routeIndex = 0;
-    for (int i = 0; i < places.length - 1; i++) {
-      if (places[i].placeId != null && places[i + 1].placeId != null) {
+    for (int i = 0; i < temp_routes.length - 1; i++) {
+      if (temp_routes[i].placeId != null && temp_routes[i + 1].placeId != null) {
         // Create or update route
-        if (routeIndex < routes.length) {
+        if (routeIndex < temp_routes.length) {
           // Update existing route
-          routes[routeIndex] = Trip(
-            id: routes[routeIndex].id,
-            planId: routes[routeIndex].planId,
+            temp_routes[routeIndex] = Trip(
+            id: temp_routes[routeIndex].id,
+            planId: temp_routes[routeIndex].planId,
             day: day,
             type: TripType.route,
-            placeId: null,
-            placeName: null,
-            placeDescription: null,
-            placeImageUrl: null,
-            arrivalTime: null,
-            routeMode: routes[routeIndex].routeMode ?? RouteMode.unselected,
-            routeFrom: places[i].placeId,
-            routeTo: places[i + 1].placeId,
-            routeTotalTime: routes[routeIndex].routeTotalTime,
-            routeTotalCost: routes[routeIndex].routeTotalCost,
-            routeTotalDistance: routes[routeIndex].routeTotalDistance,
-            routeDistance: routes[routeIndex].routeDistance,
-            routeNote: routes[routeIndex].routeNote,
-            note: routes[routeIndex].note,
+            routeMode: temp_routes[routeIndex].routeMode ?? RouteMode.unselected,
+            routeFrom: temp_routes[i].placeId,
+            routeTo: temp_routes[i + 1].placeId,
+            routeTotalTime: temp_routes[routeIndex].routeTotalTime,
+            routeTotalCost: temp_routes[routeIndex].routeTotalCost,
+            routeTotalDistance: temp_routes[routeIndex].routeTotalDistance,
+            routeDistance: temp_routes[routeIndex].routeDistance,
+            routeNote: temp_routes[routeIndex].routeNote,
+            note: temp_routes[routeIndex].note,
           );
         } else {
           // Add new route
-          routes.add(
+          temp_routes.add(
             Trip(
-              id: places[i].id,
-              planId: places[i].planId,
+              id: temp_routes[i].id,
+              planId: temp_routes[i].planId,
               day: day,
               type: TripType.route,
-              placeId: null,
-              placeName: null,
-              placeDescription: null,
-              placeImageUrl: null,
-              arrivalTime: null,
               routeMode: RouteMode.unselected,
-              routeFrom: places[i].placeId,
-              routeTo: places[i + 1].placeId,
+              routeFrom: temp_routes[i].placeId,
+              routeTo: temp_routes[i + 1].placeId,
               routeTotalTime: null,
               routeTotalCost: null,
               routeTotalDistance: null,
@@ -275,7 +256,7 @@ class TripService {
       }
 
       print(
-        'route options: ${findRouteOptions(places[i].id, places[i + 1].id)}',
+        'route options: ${findRouteOptions(temp_routes[i].id, temp_routes[i + 1].id)}',
       );
     }
   }
@@ -292,27 +273,19 @@ class TripService {
           "Established since 2008, Pattaya Floating Market is riverside attraction in Pattaya displaying and showcasing the beautiful ancient Thai riverside living community and authentic ways of life",
       placeImageUrl:
           "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/53/6d/b7/pattaya-floating-market.jpg?w=1400&h=-1&s=1",
-      arrivalTime: null,
-      routeMode: null,
-      routeTotalTime: null,
-      routeTotalCost: null,
-      routeTotalDistance: null,
-      routeDistance: null,
-      routeNote: null,
-      note: null,
     );
 
-    places.insert(index + 1, newPlace);
+    temp_routes.insert(index + 1, newPlace);
     recalculateAllRoutes();
   }
 
   void deleteAllPlaceCards() {
     for (int ind in deletedItems) {
-      if (ind < 0 || ind >= places.length) {
+      if (ind < 0 || ind >= temp_routes.length) {
         log("Index $ind is out of bounds for places list.");
         continue;
       } else {
-        places.removeAt(ind);
+        temp_routes.removeAt(ind);
       }
     }
     deletedItems.clear();
