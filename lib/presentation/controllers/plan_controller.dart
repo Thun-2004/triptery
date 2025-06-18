@@ -22,11 +22,10 @@ class PlanController extends GetxController {
 
   Future<void> fetchPlan() async {
     try {
-      isLoading(true); 
+      isLoading(true);
       final result = await getPlans.execute();
-      plan.value = result; 
+      plan.value = result;
       log("✅ Plan fetched: ${plan.value?.name}");
-
     } finally {
       isLoading(false); 
     }

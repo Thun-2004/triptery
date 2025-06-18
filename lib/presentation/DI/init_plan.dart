@@ -15,8 +15,8 @@ import 'package:triptery/presentation/controllers/plan_controller.dart';
 //otherwise use Get.lazyPut(), Get.put()
 class PlanDI {
   static void init() {
-    final dataSource = PlanDataSource();
-    final repository = PlanRepositoryImpl(planDataSource: dataSource);
+    final planDataSource = PlanDataSource();
+    final repository = PlanRepositoryImpl(planDataSource: planDataSource);
     final getPopularMovies = GetPlans(repository: repository);
     Get.put(PlanController(getPlans: getPopularMovies));
   }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/DI/init_plan.dart';
+import 'package:triptery/presentation/DI/init_trip.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,7 +32,7 @@ Future<void> main() async {
   );
 
   Get.put(LanguageController());
-  Get.put(TripController());
+  // Get.put(TripController());
   runApp(MyApp());
 }
 
@@ -99,10 +100,10 @@ class MyApp extends StatelessWidget {
           page: () => const TripPage(),
           binding: BindingsBuilder(() {
             if (!Get.isRegistered<PlanController>()) {
-              log("🔍 PlanController not registered yet, initializing...");
               PlanDI.init();
-            }else{
-              log("✅ PlanController already registered");
+            }
+            if(!Get.isRegistered<TripController>()) {
+              TripDI.init(); 
             }
           }),
       )]
