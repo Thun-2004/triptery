@@ -29,7 +29,7 @@ class _DayState extends State<Day> {
   var selectedTime = Duration(hours: 9, minutes: 41);
   //NOTE :getter type = dynamic type
   List<Trip> get temp_routes => tripService.getEntireRoutes(); 
-  // List<Trip> get _places => tripService.getPlaces();
+  // List<Trip> get temp_routes => tripService.getPlaces();
   // List<Trip> get _routes => tripService.getRoutes();
 
   void _onCardSelected(int index) {
@@ -164,17 +164,17 @@ class _DayState extends State<Day> {
                     scrollDirection: Axis.vertical,
                     // shrinkWrap: true,
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: _places.length,
+                    itemCount: temp_routes.length,
 
                     onReorder: handleReorder,
                     itemBuilder: (context, index) {
                       List<Map<String, String>> routeOptions =
-                          index < _places.length - 1 &&
-                                  _places[index].placeId != null &&
-                                  _places[index + 1].placeId != null
+                          index < temp_routes.length - 1 &&
+                                  temp_routes[index].placeId != null &&
+                                  temp_routes[index + 1].placeId != null
                               ? tripService.findRouteOptions(
-                                _places[index].placeId!,
-                                _places[index + 1].placeId!,
+                                temp_routes[index].placeId!,
+                                temp_routes[index + 1].placeId!,
                               )
                               : [];
                       return Padding(
@@ -190,9 +190,9 @@ class _DayState extends State<Day> {
                                     child: Column(
                                       children: [
                                         const SizedBox(height: 4),
-                                        if (_places[index].day == widget.day &&
-                                            index <= _places.length - 1 &&
-                                            _places[index].placeId != null)
+                                        if (temp_routes[index].day == widget.day &&
+                                            index <= temp_routes.length - 1 &&
+                                            temp_routes[index].placeId != null)
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
@@ -214,7 +214,7 @@ class _DayState extends State<Day> {
                                                   showTimePicker();
                                                 }),
                                                 child: Text(
-                                                  _places[index].arrivalTime!,
+                                                  temp_routes[index].arrivalTime!,
                                                   style: TextStyle(
                                                     color: AppColors.orange_950,
                                                   ),
@@ -223,9 +223,9 @@ class _DayState extends State<Day> {
                                             ],
                                           ),
 
-                                        if (_places[index].day == widget.day &&
-                                            index <= _places.length - 1 &&
-                                            _places[index].placeId != null)
+                                        if (temp_routes[index].day == widget.day &&
+                                            index <= temp_routes.length - 1 &&
+                                            temp_routes[index].placeId != null)
                                           GestureDetector(
                                             onTap: () => _onCardSelected(index),
                                             child: Container(
@@ -243,40 +243,40 @@ class _DayState extends State<Day> {
                                               child: PlaceCard(
                                                 index: index,
                                                 placeId:
-                                                    _places[index].placeId!,
+                                                    temp_routes[index].placeId!,
                                                 placeName:
-                                                    _places[index].placeName!,
+                                                    temp_routes[index].placeName!,
                                                 placeDescription:
-                                                    _places[index]
+                                                    temp_routes[index]
                                                         .placeDescription!,
                                                 placeImage:
-                                                    _places[index]
+                                                    temp_routes[index]
                                                         .placeImageUrl!,
                                                 arrivalTime:
-                                                    _places[index].arrivalTime!,
+                                                    temp_routes[index].arrivalTime!,
                                               ),
                                             ),
                                           ),
 
-                                        if (index == _places.length - 1)
+                                        if (index == temp_routes.length - 1)
                                           const SizedBox(height: 10)
-                                        else if (index < _places.length - 1 &&
-                                            index < _routes.length &&
-                                            _routes[index].day == widget.day &&
-                                            _places[index].placeId != null &&
-                                            _places[index + 1].placeId !=
+                                        else if (index < temp_routes.length - 1 &&
+                                            index < temp_routes.length &&
+                                            temp_routes[index].day == widget.day &&
+                                            temp_routes[index].placeId != null &&
+                                            temp_routes[index + 1].placeId !=
                                                 null &&
                                             routeOptions.isNotEmpty)
                                           RouteDropdown(
                                             key: ValueKey(
-                                              'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
+                                              'route-${temp_routes[index].placeId}-${temp_routes[index + 1].placeId}-$index',
                                             ),
 
                                             choices: routeOptions,
                                             pastChoice:
                                                 _selectedIndex == index
                                                     ? "Select route mode"
-                                                    : _routes[index].routeMode
+                                                    : temp_routes[index].routeMode
                                                         .toString(),
                                           ),
                                       ],
