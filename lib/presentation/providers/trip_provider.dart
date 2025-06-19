@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:triptery/data/mock/mock_trips.dart';
+import 'package:triptery/data/mock/mock_plan.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'dart:developer';
 

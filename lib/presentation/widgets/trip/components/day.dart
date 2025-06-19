@@ -28,6 +28,7 @@ class _DayState extends State<Day> {
   late TripService tripService;
   var selectedTime = Duration(hours: 9, minutes: 41);
   //NOTE :getter type = dynamic type
+  // List<Trip> get temp_routes => tripService.getEntireRoutes(); 
   List<Trip> get _places => tripService.getPlaces();
   List<Trip> get _routes => tripService.getRoutes();
 
@@ -49,6 +50,7 @@ class _DayState extends State<Day> {
 
   void recalculateAllRoutes() {
     tripService.recalculateAllRoutes();
+    // setState(() {});
   }
 
   void addPlace(int index) {

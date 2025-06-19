@@ -1,5 +1,5 @@
 import 'package:triptery/data/mock/mock_places.dart';
-import 'package:triptery/data/mock/mock_trips.dart';
+import 'package:triptery/data/mock/mock_plan.dart';
 import 'package:triptery/domain/entities/place/place.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:get/get.dart';

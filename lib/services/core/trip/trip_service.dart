@@ -1,4 +1,4 @@
-import 'package:triptery/data/mock/mock_trips.dart';
+import 'package:triptery/data/mock/mock_plan.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'dart:developer';
 
@@ -138,12 +138,51 @@ class TripService {
   }
 
   void init() {
-    if (places.isEmpty && trips.isNotEmpty) {
-      places = trips.where((trip) => trip.type == TripType.dest).toList();
-    }
+    // if (places.isEmpty && trips.isNotEmpty) {
+    //   places = trips.where((trip) => trip.type == TripType.dest).toList();
+    // }
 
     if (trips.isNotEmpty) {
-      routes = trips.where((trip) => trip.type == TripType.route).toList();
+      // routes = trips.where((trip) => trip.type == TripType.route).toList();
+      for (Trip trip in trips) {
+        places.add(
+          Trip(
+            id: trip.id,
+            planId: trip.planId,
+            day: trip.day,
+            type: trip.type,
+            placeId: trip.placeId,
+            placeName: trip.placeName,
+            placeDescription: trip.placeDescription,
+            placeImageUrl: trip.placeImageUrl,
+            arrivalTime: trip.arrivalTime,
+            note: trip.note,
+          ),
+        );
+        log("TripService: Added place ${trip.placeName} with id ${trip.id}");
+
+        if (trip.routeFrom != null) {
+          routes.add(
+            Trip(
+              id: trip.id,
+              planId: trip.planId,
+              day: trip.day,
+              type: trip.type,
+              routeMode: trip.routeMode,
+              routeFrom: trip.routeFrom,
+              routeTo: trip.routeTo,
+              routeTotalTime: trip.routeTotalTime,
+              routeTotalCost: trip.routeTotalCost,
+              routeTotalDistance: trip.routeTotalDistance,
+              routeDistance: trip.routeDistance,
+              routeNote: trip.routeNote,
+            ),
+          );
+          log(
+            "TripService: Added route from ${trip.routeFrom} to ${trip.routeTo} with mode ${trip.routeMode}",
+          );
+        }
+      }
     }
   }
 
@@ -175,98 +214,126 @@ class TripService {
     }
   }
 
+  // void recalculateAllRoutes() {
+  //   // Calculate how many routes we should have based on places
+  //   int expectedRouteCount = 0;
+  //   for (int i = 0; i < places.length - 1; i++) {
+  //     if (places[i].placeId != null && places[i + 1].placeId != null) {
+  //       expectedRouteCount++;
+  //     }
+  //   }
+
+  //   // Resize routes list if needed
+  //   if (routes.length > expectedRouteCount) {
+  //     routes = routes.sublist(0, expectedRouteCount);
+  //   }
+
+  //   // Update existing routes or add new ones
+  //   int routeIndex = 0;
+  //   for (int i = 0; i < places.length - 1; i++) {
+  //     if (places[i].placeId != null && places[i + 1].placeId != null) {
+  //       // Create or update route
+  //       if (routeIndex < routes.length) {
+  //         // Update existing route
+  //         routes[routeIndex] = Trip(
+  //           id: routes[routeIndex].id,
+  //           planId: routes[routeIndex].planId,
+  //           day: day,
+  //           type: TripType.route,
+  //           routeMode: routes[routeIndex].routeMode ?? RouteMode.unselected,
+  //           routeFrom: places[i].placeId,
+  //           routeTo: places[i + 1].placeId,
+  //           routeTotalTime: routes[routeIndex].routeTotalTime,
+  //           routeTotalCost: routes[routeIndex].routeTotalCost,
+  //           routeTotalDistance: routes[routeIndex].routeTotalDistance,
+  //           routeDistance: routes[routeIndex].routeDistance,
+  //           routeNote: routes[routeIndex].routeNote,
+  //           note: routes[routeIndex].note,
+  //         );
+  //       } else {
+  //         // Add new route
+  //         routes.add(
+  //           Trip(
+  //             id: places[i].id,
+  //             planId: places[i].planId,
+  //             day: day,
+  //             type: TripType.route,
+  //             routeMode: RouteMode.unselected,
+  //             routeFrom: places[i].placeId,
+  //             routeTo: places[i + 1].placeId,
+  //             routeTotalTime: null,
+  //             routeTotalCost: null,
+  //             routeTotalDistance: null,
+  //             routeDistance: null,
+  //             routeNote: null,
+  //             note: null,
+  //           ),
+  //         );
+  //       }
+  //       routeIndex++;
+  //     }
+
+  //     print(
+  //       'route options: ${findRouteOptions(places[i].id, places[i + 1].id)}',
+  //     );
+  //   }
+  // }
+  void recalculateAllRoutes() {
+    // Clear all old routes
+    routes.clear();
+
+    for (int i = 0; i < places.length - 1; i++) {
+      final fromPlace = places[i];
+      final toPlace = places[i + 1];
+
+      if (fromPlace.placeId != null && toPlace.placeId != null) {
+        routes.add(
+          Trip(
+            id: "${fromPlace.id}-${toPlace.id}", // generate unique route id
+            planId: fromPlace.planId,
+            day: day,
+            type: TripType.route,
+            routeMode: RouteMode.unselected,
+            routeFrom: fromPlace.placeId,
+            routeTo: toPlace.placeId,
+            routeTotalTime: null,
+            routeTotalCost: null,
+            routeTotalDistance: null,
+            routeDistance: null,
+            routeNote: null,
+            note: null,
+          ),
+        );
+
+        final matched = findRouteOptions(fromPlace.placeId!, toPlace.placeId!);
+        print(
+          "🔁 Regenerated route from ${fromPlace.placeId} → ${toPlace.placeId}: ${matched.length} option(s)",
+        );
+      }
+    }
+
+    print("✅ Total routes regenerated: ${routes.length}");
+  }
+
   void handleReorder(int oldIndex, int newIndex, int selectedIndex) {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
-    //swap place
-    final Trip item = places.removeAt(oldIndex);
-    places.insert(newIndex, item);
 
     //swap time
     String tempTime = places[newIndex].arrivalTime ?? '';
     places[newIndex].arrivalTime = places[oldIndex].arrivalTime;
     places[oldIndex].arrivalTime = tempTime;
 
+    //swap place
+    final Trip item = places.removeAt(oldIndex);
+    places.insert(newIndex, item);
+
     //recalculate routes
     selectedIndex = -1;
     recalculateAllRoutes();
+
     print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
-  }
-
-  void recalculateAllRoutes() {
-    // Calculate how many routes we should have based on places
-    int expectedRouteCount = 0;
-    for (int i = 0; i < places.length - 1; i++) {
-      if (places[i].placeId != null && places[i + 1].placeId != null) {
-        expectedRouteCount++;
-      }
-    }
-
-    // Resize routes list if needed
-    if (routes.length > expectedRouteCount) {
-      routes = routes.sublist(0, expectedRouteCount);
-    }
-
-    // Update existing routes or add new ones
-    int routeIndex = 0;
-    for (int i = 0; i < places.length - 1; i++) {
-      if (places[i].placeId != null && places[i + 1].placeId != null) {
-        // Create or update route
-        if (routeIndex < routes.length) {
-          // Update existing route
-          routes[routeIndex] = Trip(
-            id: routes[routeIndex].id,
-            planId: routes[routeIndex].planId,
-            day: day,
-            type: TripType.route,
-            placeId: null,
-            placeName: null,
-            placeDescription: null,
-            placeImageUrl: null,
-            arrivalTime: null,
-            routeMode: routes[routeIndex].routeMode ?? RouteMode.unselected,
-            routeFrom: places[i].placeId,
-            routeTo: places[i + 1].placeId,
-            routeTotalTime: routes[routeIndex].routeTotalTime,
-            routeTotalCost: routes[routeIndex].routeTotalCost,
-            routeTotalDistance: routes[routeIndex].routeTotalDistance,
-            routeDistance: routes[routeIndex].routeDistance,
-            routeNote: routes[routeIndex].routeNote,
-            note: routes[routeIndex].note,
-          );
-        } else {
-          // Add new route
-          routes.add(
-            Trip(
-              id: places[i].id,
-              planId: places[i].planId,
-              day: day,
-              type: TripType.route,
-              placeId: null,
-              placeName: null,
-              placeDescription: null,
-              placeImageUrl: null,
-              arrivalTime: null,
-              routeMode: RouteMode.unselected,
-              routeFrom: places[i].placeId,
-              routeTo: places[i + 1].placeId,
-              routeTotalTime: null,
-              routeTotalCost: null,
-              routeTotalDistance: null,
-              routeDistance: null,
-              routeNote: null,
-              note: null,
-            ),
-          );
-        }
-        routeIndex++;
-      }
-
-      print(
-        'route options: ${findRouteOptions(places[i].id, places[i + 1].id)}',
-      );
-    }
   }
 
   void addPlace(index) {
@@ -281,14 +348,14 @@ class TripService {
           "Established since 2008, Pattaya Floating Market is riverside attraction in Pattaya displaying and showcasing the beautiful ancient Thai riverside living community and authentic ways of life",
       placeImageUrl:
           "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/53/6d/b7/pattaya-floating-market.jpg?w=1400&h=-1&s=1",
-      arrivalTime: null,
-      routeMode: null,
-      routeTotalTime: null,
-      routeTotalCost: null,
-      routeTotalDistance: null,
-      routeDistance: null,
-      routeNote: null,
-      note: null,
+      // arrivalTime: null,
+      // routeMode: null,
+      // routeTotalTime: null,
+      // routeTotalCost: null,
+      // routeTotalDistance: null,
+      // routeDistance: null,
+      // routeNote: null,
+      // note: null,
     );
 
     places.insert(index + 1, newPlace);

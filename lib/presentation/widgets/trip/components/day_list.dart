@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/widgets/trip/components/day.dart';
-import 'package:triptery/data/mock/mock_trips.dart';
+import 'package:triptery/data/mock/mock_plan.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 
 class DayList extends StatefulWidget {

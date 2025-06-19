@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
-import 'package:triptery/data/mock/mock_trips.dart';
+import 'package:triptery/data/mock/mock_plan.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:triptery/presentation/pages/trip/add_place_sheet.dart';

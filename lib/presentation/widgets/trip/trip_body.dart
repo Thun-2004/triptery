@@ -5,7 +5,7 @@ import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/day.dart';
 import 'package:triptery/presentation/widgets/trip/components/day_list.dart';
-import 'package:triptery/data/mock/mock_trips.dart';
+import 'package:triptery/data/mock/mock_plan.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 
 class TripState extends ChangeNotifier {
