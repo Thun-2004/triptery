@@ -9,7 +9,7 @@ class TripDI{
   static void init() {
     final tripDataSource = TripDataSource(); 
     final tripRepository = TripRepositoryImpl(tripDataSource: tripDataSource); 
-    final getTripById = GetTripByDayId(tripRepository: tripRepository); 
-    Get.put(TripController(getTripByDayId: getTripById)); 
+    final getTripByPlanId = GetTripByPlanId(tripRepository: tripRepository); 
+    Get.put(TripController(getTripByPlanId: getTripByPlanId)); 
   }
 }

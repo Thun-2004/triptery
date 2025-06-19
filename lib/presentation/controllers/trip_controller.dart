@@ -1,26 +1,27 @@
 import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
-import 'package:triptery/domain/usecases/trip/get_trips.dart'; 
+import 'package:triptery/domain/usecases/trip/get_trips.dart';
 
-//strategy = trip gradually add when day card is clicked  
-class TripController extends GetxController{
+//strategy = trip gradually add when day card is clicked
+class TripController extends GetxController {
   final GetTripByDayId? getTripByDayId;
-  final GetTripByPlanId? getTripByPlanId; 
+  final GetTripByPlanId? getTripByPlanId;
   var isLoading = true.obs;
-  RxList<Trip?> trips = <Trip?>[].obs;//NOTE: can't initialize list with null
-  
-  final Rx<bool> _isEditingTripInfo = Rx<bool>(false); 
-  bool get isEditingTripInfo => _isEditingTripInfo.value; 
+  RxList<Trip?> trips = <Trip?>[].obs; //NOTE: can't initialize list with null
 
-  final Rx<bool> _isEditingPlaceOrder = Rx<bool>(false); 
+  final Rx<bool> _isEditingTripInfo = Rx<bool>(false);
+  bool get isEditingTripInfo => _isEditingTripInfo.value;
+
+  final Rx<bool> _isEditingPlaceOrder = Rx<bool>(false);
   bool get isEditingPlaceOrder => _isEditingPlaceOrder.value;
 
   //added
-  int day = 0; 
+  int day = 0;
 
   RxList<Trip> places = <Trip>[].obs;
-  List<Trip> get getPlaces => places.whereType<Trip>().toList(); // Getter for places
+  List<Trip> get getPlaces =>
+      places.whereType<Trip>().toList(); // Getter for places
 
   RxList<Trip> routes = <Trip>[].obs;
   List<Trip> get getRoutes => routes.whereType<Trip>().toList();
@@ -149,33 +150,33 @@ class TripController extends GetxController{
     },
   ];
 
-  TripController({this.getTripByDayId, this.getTripByPlanId}); 
+  TripController({this.getTripByDayId, this.getTripByPlanId});
 
   @override
-  void onInit(){
+  void onInit() {
     super.onInit();
-    fetchTripsbyPlanId(1); 
+    fetchTripsbyPlanId(1);
     log("🚀 TripController initialized");
   }
 
   void test() {
     //print item in places
-    for (Trip place in places) { 
+    for (Trip place in places) {
       log("TripController: Place - ${place.placeName}, ID - ${place.id}");
     }
   }
 
   Future<void> fetchTripsbyDay(int planId, int day) async {
-    try{
+    try {
       isLoading(true);
-      if(getTripByDayId != null){
+      if (getTripByDayId != null) {
         final result = await getTripByDayId!.execute(1, 1);
         trips.value.add(result);
         populatePlaceAndRouteLists();
       }
     } catch (e) {
       log("Error fetching trips by day: $e");
-    }finally {
+    } finally {
       isLoading(false);
     }
   }
@@ -183,7 +184,8 @@ class TripController extends GetxController{
   Future<void> fetchTripsbyPlanId(int planId) async {
     try {
       isLoading(true);
-      trips.clear(); //clean previous trips in case user click day card before all card
+      trips
+          .clear(); //clean previous trips in case user click day card before all card
       if (getTripByPlanId != null) {
         final result = await getTripByPlanId!.execute(planId);
         trips.value = result;
@@ -202,12 +204,12 @@ class TripController extends GetxController{
 
   void toggleEditPlaceOrder() {
     _isEditingPlaceOrder.value = !_isEditingPlaceOrder.value;
-    print("isEditingPlaceOrder: ${_isEditingPlaceOrder.value}"); 
+    print("isEditingPlaceOrder: ${_isEditingPlaceOrder.value}");
   }
 
   void populatePlaceAndRouteLists() {
     //clear previous data
-    routes.clear(); 
+    routes.clear();
     places.clear();
 
     if (trips.isNotEmpty) {
@@ -305,6 +307,39 @@ class TripController extends GetxController{
 
     print("✅ Total routes regenerated: ${routes.length}");
   }
+  // void recalculateAllRoutes() {
+  //   final List<Trip> newRoutes = [];
+
+  //   for (int i = 0; i < places.length - 1; i++) {
+  //     final fromPlace = places[i];
+  //     final toPlace = places[i + 1];
+
+  //     final fromId = fromPlace.placeId;
+  //     final toId = toPlace.placeId;
+
+  //     if (fromId == null || toId == null) continue;
+
+  //     final routeId = "${fromPlace.id}-${toPlace.id}";
+  //     final matchedRoutes = findRouteOptions(fromId, toId);
+
+  //     newRoutes.add(
+  //       Trip(
+  //         id: routeId,
+  //         planId: fromPlace.planId,
+  //         day: day,
+  //         type: TripType.route,
+  //         routeMode: RouteMode.unselected,
+  //         routeFrom: fromId,
+  //         routeTo: toId,
+  //       ),
+  //     );
+
+  //     log("🔁 Regenerated route from $fromId → $toId: ${matchedRoutes.length} option(s)");
+  //   }
+
+  //   routes.assignAll(newRoutes);
+  //   log("✅ Total routes regenerated: ${newRoutes.length}");
+  // }
 
   void handleReorder(int oldIndex, int newIndex, int selectedIndex) {
     if (oldIndex < newIndex) {
@@ -367,7 +402,5 @@ class TripController extends GetxController{
     log("Deleted items: $deletedItems");
   }
 
-
   //FIXME: create day flow(add button -> add new route -> if no route/trip exists = add button)
-  
 }

@@ -11,7 +11,7 @@ import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/services/core/trip/trip_service.dart';
 
-//FIXME : change to DraggableScrollableSheet class
+//FIXME : change to Draggable place card(place card drag and drop พังไอสัดดดดดด)
 class Day extends StatefulWidget {
   const Day({super.key, required this.day});
   final int day;
@@ -268,14 +268,8 @@ class _DayState extends State<Day> {
 
                                           if (index == _places.length - 1)
                                             const SizedBox(height: 10)
-                                          else if (index < _places.length - 1 &&
-                                              index < _routes.length &&
-                                              _routes[index].day ==
-                                                  widget.day &&
-                                              _places[index].placeId != null &&
-                                              _places[index + 1].placeId !=
-                                                  null &&
-                                              routeOptions.isNotEmpty)
+                                          else if (index < _routes.length)                                           
+                                          // else if (index < _places.length - 1 && index < _routes.length && _routes[index].day == widget.day && _places[index].placeId != null && _places[index + 1].placeId != null && routeOptions.isNotEmpty)                                           
                                             RouteDropdown(
                                               key: ValueKey(
                                                 'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
