@@ -10,11 +10,13 @@ import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/services/core/trip/trip_service.dart';
+import 'package:triptery/utils/datetime.dart';
 
 //FIXME : change to Draggable place card(place card drag and drop พังไอสัดดดดดด)
 class Day extends StatefulWidget {
-  const Day({super.key, required this.day});
+  const Day({super.key, required this.day, required this.date});
   final int day;
+  final DateTime date; 
 
   @override
   State<Day> createState() => _DayState();
@@ -128,13 +130,13 @@ class _DayState extends State<Day> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            text: "Day 1",
+                            text: "Day ${widget.day}",
                             type: TextType.subHeading,
                             color:
                                 _isExpanded ? AppColors.white : AppColors.black,
                           ),
                           CustomText(
-                            text: "Thursday, 12th October 2023",
+                            text: formatDateWithOrdinal(widget.date),
                             type: TextType.body,
                             color:
                                 _isExpanded

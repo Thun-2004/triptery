@@ -6,20 +6,19 @@ import 'package:triptery/data/mock/mock_plan.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 
 class DayList extends StatefulWidget {
-  const DayList({super.key});
+  const DayList({super.key, required this.dateFrom, required this.dayCount});
+  final DateTime dateFrom;
+  final int dayCount;
 
   @override
   State<DayList> createState() => _DayListState();
 }
 
 class _DayListState extends State<DayList> {
-  List<Trip> trips = mockTrips;
-  List<int> get days {
-    return trips
-        .where((trip) => trip.day > 0)
-        .map((trip) => trip.day)
-        .toSet()
-        .toList();
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -36,12 +35,13 @@ class _DayListState extends State<DayList> {
         padding: const EdgeInsets.symmetric(vertical: 0),
         shrinkWrap: true,
         physics: const BouncingScrollPhysics(),
-        itemCount: days.length,
+        itemCount: widget.dayCount,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 16),
             child: Day(
-              day: days[index],
+              day: index + 1,
+              date: widget.dateFrom.add(Duration(days: index))
             )
           ); 
         },

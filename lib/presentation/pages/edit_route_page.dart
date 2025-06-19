@@ -47,16 +47,16 @@ class _EditRoutePageState extends State<EditRoutePage> {
         .toList();
   }
 
-  void _selectDay(int day) {
-    setState(() {
-      if (day == 0) {
-        dayMode = DayList();
-      } else {
-        dayMode = Day(day: day);
-      }
-      selectedDay = day;
-    });
-  }
+  // void _selectDay(int day) {
+  //   setState(() {
+  //     if (day == 0) {
+  //       dayMode = DayList();
+  //     } else {
+  //       dayMode = Day(day: day);
+  //     }
+  //     selectedDay = day;
+  //   });
+  // }
 
   void _onCardSelected(int index) {
     setState(() {
@@ -180,7 +180,8 @@ class _EditRoutePageState extends State<EditRoutePage> {
                             children: [
                               DayButton(
                                 text: 'Day $day',
-                                onPressed: () => _selectDay(day),
+                                onPressed: () => {},
+                                // onPressed: () => _selectDay(day),
                                 index: day,
                                 selectedDay: selectedDay,
                               ),
