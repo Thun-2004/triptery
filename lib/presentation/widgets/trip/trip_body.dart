@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
+import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/day.dart';
 import 'package:triptery/presentation/widgets/trip/components/day_list.dart';
@@ -25,6 +26,7 @@ class TripBody extends StatefulWidget {
 }
 
 class _TripBodyState extends State<TripBody> {
+  TripController tripController = Get.find<TripController>();
   int selectedDay = 0;
   late Widget dayMode;
   List<Trip> trips = mockTrips;
@@ -82,12 +84,19 @@ class _TripBodyState extends State<TripBody> {
                 child: Obx(() {
                   final plan = Get.find<PlanController>().plan.value;
 
+                  if (plan == null) {
+                    return const SizedBox();
+                  }
+
                   return ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
                       DayButton(
                         text: 'All',
-                        onPressed: () => _selectDay(0),
+                        onPressed: () {
+                          // tripController.fetchTripsbyPlanId(1);
+                          _selectDay(0);
+                        },
                         index: 0,
                         selectedDay: selectedDay,
                       ),
@@ -101,7 +110,10 @@ class _TripBodyState extends State<TripBody> {
                               padding: const EdgeInsets.only(right: 10),
                               child: DayButton(
                                 text: 'Day $day',
-                                onPressed: () => _selectDay(day),
+                                onPressed: () {
+                                  //tripController.fetchTripsbyDay(1, day); //FIXME: change to dynamic planId
+                                  _selectDay(day);
+                                },
                                 index: day,
                                 selectedDay: selectedDay,
                               ),

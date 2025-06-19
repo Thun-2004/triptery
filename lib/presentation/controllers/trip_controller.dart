@@ -5,7 +5,8 @@ import 'package:triptery/domain/usecases/trip/get_trips.dart';
 
 //strategy = trip gradually add when day card is clicked  
 class TripController extends GetxController{
-  final GetTripByDayId getTripById;
+  final GetTripByDayId? getTripByDayId;
+  final GetTripByPlanId? getTripByPlanId; 
   var isLoading = true.obs;
   RxList<Trip?> trips = <Trip?>[].obs;//NOTE: can't initialize list with null
   
@@ -25,7 +26,7 @@ class TripController extends GetxController{
   List<Trip> get getRoutes => routes.whereType<Trip>().toList();
 
   RxList<int> deletedItems = <int>[].obs;
-  List<Trip> get getDeletedItems => routes.whereType<Trip>().toList();
+  List<int> get getDeletedItems => routes.whereType<int>().toList();
 
   List<Map<String, String>> routeChoices = [
     {
@@ -148,21 +149,50 @@ class TripController extends GetxController{
     },
   ];
 
-  TripController({required this.getTripById}); 
+  TripController({this.getTripByDayId, this.getTripByPlanId}); 
 
   @override
   void onInit(){
     super.onInit();
+    fetchTripsbyPlanId(1); 
     log("🚀 TripController initialized");
+  }
+
+  void test() {
+    //print item in places
+    for (Trip place in places) { 
+      log("TripController: Place - ${place.placeName}, ID - ${place.id}");
+    }
   }
 
   Future<void> fetchTripsbyDay(int planId, int day) async {
     try{
-      isLoading(true); 
-      final result = await getTripById.execute(1, 1); 
-      trips.value.add(result);
+      isLoading(true);
+      if(getTripByDayId != null){
+        final result = await getTripByDayId!.execute(1, 1);
+        trips.value.add(result);
+        populatePlaceAndRouteLists();
+      }
+    } catch (e) {
+      log("Error fetching trips by day: $e");
+    }finally {
+      isLoading(false);
+    }
+  }
+
+  Future<void> fetchTripsbyPlanId(int planId) async {
+    try {
+      isLoading(true);
+      trips.clear(); //clean previous trips in case user click day card before all card
+      if (getTripByPlanId != null) {
+        final result = await getTripByPlanId!.execute(planId);
+        trips.value = result;
+        populatePlaceAndRouteLists();
+      }
+    } catch (e) {
+      log("Error fetching trips: $e");
     } finally {
-      isLoading(false); 
+      isLoading(false);
     }
   }
 
@@ -175,11 +205,13 @@ class TripController extends GetxController{
     print("isEditingPlaceOrder: ${_isEditingPlaceOrder.value}"); 
   }
 
-  //added
   void populatePlaceAndRouteLists() {
+    //clear previous data
+    routes.clear(); 
+    places.clear();
+
     if (trips.isNotEmpty) {
-      // routes = trips.where((trip) => trip.type == TripType.route).toList();
-      for (Trip trip in trips.whereType().toList()) {
+      for (Trip trip in trips.whereType<Trip>().toList()) {
         places.add(
           Trip(
             id: trip.id,

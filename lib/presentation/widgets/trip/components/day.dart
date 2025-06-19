@@ -25,12 +25,12 @@ class _DayState extends State<Day> {
   bool isExpanded = false;
   bool _isExpanded = false;
   int _selectedIndex = 0;
-  late TripService tripService;
+  // late TripService tripService;
   var selectedTime = Duration(hours: 9, minutes: 41);
   //NOTE :getter type = dynamic type
-  // List<Trip> get temp_routes => tripService.getEntireRoutes(); 
-  List<Trip> get _places => tripService.getPlaces();
-  List<Trip> get _routes => tripService.getRoutes();
+  // List<Trip> get temp_routes => tripService.getEntireRoutes();
+  List<Trip> get _places => tripController.getPlaces;
+  List<Trip> get _routes => tripController.getRoutes;
 
   void _onCardSelected(int index) {
     setState(() {
@@ -44,17 +44,17 @@ class _DayState extends State<Day> {
 
   void handleReorder(int oldIndex, int newIndex) {
     setState(() {
-      tripService.handleReorder(oldIndex, newIndex, _selectedIndex);
+      tripController.handleReorder(oldIndex, newIndex, _selectedIndex);
     });
   }
 
   void recalculateAllRoutes() {
-    tripService.recalculateAllRoutes();
+    tripController.recalculateAllRoutes();
     // setState(() {});
   }
 
   void addPlace(int index) {
-    tripService.addPlace(index);
+    tripController.addPlace(index);
     setState(() {});
   }
 
@@ -82,8 +82,8 @@ class _DayState extends State<Day> {
   @override
   void initState() {
     super.initState();
-    tripService = TripService(widget.day);
-    tripService.init();
+    // tripService = TripService(widget.day);
+    // tripService.init();
   }
 
   @override
@@ -160,136 +160,145 @@ class _DayState extends State<Day> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           child:
               _isExpanded
-                  ? ReorderableListView.builder(
-                    buildDefaultDragHandles: true,
-                    scrollDirection: Axis.vertical,
-                    // shrinkWrap: true,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: _places.length,
+                  ? Obx(
+                    () => ReorderableListView.builder(
+                      buildDefaultDragHandles: true,
+                      scrollDirection: Axis.vertical,
+                      // shrinkWrap: true,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: _places.length,
 
-                    onReorder: handleReorder,
-                    itemBuilder: (context, index) {
-                      List<Map<String, String>> routeOptions =
-                          index < _places.length - 1 &&
-                                  _places[index].placeId != null &&
-                                  _places[index + 1].placeId != null
-                              ? tripService.findRouteOptions(
-                                _places[index].placeId!,
-                                _places[index + 1].placeId!,
-                              )
-                              : [];
-                      return Padding(
-                        key: ValueKey('place-$index'),
-                        padding: const EdgeInsets.only(bottom: 0.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.all(0),
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(height: 4),
-                                        if (_places[index].day == widget.day &&
-                                            index <= _places.length - 1 &&
-                                            _places[index].placeId != null)
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Icon(
-                                                LucideIcons.clock,
-                                                color: AppColors.orange_950,
-                                                size: 16,
-                                              ),
-                                              TextButton(
-                                                style: TextButton.styleFrom(
-                                                  padding: EdgeInsets.zero,
-                                                  tapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
-                                                  minimumSize: Size(0, 0),
+                      onReorder: handleReorder,
+                      itemBuilder: (context, index) {
+                        List<Map<String, String>> routeOptions =
+                            index < _places.length - 1 &&
+                                    _places[index].placeId != null &&
+                                    _places[index + 1].placeId != null
+                                ? tripController.findRouteOptions(
+                                  _places[index].placeId!,
+                                  _places[index + 1].placeId!,
+                                )
+                                : [];
+                        return Padding(
+                          key: ValueKey('place-$index'),
+                          padding: const EdgeInsets.only(bottom: 0.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.all(0),
+                                      child: Column(
+                                        children: [
+                                          const SizedBox(height: 4),
+                                          if (_places[index].day ==
+                                                  widget.day &&
+                                              index <= _places.length - 1 &&
+                                              _places[index].placeId != null)
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Icon(
+                                                  LucideIcons.clock,
+                                                  color: AppColors.orange_950,
+                                                  size: 16,
                                                 ),
-                                                onPressed: (() {
-                                                  showTimePicker();
-                                                }),
-                                                child: Text(
-                                                  _places[index].arrivalTime!,
-                                                  style: TextStyle(
-                                                    color: AppColors.orange_950,
+                                                TextButton(
+                                                  style: TextButton.styleFrom(
+                                                    padding: EdgeInsets.zero,
+                                                    tapTargetSize:
+                                                        MaterialTapTargetSize
+                                                            .shrinkWrap,
+                                                    minimumSize: Size(0, 0),
+                                                  ),
+                                                  onPressed: (() {
+                                                    showTimePicker();
+                                                  }),
+                                                  child: Text(
+                                                    _places[index].arrivalTime!,
+                                                    style: TextStyle(
+                                                      color:
+                                                          AppColors.orange_950,
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
+                                              ],
+                                            ),
 
-                                        if (_places[index].day == widget.day &&
-                                            index <= _places.length - 1 &&
-                                            _places[index].placeId != null)
-                                          GestureDetector(
-                                            onTap: () => _onCardSelected(index),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color:
-                                                      _selectedIndex == index
-                                                          ? Colors.blue
-                                                          : Colors.transparent,
-                                                  width: 2,
+                                          if (_places[index].day ==
+                                                  widget.day &&
+                                              index <= _places.length - 1 &&
+                                              _places[index].placeId != null)
+                                            GestureDetector(
+                                              onTap:
+                                                  () => _onCardSelected(index),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color:
+                                                        _selectedIndex == index
+                                                            ? Colors.blue
+                                                            : Colors
+                                                                .transparent,
+                                                    width: 2,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
                                                 ),
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: PlaceCard(
-                                                index: index,
-                                                placeId:
-                                                    _places[index].placeId!,
-                                                placeName:
-                                                    _places[index].placeName!,
-                                                placeDescription:
-                                                    _places[index]
-                                                        .placeDescription!,
-                                                placeImage:
-                                                    _places[index]
-                                                        .placeImageUrl!,
-                                                arrivalTime:
-                                                    _places[index].arrivalTime!,
+                                                child: PlaceCard(
+                                                  index: index,
+                                                  placeId:
+                                                      _places[index].placeId!,
+                                                  placeName:
+                                                      _places[index].placeName!,
+                                                  placeDescription:
+                                                      _places[index]
+                                                          .placeDescription!,
+                                                  placeImage:
+                                                      _places[index]
+                                                          .placeImageUrl!,
+                                                  arrivalTime:
+                                                      _places[index]
+                                                          .arrivalTime!,
+                                                ),
                                               ),
                                             ),
-                                          ),
 
-                                        if (index == _places.length - 1)
-                                          const SizedBox(height: 10)
-                                        else if (index < _places.length - 1 &&
-                                            index < _routes.length &&
-                                            _routes[index].day == widget.day &&
-                                            _places[index].placeId != null &&
-                                            _places[index + 1].placeId !=
-                                                null &&
-                                            routeOptions.isNotEmpty)
-                                          RouteDropdown(
-                                            key: ValueKey(
-                                              'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
+                                          if (index == _places.length - 1)
+                                            const SizedBox(height: 10)
+                                          else if (index < _places.length - 1 &&
+                                              index < _routes.length &&
+                                              _routes[index].day ==
+                                                  widget.day &&
+                                              _places[index].placeId != null &&
+                                              _places[index + 1].placeId !=
+                                                  null &&
+                                              routeOptions.isNotEmpty)
+                                            RouteDropdown(
+                                              key: ValueKey(
+                                                'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
+                                              ),
+
+                                              choices: routeOptions,
+                                              pastChoice:
+                                                  _selectedIndex == index
+                                                      ? "Select route mode"
+                                                      : _routes[index].routeMode
+                                                          .toString(),
                                             ),
-
-                                            choices: routeOptions,
-                                            pastChoice:
-                                                _selectedIndex == index
-                                                    ? "Select route mode"
-                                                    : _routes[index].routeMode
-                                                        .toString(),
-                                          ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   )
                   : const SizedBox.shrink(),
         ),
