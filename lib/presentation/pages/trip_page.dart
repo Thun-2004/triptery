@@ -61,7 +61,7 @@ class _TripPageState extends State<TripPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => EditRoutePage(day: 1)),
+            MaterialPageRoute(builder: (context) => EditRoutePage()),
           );
         }, 
 

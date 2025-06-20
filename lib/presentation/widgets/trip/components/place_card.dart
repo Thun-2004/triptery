@@ -95,8 +95,7 @@ class _PlaceCardState extends State<PlaceCard> {
                             color: AppColors.black,
                           ),
 
-                          if (widget.isEdit ==
-                              true) //NOTE : check if isEdit is true
+                          if (widget.isEdit == true) //NOTE : check if isEdit is true
                             Checkbox(
                               isError: true,
                               tristate: true,

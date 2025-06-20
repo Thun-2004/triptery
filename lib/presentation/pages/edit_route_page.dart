@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/data/mock/mock_plan.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
+import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:triptery/presentation/pages/trip/add_place_sheet.dart';
 import 'package:triptery/presentation/widgets/add_button.dart';
@@ -17,8 +18,8 @@ import 'package:triptery/services/core/trip/trip_service.dart';
 
 //FIXME: change reorderable to widget
 class EditRoutePage extends StatefulWidget {
-  const EditRoutePage({super.key, required this.day});
-  final int day;
+  const EditRoutePage({super.key});
+  // final int day;
 
   @override
   State<EditRoutePage> createState() => _EditRoutePageState();
@@ -28,24 +29,24 @@ class _EditRoutePageState extends State<EditRoutePage> {
   final tripController = Get.find<TripController>();
   bool isExpanded = false;
   int _selectedIndex = 0;
-  late TripService tripService;
+  // late TripService tripService;
   late bool _isEditing;
   int selectedDay = 1;
-  List<Trip> trips = mockTrips;
-  late Widget dayMode;
+  // List<Trip> trips = mockTrips;
+  // late Widget dayMode;
 
   //NOTE :getter type = dynamic type
-  List<Trip> get _places => tripService.getPlaces();
-  List<Trip> get _routes => tripService.getRoutes();
-  List<int> get _deletedItems => tripService.getDeletedItems();
+  List<Trip> get _places => tripController.getPlaces;
+  List<Trip> get _routes => tripController.getRoutes;
+  List<int> get _deletedItems => tripController.getDeletedItems;
 
-  List<int> get days {
-    return trips
-        .where((trip) => trip.day > 0)
-        .map((trip) => trip.day)
-        .toSet()
-        .toList();
-  }
+  // List<int> get days {
+  //   return trips
+  //       .where((trip) => trip.day > 0)
+  //       .map((trip) => trip.day)
+  //       .toSet()
+  //       .toList();
+  // }
 
   // void _selectDay(int day) {
   //   setState(() {
@@ -70,12 +71,12 @@ class _EditRoutePageState extends State<EditRoutePage> {
 
   void handleReorder(int oldIndex, int newIndex) {
     setState(() {
-      tripService.handleReorder(oldIndex, newIndex, _selectedIndex);
+      tripController.handleReorder(oldIndex, newIndex, _selectedIndex);
     });
   }
 
   void recalculateAllRoutes() {
-    tripService.recalculateAllRoutes();
+    tripController.recalculateAllRoutes();
   }
 
   void addPlace(index) {
@@ -92,15 +93,15 @@ class _EditRoutePageState extends State<EditRoutePage> {
     );
   }
 
-  void deleteCard(index) {
-    setState(() {
-      tripService.addDeletedPlaceCards(index);
-    });
-  }
+  // void deleteCard(index) {
+  //   setState(() {
+  //     tripService.addDeletedPlaceCards(index);
+  //   });
+  // }
 
   void addDeletedPlaceCards(int index) {
     setState(() {
-      tripService.addDeletedPlaceCards(index);
+      tripController.addDeletedPlaceCards(index);
     });
   }
 
@@ -110,11 +111,17 @@ class _EditRoutePageState extends State<EditRoutePage> {
     });
   }
 
+  void _selectDay(int day) {
+    setState(() {
+      selectedDay = day;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    tripService = TripService(widget.day);
-    tripService.init();
+    // tripService = TripService(widget.day);
+    // tripService.init();
     _isEditing = tripController.isEditingPlaceOrder;
   }
 
@@ -172,23 +179,34 @@ class _EditRoutePageState extends State<EditRoutePage> {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: SizedBox(
                     height: 40,
-                    child: ListView(
+                    child: Obx(() {
+
+                      PlanController planController = Get.find<PlanController>();
+
+                      if (planController.plan.value == null) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      return ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        ...days.map(
-                          (day) => Row(
+                        ...List.generate(planController.plan.value!.dayCount ?? 0, (index) {
+                          int day = index + 1;
+                          return Row(
                             children: [
-                              DayButton(
-                                text: 'Day $day',
-                                onPressed: () => {},
-                                // onPressed: () => _selectDay(day),
-                                index: day,
-                                selectedDay: selectedDay,
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: DayButton(
+                                  text: 'Day $day',
+                                  onPressed: () {
+                                    _selectDay(day);                              
+                                  },
+                                  index: day,
+                                  selectedDay: selectedDay,
+                                ),
                               ),
-                              const SizedBox(width: 10),
                             ],
-                          ),
-                        ),
+                          );
+                        }), 
 
                         AddButton(
                           onPressed: () {
@@ -201,7 +219,8 @@ class _EditRoutePageState extends State<EditRoutePage> {
                           height: 28,
                         ),
                       ],
-                    ),
+                    ); 
+                    })
                   ),
                 ),
               ],
@@ -239,7 +258,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                           color: AppColors.darkBlue,
                         ),
                         onPressed: () {
-                          tripService.deleteAllPlaceCards();
+                          tripController.deleteAllPlaceCards();
                         },
                       ),
                       // IconButton(
@@ -275,7 +294,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                     index < _places.length - 1 &&
                             _places[index].placeId != null &&
                             _places[index + 1].placeId != null
-                        ? tripService.findRouteOptions(
+                        ? tripController.findRouteOptions(
                           _places[index].placeId!,
                           _places[index + 1].placeId!,
                         )
@@ -293,7 +312,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                               child: Column(
                                 children: [
                                   const SizedBox(height: 4),
-                                  if (_places[index].day == widget.day &&
+                                  if (_places[index].day == selectedDay &&
                                       index <= _places.length - 1 &&
                                       _places[index].placeId != null)
                                     Row(
@@ -312,7 +331,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                       ],
                                     ),
 
-                                  if (_places[index].day == widget.day &&
+                                  if (_places[index].day == selectedDay &&
                                       index <= _places.length - 1 &&
                                       _places[index].placeId != null)
                                     GestureDetector(
@@ -350,7 +369,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                     const SizedBox(height: 10)
                                   else if (index < _places.length - 1 &&
                                       index < _routes.length &&
-                                      _routes[index].day == widget.day &&
+                                      _routes[index].day == selectedDay &&
                                       _places[index].placeId != null &&
                                       _places[index + 1].placeId != null &&
                                       routeOptions.isNotEmpty)

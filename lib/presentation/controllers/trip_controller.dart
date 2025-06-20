@@ -299,13 +299,13 @@ class TripController extends GetxController {
         );
 
         final matched = findRouteOptions(fromPlace.placeId!, toPlace.placeId!);
-        print(
+        log(
           "🔁 Regenerated route from ${fromPlace.placeId} → ${toPlace.placeId}: ${matched.length} option(s)",
         );
       }
     }
 
-    print("✅ Total routes regenerated: ${routes.length}");
+    log("✅ Total routes regenerated: ${routes.length}");
   }
   // void recalculateAllRoutes() {
   //   final List<Trip> newRoutes = [];
@@ -387,6 +387,7 @@ class TripController extends GetxController {
         continue;
       } else {
         places.removeAt(ind);
+        routes.removeAt(ind); 
       }
     }
     deletedItems.clear();
