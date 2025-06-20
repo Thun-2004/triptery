@@ -505,7 +505,7 @@ class TripController extends GetxController {
     }
     selectedPlaces.clear(); 
     places.assignAll([...places]);
-    routes.refresh();
+    routes.assignAll([...routes]);
   }
 
   //FIXME: create day flow(add button -> add new route -> if no route/trip exists = add button)
