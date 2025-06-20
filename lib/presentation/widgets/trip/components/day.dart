@@ -270,7 +270,7 @@ class _DayState extends State<Day> {
 
                                           if (index == _places.length - 1)
                                             const SizedBox(height: 10)
-                                          else if (index < _routes.length)                                           
+                                          else if (index < _routes.length && _routes[index].day == widget.day)                                           
                                           // else if (index < _places.length - 1 && index < _routes.length && _routes[index].day == widget.day && _places[index].placeId != null && _places[index + 1].placeId != null && routeOptions.isNotEmpty)                                           
                                             RouteDropdown(
                                               key: ValueKey(
