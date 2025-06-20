@@ -55,11 +55,6 @@ class _DayState extends State<Day> {
     // setState(() {});
   }
 
-  void addPlace(int index) {
-    tripController.addPlace(index);
-    setState(() {});
-  }
-
   void showTimePicker() {
     showModalBottomSheet(
       context: context,

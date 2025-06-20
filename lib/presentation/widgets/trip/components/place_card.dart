@@ -72,7 +72,7 @@ class _PlaceCardState extends State<PlaceCard> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     image: DecorationImage(
-                      image: AssetImage(widget.placeImage),
+                      image: NetworkImage(widget.placeImage),
                       fit: BoxFit.cover,
                     ),
                   ),

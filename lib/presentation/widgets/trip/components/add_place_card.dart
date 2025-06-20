@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/domain/entities/place/place.dart';
 import 'package:triptery/presentation/controllers/place_controller.dart';
+import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:triptery/presentation/pages/place_detail.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 
@@ -25,7 +26,7 @@ class AddPlaceCard extends StatefulWidget {
 
 class AddPlaceCardState extends State<AddPlaceCard> {
   bool isAdded = false;
-  final placeController = Get.find<PlaceController>();
+  final TripController tripController = Get.find<TripController>();
   late int currentOrder;
 
   @override
@@ -36,18 +37,18 @@ class AddPlaceCardState extends State<AddPlaceCard> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      isAdded = placeController.selectedPlaces.any(
+      isAdded = tripController.selectedPlaces.any(
         (place) => int.parse(place.id) == widget.placeId,
       );
 
       currentOrder =
-          placeController.selectedPlaces.indexWhere(
+          tripController.selectedPlaces.indexWhere(
             (place) => int.parse(place.id) == widget.placeId,
           ) + 1;
 
       return GestureDetector(
         onTap: ((){
-          Place place = placeController.allPlaces.firstWhere(
+          Place place = tripController.allPlaces.firstWhere(
             (place) => int.parse(place.id) == widget.placeId,
           );
           
@@ -151,9 +152,9 @@ class AddPlaceCardState extends State<AddPlaceCard> {
                               setState(() {
                                 isAdded = !isAdded;
                                 if (isAdded) {
-                                  placeController.addPlace(widget.placeId);
+                                  tripController.addPlaceToSelected(widget.placeId);
                                 } else {
-                                  placeController.removePlace(widget.placeId);
+                                  tripController.removePlaceFromSelected(widget.placeId);
                                 }
                               });
                             },

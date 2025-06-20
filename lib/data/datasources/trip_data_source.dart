@@ -24,7 +24,7 @@ class TripDataSource {
         "placeName": "Pattaya walking street",
         "placeDescription":
             "a vibrant entertainment area in Pattaya that has gained notoriety for its go-go bars and adult shows, as well as karaoke bars and nightclubs",
-        "placeImageUrl": "assets/images/pattaya.jpg",
+        "placeImageUrl": "https://i.pinimg.com/736x/0b/8b/44/0b8b44749794c89156391daf1e607f95.jpg",
         "arrivalTime": "10:00 AM",
         "routeMode": "car",
         "routeFrom": "1",
@@ -45,7 +45,7 @@ class TripDataSource {
         "placeName": "Jomtien Beach",
         "placeDescription":
             "a popular tourist destination located in Pattaya, Thailand, known for its long stretch of sand, vibrant atmosphere, and variety of activities.",
-        "placeImageUrl": "assets/images/sea.jpeg",
+        "placeImageUrl": "https://i.pinimg.com/736x/6e/bd/aa/6ebdaa58bc13a33a76f9beb560111da2.jpg",
         "arrivalTime": "11:00 AM",
         "routeMode": "publicTransit",
         "routeFrom": "2",
@@ -66,7 +66,7 @@ class TripDataSource {
         "placeName": "Sanctuary of Truth",
         "placeDescription":
             "an unfinished museum in Pattaya, Thailand designed by Thai businessman Lek Viriyaphan. The museum structure is a hybrid of a temple and a castle that is themed on the Ayutthaya Kingdom and of Buddhist and Hindu beliefs.",
-        "placeImageUrl": "assets/images/sanctuary.jpg",
+        "placeImageUrl": "https://i.pinimg.com/736x/e3/8c/10/e38c109f5cb9d2de547f5125b44f4912.jpg",
         "arrivalTime": "12:00 PM",
         "routeMode": "publicTransit",
         "routeFrom": null,
@@ -87,7 +87,7 @@ class TripDataSource {
         "placeName": "Sanctuary of Truth",
         "placeDescription":
             "an unfinished museum in Pattaya, Thailand designed by Thai businessman Lek Viriyaphan. The museum structure is a hybrid of a temple and a castle that is themed on the Ayutthaya Kingdom and of Buddhist and Hindu beliefs.",
-        "placeImageUrl": "assets/images/sanctuary.jpg",
+        "placeImageUrl": "https://i.pinimg.com/736x/e3/8c/10/e38c109f5cb9d2de547f5125b44f4912.jpg",
         "arrivalTime": "12:00 PM",
         "routeMode": "publicTransit",
         "routeFrom": null,

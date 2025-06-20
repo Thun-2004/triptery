@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:get/get.dart';
+import 'package:triptery/data/mock/mock_places.dart';
+import 'package:triptery/domain/entities/place/place.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/domain/usecases/trip/get_trips.dart';
 
@@ -16,8 +18,8 @@ class TripController extends GetxController {
   final Rx<bool> _isEditingPlaceOrder = Rx<bool>(false);
   Rx<bool> get isEditingPlaceOrderObs => _isEditingPlaceOrder;
 
-  //added
-  int day = 0;
+  // int day = 0;
+  Rx<int> day = 0.obs; // Reactive day variable
 
   RxList<Trip> places = <Trip>[].obs;
   List<Trip> get getPlaces =>
@@ -28,6 +30,17 @@ class TripController extends GetxController {
 
   RxList<int> deletedItems = <int>[].obs;
   RxList<int> get deletedItemsObs => deletedItems;
+
+  RxList<Place> selectedPlaces = <Place>[].obs;
+  RxList<Place> get addedItemsObs => selectedPlaces;
+
+  RxList<Place> recommendedPlaces = <Place>[].obs;
+  RxList<Place> get recommendedPlacesObs => recommendedPlaces;
+
+  RxList<Place> bookmarkedPlaces = <Place>[].obs;
+  RxList<Place> get bookmarkedPlacesObs => bookmarkedPlaces;
+
+  RxList<Place> allPlaces = mockPlaces.obs;
 
   List<Map<String, String>> routeChoices = [
     {
@@ -156,14 +169,9 @@ class TripController extends GetxController {
   void onInit() {
     super.onInit();
     fetchTripsbyPlanId(1);
+    fetchRecommendedPlaces(); //FIXME: shouldn't be here, but for testing
+    fetchBookmarkedPlaces(); //FIXME: shouldn't be here, but for testing
     log("🚀 TripController initialized");
-  }
-
-  void test() {
-    //print item in places
-    for (Trip place in places) {
-      log("TripController: Place - ${place.placeName}, ID - ${place.id}");
-    }
   }
 
   Future<void> fetchTripsbyDay(int planId, int day) async {
@@ -195,6 +203,22 @@ class TripController extends GetxController {
       log("Error fetching trips: $e");
     } finally {
       isLoading(false);
+    }
+  }
+
+  Future<void> fetchRecommendedPlaces() async {
+    if (recommendedPlaces.isEmpty && allPlaces.isNotEmpty) {
+      recommendedPlaces.value =
+          allPlaces.where((place) => int.parse(place.id) < 8).toList();
+      log("Recommended places initialized: ${recommendedPlaces.length}");
+    }
+  }
+
+  Future<void> fetchBookmarkedPlaces() async {
+    if (allPlaces.isNotEmpty) {
+      bookmarkedPlaces.value =
+          allPlaces.where((place) => int.parse(place.id) > 7).toList();
+      log("Recommended places initialized: ${bookmarkedPlaces.length}");
     }
   }
 
@@ -284,7 +308,7 @@ class TripController extends GetxController {
           Trip(
             id: "${fromPlace.id}-${toPlace.id}", // generate unique route id
             planId: fromPlace.planId,
-            day: day,
+            day: day.value,
             type: TripType.route,
             routeMode: RouteMode.unselected,
             routeFrom: fromPlace.placeId,
@@ -362,23 +386,23 @@ class TripController extends GetxController {
     print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
   }
 
-  void addPlace(index) {
-    Trip newPlace = Trip(
-      id: "1",
-      planId: "1",
-      day: 1,
-      type: TripType.dest,
-      placeId: "5",
-      placeName: "Pattaya Floating Market",
-      placeDescription:
-          "Established since 2008, Pattaya Floating Market is riverside attraction in Pattaya displaying and showcasing the beautiful ancient Thai riverside living community and authentic ways of life",
-      placeImageUrl:
-          "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/53/6d/b7/pattaya-floating-market.jpg?w=1400&h=-1&s=1",
-    );
+  // void addPlace(index) {
+  //   Trip newPlace = Trip(
+  //     id: "1",
+  //     planId: "1",
+  //     day: 1,
+  //     type: TripType.dest,
+  //     placeId: "5",
+  //     placeName: "Pattaya Floating Market",
+  //     placeDescription:
+  //         "Established since 2008, Pattaya Floating Market is riverside attraction in Pattaya displaying and showcasing the beautiful ancient Thai riverside living community and authentic ways of life",
+  //     placeImageUrl:
+  //         "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/53/6d/b7/pattaya-floating-market.jpg?w=1400&h=-1&s=1",
+  //   );
 
-    places.insert(index + 1, newPlace);
-    recalculateAllRoutes();
-  }
+  //   places.insert(index + 1, newPlace);
+  //   recalculateAllRoutes();
+  // }
 
   void deleteAllPlaceCards() {
     for (int ind in deletedItems) {
@@ -401,6 +425,62 @@ class TripController extends GetxController {
       deletedItems.remove(selectedIndex);
     }
     log("Deleted items: $deletedItems");
+  }
+
+  void addPlaceToSelected(int placeId) {
+    selectedPlaces.add(
+      allPlaces.firstWhere((place) => int.parse(place.id) == placeId),
+    );
+    log("Added place with ID $placeId to selected places.");
+  }
+
+  void removePlaceFromSelected(int placeId) {
+    selectedPlaces.removeWhere((place) => place.id == placeId.toString());
+  }
+
+  void clearSelectedPlaces() {
+    selectedPlaces.clear();
+  }
+
+  void addPlaceToTripRoute(int prevPlaceId) {
+    log('day index: ${day.value}');
+    for(Place place in selectedPlaces) {
+      Trip _place = Trip(
+        id: place.id,
+        planId: "1",
+        day:1,
+        // day:day.value,
+        type: TripType.dest,
+        placeId: place.id,
+        placeName: place.name,
+        placeDescription: place.description,
+        placeImageUrl: place.imageUrl,
+        arrivalTime: "10:00 AM",
+      );
+      Trip _route = Trip(
+        id: place.id,
+        planId: "1",
+        day:1,
+        //day:day.value,
+        type: TripType.dest,
+        routeMode: RouteMode.unselected,
+        routeFrom: (prevPlaceId + 1).toString(), 
+        routeTo: (prevPlaceId + 2).toString(),  
+        routeTotalTime: null,
+        routeTotalCost: null,
+        routeTotalDistance: null,
+        routeDistance: null,
+        routeNote: null,
+        note: "Added to trip",
+      );
+
+      places.insert(prevPlaceId + 1, _place);
+      routes.insert(prevPlaceId + 1, _route);
+    }
+    selectedPlaces.clear(); 
+    places.refresh();
+    routes.refresh();
+
   }
 
   //FIXME: create day flow(add button -> add new route -> if no route/trip exists = add button)

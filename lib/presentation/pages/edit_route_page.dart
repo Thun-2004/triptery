@@ -1,20 +1,18 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
-import 'package:triptery/data/mock/mock_plan.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:triptery/presentation/pages/trip/add_place_sheet.dart';
 import 'package:triptery/presentation/widgets/add_button.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
-import 'package:triptery/presentation/widgets/trip/components/day.dart';
-import 'package:triptery/presentation/widgets/trip/components/day_list.dart';
 import 'package:triptery/presentation/widgets/trip/components/place_card.dart';
 import 'package:triptery/presentation/widgets/trip/components/route_dropdown.dart';
 import 'package:triptery/presentation/widgets/trip/trip_body.dart';
-import 'package:triptery/services/core/trip/trip_service.dart';
 
 //FIXME: change reorderable to widget
 class EditRoutePage extends StatefulWidget {
@@ -31,7 +29,6 @@ class _EditRoutePageState extends State<EditRoutePage> {
   int _selectedIndex = 0;
   // late bool _isEditing;
   int selectedDay = 1;
-  
 
   void _onCardSelected(int index) {
     setState(() {
@@ -62,16 +59,13 @@ class _EditRoutePageState extends State<EditRoutePage> {
       showDragHandle: true,
       backgroundColor: AppColors.white,
       builder: (context) {
-        return FractionallySizedBox(heightFactor: 0.7, child: AddPlaceSheet());
+        return FractionallySizedBox(
+          heightFactor: 0.7,
+          child: AddPlaceSheet(prevPlaceId: index),
+        );
       },
     );
   }
-
-  // void deleteCard(index) {
-  //   setState(() {
-  //     tripService.addDeletedPlaceCards(index);
-  //   });
-  // }
 
   void addDeletedPlaceCards(int index) {
     setState(() {
@@ -88,6 +82,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
   void _selectDay(int day) {
     setState(() {
       selectedDay = day;
+      tripController.day.value = day; 
     });
   }
 
@@ -151,47 +146,50 @@ class _EditRoutePageState extends State<EditRoutePage> {
                   child: SizedBox(
                     height: 40,
                     child: Obx(() {
-
-                      PlanController planController = Get.find<PlanController>();
+                      PlanController planController =
+                          Get.find<PlanController>();
 
                       if (planController.plan.value == null) {
                         return const Center(child: CircularProgressIndicator());
                       }
                       return ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        ...List.generate(planController.plan.value!.dayCount ?? 0, (index) {
-                          int day = index + 1;
-                          return Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: DayButton(
-                                  text: 'Day $day',
-                                  onPressed: () {
-                                    _selectDay(day);                              
-                                  },
-                                  index: day,
-                                  selectedDay: selectedDay,
-                                ),
-                              ),
-                            ],
-                          );
-                        }), 
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          ...List.generate(
+                            planController.plan.value!.dayCount ?? 0,
+                            (index) {
+                              int day = index + 1;
+                              return Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 10),
+                                    child: DayButton(
+                                      text: 'Day $day',
+                                      onPressed: () {
+                                        _selectDay(day);
+                                      },
+                                      index: day,
+                                      selectedDay: selectedDay,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
 
-                        AddButton(
-                          onPressed: () {
-                            // Your logic here
-                          },
-                          text: '+',
-                          textSize: 16,
-                          textColor: AppColors.orange_950,
-                          width: 50,
-                          height: 28,
-                        ),
-                      ],
-                    ); 
-                    })
+                          AddButton(
+                            onPressed: () {
+                              // Your logic here
+                            },
+                            text: '+',
+                            textSize: 16,
+                            textColor: AppColors.orange_950,
+                            width: 50,
+                            height: 28,
+                          ),
+                        ],
+                      );
+                    }),
                   ),
                 ),
               ],
@@ -200,7 +198,8 @@ class _EditRoutePageState extends State<EditRoutePage> {
 
           //selected deletion
           Obx(() {
-            if (tripController.deletedItemsObs.isEmpty) return const SizedBox.shrink();
+            if (tripController.deletedItemsObs.isEmpty)
+              return const SizedBox.shrink();
 
             return AnimatedContainer(
               duration: const Duration(milliseconds: 300),
@@ -234,180 +233,163 @@ class _EditRoutePageState extends State<EditRoutePage> {
                           tripController.deleteAllPlaceCards();
                         },
                       ),
-                     
                     ],
                   ),
                 ],
               ),
             );
-            }), 
+          }),
           //scrollable content
           Expanded(
             child: Obx(() {
-              final List<Trip> _places = tripController.getPlaces;
+              List<Trip> _places = tripController.getPlaces;
               List<Trip> _routes = tripController.getRoutes;
-              
+
+              log("Visible places: ${_places.map((e) => '${e.placeName} (Day ${e.day})').toList()}");
 
               return ReorderableListView.builder(
-              //NOTE reorderable list view is scrollable on its own
-              buildDefaultDragHandles: true,
-              scrollDirection: Axis.vertical,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: _places.length,
+                //NOTE reorderable list view is scrollable on its own
+                buildDefaultDragHandles: true,
+                scrollDirection: Axis.vertical,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: _places.length,
 
-              onReorder: handleReorder,
-              itemBuilder: (context, index) {
-                List<Map<String, String>> routeOptions =
-                    index < _places.length - 1 &&
-                            _places[index].placeId != null &&
-                            _places[index + 1].placeId != null
-                        ? tripController.findRouteOptions(
-                          _places[index].placeId!,
-                          _places[index + 1].placeId!,
-                        )
-                        : [];
-                return Padding(
-                  key: ValueKey('place-${_places[index].placeId}-$index'),
-                  padding: const EdgeInsets.only(bottom: 0.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.all(0),
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 4),
-                                  if (_places[index].day == selectedDay &&
-                                      index <= _places.length - 1 &&
-                                      _places[index].placeId != null)
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Icon(
-                                          LucideIcons.clock,
-                                          color: AppColors.orange_950,
-                                          size: 16,
-                                        ),
-                                        CustomText(
-                                          text: _places[index].arrivalTime!,
-                                          type: TextType.body,
-                                          color: AppColors.orange_950,
-                                        ),
-                                      ],
-                                    ),
-
-                                  if (_places[index].day == selectedDay &&
-                                      index <= _places.length - 1 &&
-                                      _places[index].placeId != null)
-                                    GestureDetector(
-                                      onTap: () => _onCardSelected(index),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color:
-                                                _selectedIndex == index
-                                                    ? Colors.blue
-                                                    : Colors.transparent,
-                                            width: 2,
+                onReorder: handleReorder,
+                itemBuilder: (context, index) {
+                  List<Map<String, String>> routeOptions =
+                      index < _places.length - 1 &&
+                              _places[index].placeId != null &&
+                              _places[index + 1].placeId != null
+                          ? tripController.findRouteOptions(
+                            _places[index].placeId!,
+                            _places[index + 1].placeId!,
+                          )
+                          : [];
+                  return Padding(
+                    key: ValueKey('place-${_places[index].placeId}-$index'),
+                    padding: const EdgeInsets.only(bottom: 0.0),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: EdgeInsets.all(0),
+                                child: Column(
+                                  children: [
+                                    const SizedBox(height: 4),
+                                    if (_places[index].day == selectedDay &&
+                                        index <= _places.length - 1 &&
+                                        _places[index].placeId != null)
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Icon(
+                                            LucideIcons.clock,
+                                            color: AppColors.orange_950,
+                                            size: 16,
                                           ),
-                                          borderRadius: BorderRadius.circular(
-                                            8,
+                                          CustomText(
+                                            text: _places[index].arrivalTime!,
+                                            type: TextType.body,
+                                            color: AppColors.orange_950,
                                           ),
-                                        ),
-                                        child: Obx(() =>
-                                          PlaceCard(
-                                            index: index,
-                                            placeId: _places[index].placeId!,
-                                            placeName: _places[index].placeName!,
-                                            placeDescription:
-                                                _places[index].placeDescription!,
-                                            placeImage:
-                                                _places[index].placeImageUrl!,
-                                            arrivalTime:
-                                                _places[index].arrivalTime!,
-                                            addDeletedItem: addDeletedPlaceCards,
-                                            isEdit: tripController.isEditingPlaceOrderObs.value,
-                                          )),
-                                      ),
-                                    ),
-
-                                  if (index == _places.length - 1)
-                                    const SizedBox(height: 10)
-                                  else if (index < _places.length - 1 &&
-                                      index < _routes.length &&
-                                      _routes[index].day == selectedDay &&
-                                      _places[index].placeId != null &&
-                                      _places[index + 1].placeId != null &&
-                                      routeOptions.isNotEmpty)
-                                    RouteDropdown(
-                                      key: ValueKey(
-                                        'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
+                                        ],
                                       ),
 
-                                      choices: routeOptions,
-                                      pastChoice:
-                                          _selectedIndex == index
-                                              ? "Select route mode"
-                                              : _routes[index].routeMode
-                                                  .toString(),
-                                    ),
+                                    if (_places[index].day == selectedDay &&
+                                        index <= _places.length - 1 &&
+                                        _places[index].placeId != null)
+                                      GestureDetector(
+                                        onTap: () => _onCardSelected(index),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color:
+                                                  _selectedIndex == index
+                                                      ? Colors.blue
+                                                      : Colors.transparent,
+                                              width: 2,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                          child: Obx(
+                                            () => PlaceCard(
+                                              index: index,
+                                              placeId: _places[index].placeId!,
+                                              placeName:
+                                                  _places[index].placeName!,
+                                              placeDescription:
+                                                  _places[index]
+                                                      .placeDescription!,
+                                              placeImage:
+                                                  _places[index].placeImageUrl!,
+                                              arrivalTime:
+                                                  _places[index].arrivalTime!,
+                                              addDeletedItem:
+                                                  addDeletedPlaceCards,
+                                              isEdit:
+                                                  tripController
+                                                      .isEditingPlaceOrderObs
+                                                      .value,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
 
-                                  Obx(() {
-                                    if (tripController.isEditingPlaceOrderObs.value && index < _places.length - 1 &&
-                                      _places[index].day == selectedDay){
-                                      return AddButton(
-                                        text: "+ Add Place",
-                                        textSize: 14,
-                                        textColor: AppColors.orange_950,
-                                        width: double.infinity,
-                                        height: 30,
-                                        onPressed: () => addPlace(index),
-                                      ); 
-                                    } else {
-                                      return const SizedBox.shrink();
-                                    }
-                                  })
-                                  // ElevatedButton(
-                                  //   onPressed: () => addPlace(index),
-                                  //   style: ElevatedButton.styleFrom(
-                                  //     backgroundColor: Color.fromARGB(
-                                  //       255,
-                                  //       250,
-                                  //       98,
-                                  //       47,
-                                  //     ),
-                                  //     shape: RoundedRectangleBorder(
-                                  //       borderRadius: BorderRadius.circular(
-                                  //         15,
-                                  //       ),
-                                  //     ),
-                                  //     padding: const EdgeInsets.symmetric(
-                                  //       vertical: 10,
-                                  //       horizontal: 10,
-                                  //     ),
-                                  //   ),
-                                  //   child: Text(
-                                  //     "Add Place",
-                                  //     style: TextStyle(
-                                  //       color: AppColors.white,
-                                  //       fontSize: 14,
-                                  //       fontWeight: FontWeight.bold,
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                ],
+                                    if (index == _places.length - 1)
+                                      const SizedBox(height: 10)
+                                    else if (index < _places.length - 1 &&
+                                        index < _routes.length &&
+                                        _routes[index].day == selectedDay &&
+                                        _places[index].placeId != null &&
+                                        _places[index + 1].placeId != null &&
+                                        routeOptions.isNotEmpty)
+                                      RouteDropdown(
+                                        key: ValueKey(
+                                          'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
+                                        ),
+
+                                        choices: routeOptions,
+                                        pastChoice:
+                                            _selectedIndex == index
+                                                ? "Select route mode"
+                                                : _routes[index].routeMode
+                                                    .toString(),
+                                      ),
+
+                                    Obx(() {
+                                      if (tripController
+                                              .isEditingPlaceOrderObs
+                                              .value &&
+                                          index < _places.length - 1 &&
+                                          _places[index].day == selectedDay) {
+                                        return AddButton(
+                                          text: "+ Add Place",
+                                          textSize: 14,
+                                          textColor: AppColors.orange_950,
+                                          width: double.infinity,
+                                          height: 30,
+                                          onPressed: () => addPlace(index),
+                                        );
+                                      } else {
+                                        return const SizedBox.shrink();
+                                      }
+                                    }),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
+                      ],
+                    ),
+                  );
+                },
+              );
             }),
           ),
 
