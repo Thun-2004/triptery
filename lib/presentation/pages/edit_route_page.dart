@@ -343,11 +343,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                     if (index == _places.length - 1)
                                       const SizedBox(height: 10)
                                     else if (index < _places.length - 1 &&
-                                        index < _routes.length &&
-                                        _routes[index].day == selectedDay &&
-                                        _places[index].placeId != null &&
-                                        _places[index + 1].placeId != null &&
-                                        routeOptions.isNotEmpty)
+                                        index < _routes.length &&_routes[index].day == selectedDay && _places[index].placeId != null && _places[index + 1].placeId != null )
                                       RouteDropdown(
                                         key: ValueKey(
                                           'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',

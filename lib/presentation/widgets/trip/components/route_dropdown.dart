@@ -148,7 +148,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (routesToDisplay.isEmpty)
-                const Text("No routes available")
+                const SizedBox.shrink()
               else
                 ...List.generate(routesToDisplay.length, (i) {
                   return Column(

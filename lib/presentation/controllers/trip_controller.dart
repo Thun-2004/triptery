@@ -4,6 +4,7 @@ import 'package:triptery/data/mock/mock_places.dart';
 import 'package:triptery/domain/entities/place/place.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/domain/usecases/trip/get_trips.dart';
+import 'package:triptery/utils/datetime.dart';
 
 //strategy = trip gradually add when day card is clicked
 class TripController extends GetxController {
@@ -442,7 +443,7 @@ class TripController extends GetxController {
     selectedPlaces.clear();
   }
 
-  void addPlaceToTripRoute(int prevPlaceId) {
+  void addPlaceToTripRoute(int prevPlaceIndex) {
     log('day index: ${day.value}');
     for(Place place in selectedPlaces) {
       Trip _place = Trip(
@@ -455,7 +456,7 @@ class TripController extends GetxController {
         placeName: place.name,
         placeDescription: place.description,
         placeImageUrl: place.imageUrl,
-        arrivalTime: "10:00 AM",
+        arrivalTime: incrementHour(places[prevPlaceIndex].arrivalTime!) ,
       );
       Trip _route = Trip(
         id: place.id,
@@ -464,8 +465,8 @@ class TripController extends GetxController {
         //day:day.value,
         type: TripType.dest,
         routeMode: RouteMode.unselected,
-        routeFrom: (prevPlaceId + 1).toString(), 
-        routeTo: (prevPlaceId + 2).toString(),  
+        routeFrom: places[prevPlaceIndex].placeId.toString(), 
+        routeTo: place.id.toString(),  
         routeTotalTime: null,
         routeTotalCost: null,
         routeTotalDistance: null,
@@ -474,13 +475,37 @@ class TripController extends GetxController {
         note: "Added to trip",
       );
 
-      places.insert(prevPlaceId + 1, _place);
-      routes.insert(prevPlaceId + 1, _route);
+      Trip _route2 = Trip(
+        id: place.id,
+        planId: "1",
+        day: 1,
+        //day:day.value,
+        type: TripType.dest,
+        routeMode: RouteMode.unselected,
+        routeFrom: place.id.toString(),
+        routeTo: places[prevPlaceIndex + 1].placeId.toString(),
+        routeTotalTime: null,
+        routeTotalCost: null,
+        routeTotalDistance: null,
+        routeDistance: null,
+        routeNote: null,
+        note: "Added to trip",
+      );
+      
+      places.insert(prevPlaceIndex + 1, _place);
+      routes.insert(prevPlaceIndex + 1, _route);
+
+      //card after = time of added places + 1 
+      if(prevPlaceIndex > 0 && prevPlaceIndex < places.length - 1) {
+        routes.insert(prevPlaceIndex + 2, _route2);
+        for(int i = prevPlaceIndex + 2; i < places.length; i++) {
+          places[i].arrivalTime = incrementHour(places[i].arrivalTime!); 
+        }
+      }
     }
     selectedPlaces.clear(); 
-    places.refresh();
+    places.assignAll([...places]);
     routes.refresh();
-
   }
 
   //FIXME: create day flow(add button -> add new route -> if no route/trip exists = add button)
