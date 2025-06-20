@@ -32,6 +32,7 @@ class PlaceCard extends StatefulWidget {
 class _PlaceCardState extends State<PlaceCard> {
   bool isActivityExpanded = false;
   bool isChecked = false;
+  // final bool isChecked = tripController.deletedItemsObs.contains(widget.index); 
   List<String> itemsToShow = [
     "Not Ping pong show",
     "Martini at the bar",

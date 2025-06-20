@@ -29,35 +29,9 @@ class _EditRoutePageState extends State<EditRoutePage> {
   final tripController = Get.find<TripController>();
   bool isExpanded = false;
   int _selectedIndex = 0;
-  // late TripService tripService;
-  late bool _isEditing;
+  // late bool _isEditing;
   int selectedDay = 1;
-  // List<Trip> trips = mockTrips;
-  // late Widget dayMode;
-
-  //NOTE :getter type = dynamic type
-  List<Trip> get _places => tripController.getPlaces;
-  List<Trip> get _routes => tripController.getRoutes;
-  List<int> get _deletedItems => tripController.getDeletedItems;
-
-  // List<int> get days {
-  //   return trips
-  //       .where((trip) => trip.day > 0)
-  //       .map((trip) => trip.day)
-  //       .toSet()
-  //       .toList();
-  // }
-
-  // void _selectDay(int day) {
-  //   setState(() {
-  //     if (day == 0) {
-  //       dayMode = DayList();
-  //     } else {
-  //       dayMode = Day(day: day);
-  //     }
-  //     selectedDay = day;
-  //   });
-  // }
+  
 
   void _onCardSelected(int index) {
     setState(() {
@@ -120,9 +94,6 @@ class _EditRoutePageState extends State<EditRoutePage> {
   @override
   void initState() {
     super.initState();
-    // tripService = TripService(widget.day);
-    // tripService.init();
-    _isEditing = tripController.isEditingPlaceOrder;
   }
 
   @override
@@ -228,8 +199,10 @@ class _EditRoutePageState extends State<EditRoutePage> {
           ),
 
           //selected deletion
-          if (_deletedItems.isNotEmpty)
-            AnimatedContainer(
+          Obx(() {
+            if (tripController.deletedItemsObs.isEmpty) return const SizedBox.shrink();
+
+            return AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               alignment: Alignment.bottomCenter,
               height: 50,
@@ -245,7 +218,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                     color: AppColors.darkBlue,
                   ),
                   CustomText(
-                    text: "${_deletedItems.length} Selected",
+                    text: "${tripController.deletedItemsObs.length} Selected",
                     type: TextType.subHeading,
                     color: AppColors.white,
                   ),
@@ -261,30 +234,24 @@ class _EditRoutePageState extends State<EditRoutePage> {
                           tripController.deleteAllPlaceCards();
                         },
                       ),
-                      // IconButton(
-                      //   icon: const Icon(
-                      //     LucideIcons.x,
-                      //     color: AppColors.darkBlue,
-                      //   ),
-                      //   onPressed: (() {
-                      //     setState(() {
-                      //       _isDeleting = !_isDeleting;
-                      //     });
-                      //   }),
-                      // ),
+                     
                     ],
                   ),
                 ],
               ),
-            ),
-
+            );
+            }), 
           //scrollable content
           Expanded(
-            child: ReorderableListView.builder(
+            child: Obx(() {
+              final List<Trip> _places = tripController.getPlaces;
+              List<Trip> _routes = tripController.getRoutes;
+              
+
+              return ReorderableListView.builder(
               //NOTE reorderable list view is scrollable on its own
               buildDefaultDragHandles: true,
               scrollDirection: Axis.vertical,
-              // shrinkWrap: true,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               itemCount: _places.length,
 
@@ -300,7 +267,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                         )
                         : [];
                 return Padding(
-                  key: ValueKey('place-$index'),
+                  key: ValueKey('place-${_places[index].placeId}-$index'),
                   padding: const EdgeInsets.only(bottom: 0.0),
                   child: Row(
                     children: [
@@ -349,19 +316,20 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                             8,
                                           ),
                                         ),
-                                        child: PlaceCard(
-                                          index: index,
-                                          placeId: _places[index].placeId!,
-                                          placeName: _places[index].placeName!,
-                                          placeDescription:
-                                              _places[index].placeDescription!,
-                                          placeImage:
-                                              _places[index].placeImageUrl!,
-                                          arrivalTime:
-                                              _places[index].arrivalTime!,
-                                          addDeletedItem: addDeletedPlaceCards,
-                                          isEdit: _isEditing,
-                                        ),
+                                        child: Obx(() =>
+                                          PlaceCard(
+                                            index: index,
+                                            placeId: _places[index].placeId!,
+                                            placeName: _places[index].placeName!,
+                                            placeDescription:
+                                                _places[index].placeDescription!,
+                                            placeImage:
+                                                _places[index].placeImageUrl!,
+                                            arrivalTime:
+                                                _places[index].arrivalTime!,
+                                            addDeletedItem: addDeletedPlaceCards,
+                                            isEdit: tripController.isEditingPlaceOrderObs.value,
+                                          )),
                                       ),
                                     ),
 
@@ -386,15 +354,21 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                                   .toString(),
                                     ),
 
-                                  if (_isEditing && index < _places.length - 1)
-                                    AddButton(
-                                      text: "+ Add Place",
-                                      textSize: 14,
-                                      textColor: AppColors.orange_950,
-                                      width: double.infinity,
-                                      height: 30,
-                                      onPressed: () => addPlace(index),
-                                    ),
+                                  Obx(() {
+                                    if (tripController.isEditingPlaceOrderObs.value && index < _places.length - 1 &&
+                                      _places[index].day == selectedDay){
+                                      return AddButton(
+                                        text: "+ Add Place",
+                                        textSize: 14,
+                                        textColor: AppColors.orange_950,
+                                        width: double.infinity,
+                                        height: 30,
+                                        onPressed: () => addPlace(index),
+                                      ); 
+                                    } else {
+                                      return const SizedBox.shrink();
+                                    }
+                                  })
                                   // ElevatedButton(
                                   //   onPressed: () => addPlace(index),
                                   //   style: ElevatedButton.styleFrom(
@@ -433,7 +407,8 @@ class _EditRoutePageState extends State<EditRoutePage> {
                   ),
                 );
               },
-            ),
+            );
+            }),
           ),
 
           //FIXME: add day info
@@ -442,9 +417,9 @@ class _EditRoutePageState extends State<EditRoutePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
           tripController.toggleEditPlaceOrder();
-          setState(() {
-            _isEditing = tripController.isEditingPlaceOrder;
-          });
+          // setState(() {
+          //   _isEditing = tripController.isEditingPlaceOrder;
+          // });
         }),
 
         elevation: 4,

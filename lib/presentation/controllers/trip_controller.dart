@@ -14,7 +14,7 @@ class TripController extends GetxController {
   bool get isEditingTripInfo => _isEditingTripInfo.value;
 
   final Rx<bool> _isEditingPlaceOrder = Rx<bool>(false);
-  bool get isEditingPlaceOrder => _isEditingPlaceOrder.value;
+  Rx<bool> get isEditingPlaceOrderObs => _isEditingPlaceOrder;
 
   //added
   int day = 0;
@@ -27,7 +27,7 @@ class TripController extends GetxController {
   List<Trip> get getRoutes => routes.whereType<Trip>().toList();
 
   RxList<int> deletedItems = <int>[].obs;
-  List<int> get getDeletedItems => routes.whereType<int>().toList();
+  RxList<int> get deletedItemsObs => deletedItems;
 
   List<Map<String, String>> routeChoices = [
     {
