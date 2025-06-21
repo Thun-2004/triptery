@@ -24,12 +24,12 @@ String _getDaySuffix(int day) {
 
 
 String incrementHour(String timeString) {
-  final time = DateTime.parse("2023-01-01 ${_convertTo24Hour(timeString)}");
+  final time = DateTime.parse("2023-01-01 ${convertTo24Hour(timeString)}");
   final updatedTime = time.add(Duration(hours: 1));
-  return _formatTo12Hour(updatedTime);
+  return formatTo12Hour(updatedTime);
 }
 
-String _convertTo24Hour(String time) {
+String convertTo24Hour(String time) {
   final format = RegExp(r'(\d+):(\d+) (AM|PM)');
   final match = format.firstMatch(time);
 
@@ -45,9 +45,18 @@ String _convertTo24Hour(String time) {
   return '${hour.toString().padLeft(2, '0')}:${minute.toString().padLeft(2, '0')}';
 }
 
-String _formatTo12Hour(DateTime time) {
+String formatTo12Hour(DateTime time) {
   final hour = time.hour > 12 ? time.hour - 12 : (time.hour == 0 ? 12 : time.hour);
   final meridian = time.hour >= 12 ? 'PM' : 'AM';
   final minute = time.minute.toString().padLeft(2, '0');
   return '$hour:$minute $meridian';
+}
+
+String convertTo12HourWithMeridian(String time24h) {
+  final parts = time24h.split(":");
+  int hour = int.parse(parts[0]);
+  int minute = int.parse(parts[1]);
+
+  final dt = DateTime(0, 1, 1, hour, minute);
+  return DateFormat('hh:mm a').format(dt); // e.g., "10:45 AM"
 }

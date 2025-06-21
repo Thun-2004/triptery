@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,14 +11,13 @@ import 'package:triptery/presentation/widgets/trip/components/route_dropdown.dar
 import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import 'package:triptery/services/core/trip/trip_service.dart';
 import 'package:triptery/utils/datetime.dart';
 
-//FIXME : change to Draggable place card(place card drag and drop พังไอสัดดดดดด)
+
 class Day extends StatefulWidget {
   const Day({super.key, required this.day, required this.date});
   final int day;
-  final DateTime date; 
+  final DateTime date;
 
   @override
   State<Day> createState() => _DayState();
@@ -27,10 +28,8 @@ class _DayState extends State<Day> {
   bool isExpanded = false;
   bool _isExpanded = false;
   int _selectedIndex = 0;
-  // late TripService tripService;
   var selectedTime = Duration(hours: 9, minutes: 41);
   //NOTE :getter type = dynamic type
-  // List<Trip> get temp_routes => tripService.getEntireRoutes();
   List<Trip> get _places => tripController.getPlaces;
   List<Trip> get _routes => tripController.getRoutes;
 
@@ -55,7 +54,9 @@ class _DayState extends State<Day> {
     // setState(() {});
   }
 
-  void showTimePicker() {
+  // void setTimePicker()
+
+  void showTimePicker(String initialTime, Function(TimeOfDay) setTimeOnChange) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -64,7 +65,7 @@ class _DayState extends State<Day> {
       builder: (context) {
         return FractionallySizedBox(
           heightFactor: 0.3,
-          child: TimePickerCupertino(),
+          child: TimePickerCupertino(initialTime: initialTime, setTimeOnChange: setTimeOnChange),
         );
       },
     );
@@ -167,6 +168,7 @@ class _DayState extends State<Day> {
 
                       onReorder: handleReorder,
                       itemBuilder: (context, index) {
+                        String? initialTime = _places[index].arrivalTime!;
                         List<Map<String, String>> routeOptions =
                             index < _places.length - 1 &&
                                     _places[index].placeId != null &&
@@ -176,6 +178,13 @@ class _DayState extends State<Day> {
                                   _places[index + 1].placeId!,
                                 )
                                 : [];
+
+                        void setTimeOnChange(TimeOfDay selectedTime) {
+                          setState(() {
+                            _places[index].arrivalTime = convertTo12HourWithMeridian(selectedTime.format(context));
+                            log("${_places[index].arrivalTime}"); 
+                          }); 
+                        }
                         return Padding(
                           key: ValueKey('place-$index'),
                           padding: const EdgeInsets.only(bottom: 0.0),
@@ -211,7 +220,7 @@ class _DayState extends State<Day> {
                                                     minimumSize: Size(0, 0),
                                                   ),
                                                   onPressed: (() {
-                                                    showTimePicker();
+                                                    showTimePicker(initialTime, setTimeOnChange);
                                                   }),
                                                   child: Text(
                                                     _places[index].arrivalTime!,
@@ -256,9 +265,7 @@ class _DayState extends State<Day> {
                                                   placeImage:
                                                       _places[index]
                                                           .placeImageUrl!,
-                                                  arrivalTime:
-                                                      _places[index]
-                                                          .arrivalTime!,
+                                                  arrivalTime: _places[index].arrivalTime!,
                                                 ),
                                               ),
                                             ),

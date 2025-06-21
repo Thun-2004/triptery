@@ -1,8 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TimePickerCupertino extends StatefulWidget {
-  const TimePickerCupertino({super.key});
+  const TimePickerCupertino({super.key, required this.initialTime, required this.setTimeOnChange});
+
+  final Function(TimeOfDay) setTimeOnChange;
+  final String initialTime; 
 
   @override
   TimePickerCupertinoState createState() => TimePickerCupertinoState();
@@ -10,6 +16,17 @@ class TimePickerCupertino extends StatefulWidget {
 
 class TimePickerCupertinoState extends State<TimePickerCupertino> {
   TimeOfDay? selectedTime = TimeOfDay(hour: 9, minute: 41);
+
+  TimeOfDay parseTime(String timeString) {
+    final dateTime = DateFormat.jm().parse(timeString); // parses "10:00 AM"
+    return TimeOfDay.fromDateTime(dateTime);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    selectedTime = parseTime(widget.initialTime);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +63,12 @@ class TimePickerCupertinoState extends State<TimePickerCupertino> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context);
                     setState(() {
                       selectedTime = TimeOfDay.fromDateTime(tempTime);
+                      widget.setTimeOnChange(selectedTime!);
+                      log("Selected time: ${selectedTime!.format(context)}"); 
                     });
+                    Navigator.pop(context);
                   },
                   child: Text('Done', style: TextStyle(color: Colors.black)),
                 ),
