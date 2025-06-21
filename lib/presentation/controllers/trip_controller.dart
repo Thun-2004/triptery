@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:triptery/data/mock/mock_places.dart';
 import 'package:triptery/domain/entities/place/place.dart';
 import 'package:triptery/domain/entities/trip/trip.dart';
@@ -385,6 +386,16 @@ class TripController extends GetxController {
     recalculateAllRoutes();
 
     print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
+  }
+
+  void sortPlacebyTimes() {
+    final format = DateFormat('hh:mm a');
+    places.sort((a, b) {
+      final timeA = format.parse(a.arrivalTime!);
+      final timeB = format.parse(b.arrivalTime!);
+      return timeA.compareTo(timeB);
+    });
+    
   }
 
   // void addPlace(index) {

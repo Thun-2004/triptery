@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:triptery/domain/entities/trip/trip.dart';
 
 String formatDateWithOrdinal(DateTime date) {
   final String daySuffix = _getDaySuffix(date.day);

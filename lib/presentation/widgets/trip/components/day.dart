@@ -183,7 +183,8 @@ class _DayState extends State<Day> {
                           setState(() {
                             _places[index].arrivalTime = convertTo12HourWithMeridian(selectedTime.format(context));
                             log("${_places[index].arrivalTime}"); 
-                          }); 
+                          });
+                          tripController.sortPlacebyTimes(); 
                         }
                         return Padding(
                           key: ValueKey('place-$index'),
