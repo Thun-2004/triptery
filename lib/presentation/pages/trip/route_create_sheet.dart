@@ -69,6 +69,16 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
       "cost_unit": "THB",
       "note": "Walk to MRT Huai Kwang",
     },
+    {
+      "mode": TransportMode.car,
+      "station": null,
+      "time_taken": "00:21",
+      "distance": 21,
+      "distance_unit": "km",
+      "cost": 47,
+      "cost_unit": "THB",
+      "note": "Walk to MRT Huai Kwang",
+    },
   ];
 
   void addMode(TransportMode mode) {
@@ -91,6 +101,31 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
       }
     }
     return totalTime;
+  }
+
+  //NOTE: num = both int/float
+  num calcTotalDistance() {
+    num totalDistance = 0;
+    for (var mode in tempModes) {
+      if (mode["distance"] != null) {
+        if (mode["distance_unit"] == "km") {
+          totalDistance += mode["distance"];
+        } else if (mode["distance_unit"] == "meters") {
+          totalDistance += mode["distance"] / 1000; // Convert meters to km
+        } 
+      }
+    }
+    return totalDistance;
+  }
+
+  num calcTotalCost() {
+    num totalCost = 0;
+    for (var mode in tempModes) {
+      if (mode["cost"] != null) {
+        totalCost += mode["cost"];
+      }
+    }
+    return totalCost;
   }
 
   @override
@@ -178,7 +213,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                         ),
                                         // LucideIcons.footprints,
                                         color: AppColors.black,
-                                        size: 16,
+                                        size: 20,
                                       ),
                                       const SizedBox(width: 2),
                                       Tag(
@@ -189,10 +224,10 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                             ),
                                         textColor: AppColors.white,
                                         tagColor: AppColors.orange_950,
-                                        textSize: 6,
-                                        height: 10,
-                                        borderRadius: 2,
-                                        width: 20,
+                                        textSize: 10,
+                                        height: 16,
+                                        borderRadius: 5,
+                                        // width: 20,
                                       ),
                                       const SizedBox(width: 4),
                                       CustomText(
@@ -212,16 +247,14 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             CustomText(
-                              text: calcTotalTime().toString() + " min",
+                              text: "${calcTotalTime().toString()} min",
                               type: TextType.body,
                               color: AppColors.black,
                             ),
-                            Text(
-                              "21 km - 47 THB",
-                              style: TextStyle(
-                                color: AppColors.black,
-                                fontSize: 10,
-                              ),
+                            CustomText(
+                              text: "${calcTotalDistance()} km - ${calcTotalCost()} THB",
+                              type: TextType.body,
+                              color: AppColors.black,
                             ),
                           ],
                         ),
