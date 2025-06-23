@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/utils.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/constant/transport_modes.dart';
+import 'package:triptery/presentation/controllers/transport_mode_controller.dart';
 import 'package:triptery/presentation/widgets/add_button.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/tag.dart';
@@ -21,116 +23,20 @@ class CreateTransportWindow extends StatefulWidget {
 }
 
 class _CreateTransportWindowState extends State<CreateTransportWindow> {
-  List<TransportMode> modes = [TransportMode.unSelected];
+  // List<TransportMode> modes = [TransportMode.unSelected];
   bool displayTransport = false;
-  // List<Map<String, dynamic>> tempModes = [
-  //   {
-  //     "planId": 1,
-  //     "day": 1,
-  //     "total_time": 21,
-  //     "total_cost": 47,
-  //     "total_distance": 21,
-  //     "fromPlaceId": "placeId1",
-  //     "toPlaceId": "placeId2",
-  //     "tripDetail" : [
-  //       {
-  //         "name": TransportMode.unSelected,
-  //         "station": "Ratchada Market",
-  //         "time_taken": "00:21",
-  //         "distance": 21,
-  //         "distance_unit": "km",
-  //         "cost": 47,
-  //         "cost_unit" : "THB",
-  //         "note": "Walk to MRT Huai Kwang",
-  //       }
-  //     ],
-  //     "createdAt": DateTime.now().toIso8601String(),
-  //     "approved": false,
-  //   },
-  // ];
-  List<Map<String, dynamic>> tempModes = [
-    {
-      "mode": TransportMode.unSelected,
-      "station": null,
-      "time_taken": "00:21",
-      "distance": 21,
-      "distance_unit": "km",
-      "cost": 47,
-      "cost_unit": "THB",
-      "note": "Walk to MRT Huai Kwang",
-    },
-    {
-      "mode": TransportMode.car,
-      "station": null,
-      "time_taken": "00:21",
-      "distance": 21,
-      "distance_unit": "km",
-      "cost": 47,
-      "cost_unit": "THB",
-      "note": "Walk to MRT Huai Kwang",
-    },
-    {
-      "mode": TransportMode.car,
-      "station": null,
-      "time_taken": "00:21",
-      "distance": 21,
-      "distance_unit": "km",
-      "cost": 47,
-      "cost_unit": "THB",
-      "note": "Walk to MRT Huai Kwang",
-    },
-  ];
-
-  void addMode(TransportMode mode) {
-    setState(() {
-      modes.add(mode);
-    });
-  }
-
+  TransportModeController transportModeController = Get.find<TransportModeController>();
+  
   void onChangeIcon() {
     setState(() {
       displayTransport = !displayTransport;
     });
   }
 
-  int calcTotalTime() {
-    int totalTime = 0;
-    for (var mode in tempModes) {
-      if (mode["time_taken"] != null) {
-        totalTime += convertToMinutes(mode["time_taken"]);
-      }
-    }
-    return totalTime;
-  }
-
-  //NOTE: num = both int/float
-  num calcTotalDistance() {
-    num totalDistance = 0;
-    for (var mode in tempModes) {
-      if (mode["distance"] != null) {
-        if (mode["distance_unit"] == "km") {
-          totalDistance += mode["distance"];
-        } else if (mode["distance_unit"] == "meters") {
-          totalDistance += mode["distance"] / 1000; // Convert meters to km
-        } 
-      }
-    }
-    return totalDistance;
-  }
-
-  num calcTotalCost() {
-    num totalCost = 0;
-    for (var mode in tempModes) {
-      if (mode["cost"] != null) {
-        totalCost += mode["cost"];
-      }
-    }
-    return totalCost;
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return  Align(
       alignment: Alignment.topCenter,
       child: SingleChildScrollView(
         child: Column(
@@ -202,14 +108,14 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                 padding: EdgeInsets.zero,
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
-                                itemCount: tempModes.length,
+                                itemCount: transportModeController.tempModes.length,
                                 itemBuilder: (context, index) {
                                   return Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Icon(
                                         getIconForMode(
-                                          tempModes[index]["mode"],
+                                          transportModeController.tempModes[index]["mode"],
                                         ),
                                         // LucideIcons.footprints,
                                         color: AppColors.black,
@@ -218,9 +124,9 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                       const SizedBox(width: 2),
                                       Tag(
                                         text:
-                                            tempModes[index]["station"] ??
+                                            transportModeController.tempModes[index]["station"] ??
                                             getTransportModeName(
-                                              tempModes[index]["mode"],
+                                              transportModeController.tempModes[index]["mode"],
                                             ),
                                         textColor: AppColors.white,
                                         tagColor: AppColors.orange_950,
@@ -231,7 +137,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                       ),
                                       const SizedBox(width: 4),
                                       CustomText(
-                                        text: tempModes[index]["note"],
+                                        text: transportModeController.tempModes[index]["note"],
                                         type: TextType.subHeading,
                                         textSize: 10,
                                         color: AppColors.black,
@@ -247,13 +153,15 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             CustomText(
-                              text: "${calcTotalTime().toString()} min",
+                              text: "${transportModeController.calcTotalTime().toString()} min",
                               type: TextType.body,
+                              textSize: 12,
                               color: AppColors.black,
                             ),
                             CustomText(
-                              text: "${calcTotalDistance()} km - ${calcTotalCost()} THB",
+                              text: "${transportModeController.calcTotalDistance()} km - ${transportModeController.calcTotalCost()} THB",
                               type: TextType.body,
+                              textSize: 12,
                               color: AppColors.black,
                             ),
                           ],
@@ -267,13 +175,13 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: modes.length,
+                        itemCount: transportModeController.tempModes.length,
                         itemBuilder: (context, index) {
                           return TimelineTile(
                             alignment: TimelineAlign.start,
                             lineXY: 0.1,
                             isFirst: index == 0 ? true : false,
-                            isLast: index == modes.length - 1 ? true : false,
+                            isLast: index == transportModeController.tempModes.length - 1 ? true : false,
                             beforeLineStyle: LineStyle(
                               color: AppColors.orange_800,
                               thickness: 2,
@@ -286,7 +194,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                               indicator: GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    modes.removeAt(index);
+                                    transportModeController.tempModes.removeAt(index);
                                   });
                                 },
                                 child: Container(
@@ -304,11 +212,11 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                             ),
                             endChild: Padding(
                               padding:
-                                  index == modes.length - 1
+                                  index == transportModeController.tempModes.length - 1
                                       ? EdgeInsets.only(bottom: 0)
                                       : EdgeInsets.only(bottom: 16),
                               child: TransportCard(
-                                mode: modes[index],
+                                mode: transportModeController.tempModes[index]["mode"],
                                 onChangeIcon: onChangeIcon,
                               ),
                             ),
@@ -320,8 +228,8 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
                         child: AddButton(
-                          onPressed: () {
-                            addMode(TransportMode.unSelected);
+                          onPressed: (){
+                            transportModeController.addMode(TransportMode.unSelected);
                           },
                           text: "Add transport",
                           textColor: AppColors.orange_950,
@@ -329,7 +237,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                           // borderRadius: 8,
                           width: double.infinity,
                           height: 40,
-                        ),
+                        ), 
                       ),
                     ],
                   ),

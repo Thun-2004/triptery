@@ -520,4 +520,5 @@ class TripController extends GetxController {
   }
 
   //FIXME: create day flow(add button -> add new route -> if no route/trip exists = add button)
+  
 }

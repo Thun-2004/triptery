@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:triptery/presentation/DI/init_plan.dart';
 import 'package:triptery/presentation/DI/init_trip.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
+import 'package:triptery/presentation/controllers/transport_mode_controller.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:triptery/presentation/pages/login_page.dart';
@@ -105,6 +106,11 @@ class MyApp extends StatelessWidget {
             if(!Get.isRegistered<TripController>()) {
               TripDI.init(); 
             }
+
+            if(!Get.isRegistered<TransportModeController>()) {
+              Get.put(TransportModeController());
+            }
+
           }),
       )]
     );
