@@ -8,6 +8,8 @@ import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/tag.dart';
 import 'package:triptery/presentation/widgets/trip/components/transport_card.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'package:triptery/utils/datetime.dart';
+import 'package:triptery/utils/icon.dart';
 
 //NOTE: save to cache when user not focus then to db
 
@@ -21,29 +23,51 @@ class CreateTransportWindow extends StatefulWidget {
 class _CreateTransportWindowState extends State<CreateTransportWindow> {
   List<TransportMode> modes = [TransportMode.unSelected];
   bool displayTransport = false;
+  // List<Map<String, dynamic>> tempModes = [
+  //   {
+  //     "planId": 1,
+  //     "day": 1,
+  //     "total_time": 21,
+  //     "total_cost": 47,
+  //     "total_distance": 21,
+  //     "fromPlaceId": "placeId1",
+  //     "toPlaceId": "placeId2",
+  //     "tripDetail" : [
+  //       {
+  //         "name": TransportMode.unSelected,
+  //         "station": "Ratchada Market",
+  //         "time_taken": "00:21",
+  //         "distance": 21,
+  //         "distance_unit": "km",
+  //         "cost": 47,
+  //         "cost_unit" : "THB",
+  //         "note": "Walk to MRT Huai Kwang",
+  //       }
+  //     ],
+  //     "createdAt": DateTime.now().toIso8601String(),
+  //     "approved": false,
+  //   },
+  // ];
   List<Map<String, dynamic>> tempModes = [
     {
-      "planId": 1, 
-      "day": 1, 
-      "total_time": 21,
-      "total_cost": 47,
-      "total_distance": 21,
-      "fromPlaceId": "placeId1",
-      "toPlaceId": "placeId2",
-      "tripDetail" : [
-        {
-          "name": TransportMode.unSelected,
-          "station": "Ratchada Market",
-          "time_taken": "00:21",
-          "distance": 21,
-          "distance_unit": "km",
-          "cost": 47,
-          "cost_unit" : "THB", 
-          "note": "Walk to MRT Huai Kwang",
-        }
-      ],
-      "createdAt": DateTime.now().toIso8601String(),
-      "approved": false,
+      "mode": TransportMode.unSelected,
+      "station": null,
+      "time_taken": "00:21",
+      "distance": 21,
+      "distance_unit": "km",
+      "cost": 47,
+      "cost_unit": "THB",
+      "note": "Walk to MRT Huai Kwang",
+    },
+    {
+      "mode": TransportMode.car,
+      "station": null,
+      "time_taken": "00:21",
+      "distance": 21,
+      "distance_unit": "km",
+      "cost": 47,
+      "cost_unit": "THB",
+      "note": "Walk to MRT Huai Kwang",
     },
   ];
 
@@ -57,6 +81,16 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
     setState(() {
       displayTransport = !displayTransport;
     });
+  }
+
+  int calcTotalTime() {
+    int totalTime = 0;
+    for (var mode in tempModes) {
+      if (mode["time_taken"] != null) {
+        totalTime += convertToMinutes(mode["time_taken"]);
+      }
+    }
+    return totalTime;
   }
 
   @override
@@ -75,7 +109,6 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      
                       TextButton(
                         style: TextButton.styleFrom(
                           overlayColor: AppColors.lightGray,
@@ -111,7 +144,8 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                     type: TextType.body,
                     color: Colors.black,
                   ),
-                  Container(
+
+                Container(                    
                     margin: const EdgeInsets.only(bottom: 16, top: 4),
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -121,72 +155,64 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
+                        Flexible(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             //transport mode
-                            Row(
-                              children: [
-                                Icon(
-                                  LucideIcons.footprints,
-                                  color: AppColors.black,
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 2),
-                                Tag(
-                                  text: "Walk",
-                                  textColor: AppColors.white,
-                                  tagColor: AppColors.orange_950,
-                                  textSize: 6,
-                                  height: 10,
-                                  borderRadius: 2,
-                                  width: 20,
-                                ),
-                                const SizedBox(width: 4),
-                                CustomText(
-                                  text: "Walk to MRT Huai Kwang",
-                                  type: TextType.subHeading,
-                                  textSize: 10,
-                                  color: AppColors.black,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 2),
-                            //transport mode
-                            Row(
-                              children: [
-                                Icon(
-                                  LucideIcons.trainFront,
-                                  color: AppColors.black,
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 2),
-                                Tag(
-                                  text: "BL 18",
-                                  textColor: AppColors.white,
-                                  tagColor: AppColors.mrtBlue,
-                                  textSize: 6,
-                                  height: 10,
-                                  borderRadius: 2,
-                                  width: 22,
-                                ),
-                                const SizedBox(width: 4),
-                                CustomText(
-                                  text: "Ratchada Market - Subway Station",
-                                  type: TextType.subHeading,
-                                  textSize: 10,
-                                  color: AppColors.black,
-                                ),
-                              ],
+                            SizedBox(
+                              width: 300,
+                              child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: tempModes.length,
+                                itemBuilder: (context, index) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(
+                                        getIconForMode(
+                                          tempModes[index]["mode"],
+                                        ),
+                                        // LucideIcons.footprints,
+                                        color: AppColors.black,
+                                        size: 16,
+                                      ),
+                                      const SizedBox(width: 2),
+                                      Tag(
+                                        text:
+                                            tempModes[index]["station"] ??
+                                            getTransportModeName(
+                                              tempModes[index]["mode"],
+                                            ),
+                                        textColor: AppColors.white,
+                                        tagColor: AppColors.orange_950,
+                                        textSize: 6,
+                                        height: 10,
+                                        borderRadius: 2,
+                                        width: 20,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      CustomText(
+                                        text: tempModes[index]["note"],
+                                        type: TextType.subHeading,
+                                        textSize: 10,
+                                        color: AppColors.black,
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
                             ),
                           ],
-                        ),
+                        )),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             CustomText(
-                              text: "21 mins",
+                              text: calcTotalTime().toString() + " min",
                               type: TextType.body,
                               color: AppColors.black,
                             ),
@@ -283,4 +309,3 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
     );
   }
 }
-

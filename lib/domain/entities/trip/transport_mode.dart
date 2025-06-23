@@ -2,7 +2,7 @@
 //create trnsport model class
 //FIXME: add more transport modes if needed
 enum TripType { route, dest }
-enum TransportMode { car, bus, train, carRent, taxi, skyTrain, subway, boat, airplan, walk, motorcycle, publicTransit, unselected }
+enum TransportMode { car, bus, train, carRent, taxi, skyTrain, subway, boat, airplane, walk, motorcycle, publicTransit, unselected }
 
 class Transport {
   final String id;

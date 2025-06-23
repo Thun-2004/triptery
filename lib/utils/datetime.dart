@@ -61,3 +61,11 @@ String convertTo12HourWithMeridian(String time24h) {
   final dt = DateTime(0, 1, 1, hour, minute);
   return DateFormat('hh:mm a').format(dt); // e.g., "10:45 AM"
 }
+
+int convertToMinutes(String time) {
+  final parts = time.split(':');
+  if (parts.length != 2) return 0; // Invalid format
+  final hours = int.tryParse(parts[0]) ?? 0;
+  final minutes = int.tryParse(parts[1]) ?? 0;
+  return hours * 60 + minutes;
+}
