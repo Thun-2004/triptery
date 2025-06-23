@@ -3,7 +3,6 @@ import '../../../domain/entities/place/place_review_group.dart';
 import '../../../domain/entities/place/place_review.dart';
 import '../../../domain/usecases/get_reviews_by_review_group_id.dart';
 import '../../../domain/repositories/place_repository_impl.dart';
-import '../../../utils/time_formatter.dart';
 
 class PlaceReviewSection extends StatefulWidget {
   final List<PlaceReviewGroup> reviewGroups;
@@ -31,7 +30,7 @@ class _PlaceReviewSectionState extends State<PlaceReviewSection> {
       _isLoading[groupId] = true;
     });
 
-    final repo = PlaceRepositoryImpl(); // or use a shared instance
+    final repo = PlaceRepositoryImpl();
     final reviews = await GetReviewsByReviewGroupId(repo).execute(groupId);
 
     setState(() {
@@ -43,66 +42,62 @@ class _PlaceReviewSectionState extends State<PlaceReviewSection> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: widget.reviewGroups.map((group) {
         final reviews = _reviewsByGroup[group.id] ?? [];
         final isLoading = _isLoading[group.id] ?? true;
 
-        return ExpansionTile(
-          tilePadding: EdgeInsets.zero,
-          initiallyExpanded: false,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Row(
             children: [
-              Row(
-                children: [
-                  Image.asset(group.companyLogo, width: 24, height: 24),
-                  const SizedBox(width: 8),
-                  Text(group.companyName, style: const TextStyle(fontWeight: FontWeight.bold)),
-                ],
+              // 🔹 Logo
+              Image.asset(group.companyLogo, width: 32, height: 32),
+              const SizedBox(width: 12),
+
+              // 🔸 Platform name
+              Expanded(
+                child: Text(
+                  group.companyName,
+                  style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                ),
               ),
-              isLoading
-                  ? const SizedBox(
-                      height: 16,
-                      width: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text('${reviews.length} Reviews'),
+
+              // ⭐ Rating & count & link icon
+              if (isLoading)
+                const SizedBox(
+                  height: 16,
+                  width: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else
+                Row(
+                  children: [
+                    const Icon(Icons.star, size: 16, color: Colors.orange),
+                    const SizedBox(width: 4),
+                    Text(
+                      _calculateAverageRating(reviews).toStringAsFixed(1),
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '(${reviews.length})',
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                    const SizedBox(width: 4),
+                    const Icon(Icons.open_in_new, size: 16, color: Colors.grey),
+                  ],
+                ),
             ],
           ),
-          children: isLoading
-              ? [const Padding(padding: EdgeInsets.all(16), child: Text('Loading...'))]
-              : reviews.map((review) {
-                  return ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        review.userProfilePictureUrl.isNotEmpty
-                            ? review.userProfilePictureUrl
-                            : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-                      ),
-                    ),
-                    title: Text(review.username),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.star, size: 14, color: Colors.amber[700]),
-                            const SizedBox(width: 4),
-                            Text('${review.rating}', style: const TextStyle(fontSize: 12)),
-                            const SizedBox(width: 6),
-                            Text(formatRelativeTime(review.createdAt),
-                                style: const TextStyle(fontSize: 12, color: Colors.grey)),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Text(review.description),
-                      ],
-                    ),
-                  );
-                }).toList(),
         );
       }).toList(),
     );
+  }
+
+  double _calculateAverageRating(List<PlaceReview> reviews) {
+    if (reviews.isEmpty) return 0;
+    final total = reviews.fold<double>(0, (sum, r) => sum + r.rating);
+    return total / reviews.length;
   }
 }
