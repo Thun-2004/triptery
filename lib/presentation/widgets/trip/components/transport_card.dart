@@ -290,12 +290,13 @@ class _TransportCardState extends State<TransportCard> {
             // runSpacing: 4,
             // direction: Axis.horizontal,
             children: [
-              TextDropDown(
-                width: 75,
-                // height: 32,
-                values: ['Km', 'B', 'C'],
-                setValue: setDistanceValue,
-              ),
+              // TextDropDown(
+              //   width: 75,
+              //   // height: 32,
+              //   values: ['Km', 'B', 'C'],
+              //   setValue: setDistanceValue,
+              // ),
+              EditableTimeBox(width: 75),
               TextDropDown(
                 width: 75,
                 // height: 32,
@@ -349,7 +350,7 @@ class TextDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 32, 
+      // height: 32,
       decoration: BoxDecoration(
         //color: AppColors.lightGray,
         borderRadius: BorderRadius.circular(8),
@@ -385,71 +386,204 @@ class TextDropDown extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-            width: width.toDouble() - 20,
-            // height: height.toDouble(),
-            decoration: BoxDecoration(
-              // color: AppColors.black,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Theme(
-              data: Theme.of(context).copyWith(
-                inputDecorationTheme: const InputDecorationTheme(
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                ),
+              width: width.toDouble() - 20,
+              // height: height.toDouble(),
+              decoration: BoxDecoration(
+                // color: AppColors.black,
+                borderRadius: BorderRadius.circular(8),
               ),
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  inputDecorationTheme: const InputDecorationTheme(
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                  ),
+                ),
 
-              child: DropdownButton2<String>(
-                value: values.first,
-                isExpanded: true,
-                onChanged: (String? newValue) {
-                  if (newValue != null) setValue(newValue);
-                },
-                items:
-                    values.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: CustomText(
-                            text: value.toString(),
-                            type: TextType.body,
-                            color: AppColors.black,
-                            // textSize: 12,
+                child: DropdownButton2<String>(
+                  value: values.first,
+                  isExpanded: true,
+                  onChanged: (String? newValue) {
+                    if (newValue != null) setValue(newValue);
+                  },
+                  items:
+                      values.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: CustomText(
+                              text: value.toString(),
+                              type: TextType.body,
+                              color: AppColors.black,
+                              // textSize: 12,
+                            ),
                           ),
-                        ),
-                      );
-                    }).toList(),
+                        );
+                      }).toList(),
 
-                iconStyleData: const IconStyleData(
-                  icon: Icon(Icons.arrow_drop_down),
-                  iconSize: 16,
-                  iconEnabledColor: AppColors.black,
-                  iconDisabledColor: AppColors.black,
-                ),
-                dropdownStyleData: DropdownStyleData(
-                  maxHeight: 200,
-                  width: width.toDouble(),
+                  iconStyleData: const IconStyleData(
+                    icon: Icon(Icons.arrow_drop_down),
+                    iconSize: 16,
+                    iconEnabledColor: AppColors.black,
+                    iconDisabledColor: AppColors.black,
+                  ),
+                  dropdownStyleData: DropdownStyleData(
+                    maxHeight: 200,
+                    width: width.toDouble(),
 
-                  // width: width.toDouble() / 2,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: AppColors.white,
+                    // width: width.toDouble() / 2,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: AppColors.white,
+                    ),
+                    offset: const Offset(-0, 0),
+                    scrollbarTheme: ScrollbarThemeData(
+                      radius: const Radius.circular(40),
+                      thickness: MaterialStateProperty.all<double>(6),
+                      thumbVisibility: MaterialStateProperty.all<bool>(true),
+                    ),
                   ),
-                  offset: const Offset(-0, 0),
-                  scrollbarTheme: ScrollbarThemeData(
-                    radius: const Radius.circular(40),
-                    thickness: MaterialStateProperty.all<double>(6),
-                    thumbVisibility: MaterialStateProperty.all<bool>(true),
-                  ),
+                  underline: SizedBox(), // removes underline
                 ),
-                underline: SizedBox(), // removes underline
               ),
             ),
-          )),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class EditableTimeBox extends StatefulWidget {
+  final int width;
+  const EditableTimeBox({super.key, required this.width});
+
+  @override
+  _EditableTimeBoxState createState() => _EditableTimeBoxState();
+}
+
+class _EditableTimeBoxState extends State<EditableTimeBox> {
+  bool isHourEditing = false;
+  bool isMinEditing = false;
+
+  String hour = '00';
+  String minute = '05';
+
+  final hourController = TextEditingController();
+  final minuteController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    hourController.text = hour;
+    minuteController.text = minute;
+  }
+
+  @override
+  void dispose() {
+    hourController.dispose();
+    minuteController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300, width: 2),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      // width: widget.width.toDouble(),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Hour
+          GestureDetector(
+            onTap: () {
+              setState(() => isHourEditing = true);
+            },
+            child:
+                isHourEditing
+                    ? SizedBox(
+                      width: 20,
+                      child: TextField(
+                        controller: hourController,
+                        autofocus: true,
+                        keyboardType: TextInputType.number,
+                        onSubmitted: (value) {
+                          setState(() {
+                            hour = value.padLeft(2, '0');
+                            isHourEditing = false;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.zero,
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    )
+                    : CustomText(
+                      text: hour,
+                      type: TextType.body,
+                      color: AppColors.black,
+                    ),
+          ),
+
+          CustomText(
+            text: ' : ',
+            type: TextType.body,
+            color: AppColors.black,
+            // textSize: 12,
+          ),
+
+          // Minute
+          GestureDetector(
+            onTap: () {
+              setState(() => isMinEditing = true);
+            },
+            child:
+                isMinEditing
+                    ? SizedBox(
+                      width: 20,
+                      child: TextField(
+                        controller: minuteController,
+                        autofocus: true,
+                        keyboardType: TextInputType.number,
+                        onSubmitted: (value) {
+                          setState(() {
+                            minute = value.padLeft(2, '0');
+                            isMinEditing = false;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.zero,
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    )
+                    : CustomText(
+                      text: minute,
+                      type: TextType.body,
+                      color: AppColors.black,
+                    ),
+          ),
+
+          SizedBox(width: 6),
+          CustomText(
+            text: 'hrs',
+            type: TextType.body,
+            color: AppColors.black,
+            // textSize: 12,
+          ),
+          SizedBox(width: 2),
+          Icon(Icons.access_time, color: Colors.black87),
         ],
       ),
     );
