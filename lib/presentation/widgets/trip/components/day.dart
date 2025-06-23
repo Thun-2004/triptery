@@ -28,7 +28,7 @@ class _DayState extends State<Day> {
   bool isExpanded = false;
   bool _isExpanded = false;
   int _selectedIndex = 0;
-  var selectedTime = Duration(hours: 9, minutes: 41);
+  var selectedTime = Duration(hours: 9, minutes: 41); 
   //NOTE :getter type = dynamic type
   List<Trip> get _places => tripController.getPlaces;
   List<Trip> get _routes => tripController.getRoutes;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/utils.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/constant/transport_modes.dart';
@@ -18,8 +19,33 @@ class CreateTransportWindow extends StatefulWidget {
 }
 
 class _CreateTransportWindowState extends State<CreateTransportWindow> {
-  List<TransportMode> modes = [TransportMode.subway, TransportMode.subway];
+  List<TransportMode> modes = [TransportMode.unSelected];
   bool displayTransport = false;
+  List<Map<String, dynamic>> tempModes = [
+    {
+      "planId": 1, 
+      "day": 1, 
+      "total_time": 21,
+      "total_cost": 47,
+      "total_distance": 21,
+      "fromPlaceId": "placeId1",
+      "toPlaceId": "placeId2",
+      "tripDetail" : [
+        {
+          "name": TransportMode.unSelected,
+          "station": "Ratchada Market",
+          "time_taken": "00:21",
+          "distance": 21,
+          "distance_unit": "km",
+          "cost": 47,
+          "cost_unit" : "THB", 
+          "note": "Walk to MRT Huai Kwang",
+        }
+      ],
+      "createdAt": DateTime.now().toIso8601String(),
+      "approved": false,
+    },
+  ];
 
   void addMode(TransportMode mode) {
     setState(() {
@@ -99,6 +125,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
+                            //transport mode
                             Row(
                               children: [
                                 Icon(
@@ -126,6 +153,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                               ],
                             ),
                             const SizedBox(height: 2),
+                            //transport mode
                             Row(
                               children: [
                                 Icon(
@@ -255,3 +283,4 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
     );
   }
 }
+
