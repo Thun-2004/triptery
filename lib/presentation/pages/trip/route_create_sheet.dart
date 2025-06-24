@@ -136,7 +136,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                       ),
                                       const SizedBox(width: 4),
                                       CustomText(
-                                        text: transportModeController.tempModes[index]["note"],
+                                        text: transportModeController.tempModes[index]["note"] ?? "",
                                         type: TextType.subHeading,
                                         textSize: 10,
                                         color: AppColors.black,

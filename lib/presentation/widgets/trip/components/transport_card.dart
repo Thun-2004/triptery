@@ -177,6 +177,13 @@ class _TransportCardState extends State<TransportCard> {
     );
   }
 
+  void _editNote(String note) {
+    transportModeController.addNote(
+      widget.index,
+      note,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -219,6 +226,10 @@ class _TransportCardState extends State<TransportCard> {
                           if (newValue != null) {
                             final mode = getTransportModeFromName(newValue);
                             setTransportModeValue(mode);
+                            transportModeController.setTransportMode(
+                              widget.index,
+                              mode,
+                            );
                           }
                         },
                         customButton: Center(
@@ -313,12 +324,14 @@ class _TransportCardState extends State<TransportCard> {
                   width: 170,
                   height: 32,
                   child: TextFormField(
+                    initialValue: transportModeController.tempModes[widget.index]["note"] ?? '',
                     showCursor: true,
                     decoration: const InputDecoration(
                       hintText: 'station...',
                       border: UnderlineInputBorder(),
                       contentPadding: EdgeInsets.all(8),
                     ),
+                    onChanged: ((text)=> transportModeController.editTag(widget.index, text)),
                   ),
                 ),
             ],
@@ -366,9 +379,9 @@ class _TransportCardState extends State<TransportCard> {
 
           const SizedBox(height: 12),
           Note(
+            initialValue: transportModeController.tempModes[widget.index]["note"] ?? 'Some note',
             placeholderText: "Note",
-            controller: TextEditingController(),
-            onChanged: (value) {},
+            onChanged: _editNote,
           ),
         ],
       ),

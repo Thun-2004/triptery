@@ -7,13 +7,15 @@ class Note extends StatelessWidget {
   final Function(String) onChanged;
   final Icon? placeholderIcon; //? = can be null or optional
   final String? placeholderText; //? = can be null or optional
-  final TextEditingController controller; 
+  // final TextEditingController controller; 
+  final String? initialValue;
 
-  const Note({super.key, required this.onChanged, this.placeholderIcon, required this.controller, this.placeholderText});
+  const Note({super.key, this.initialValue, required this.onChanged, this.placeholderIcon, this.placeholderText});
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      initialValue: initialValue,
       decoration: InputDecoration(
         prefixIcon: Icon(
           (placeholderIcon ?? LucideIcons.notepadText) as IconData?,
@@ -33,8 +35,8 @@ class Note extends StatelessWidget {
           borderSide: BorderSide.none,
         ),
       ),
-      controller: controller,
-      onChanged: onChanged,
+      // controller: controller,
+      onChanged: ((value) => onChanged(value)),
       style: TextStyle(color: AppColors.black, fontSize: 12),
     );
   }

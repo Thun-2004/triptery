@@ -180,6 +180,13 @@ class TransportModeController extends GetxController {
     log("Note added: $note at index $modeIndex");
   }
 
+  void editTag(int modeIndex, String msg) {
+    if (tempModes.isNotEmpty) {
+      tempModes[modeIndex]["station"] = msg;
+    }
+    tempModes.refresh();
+  }
+
 }
 
 // List<Map<String, dynamic>> tempModes = [
