@@ -33,13 +33,12 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return  Align(
       alignment: Alignment.topCenter,
       child: SingleChildScrollView(
-        child: Column(
+        child: Obx(() => Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
@@ -104,7 +103,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                             //transport mode
                             SizedBox(
                               width: 300,
-                              child: ListView.builder(
+                              child: Obx(() => ListView.builder(
                                 padding: EdgeInsets.zero,
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
@@ -145,7 +144,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                     ],
                                   );
                                 },
-                              ),
+                              )),
                             ),
                           ],
                         )),
@@ -216,6 +215,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                       ? EdgeInsets.only(bottom: 0)
                                       : EdgeInsets.only(bottom: 16),
                               child: TransportCard(
+                                index: index,
                                 mode: transportModeController.tempModes[index]["mode"],
                                 onChangeIcon: onChangeIcon,
                               ),
@@ -245,7 +245,7 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
               ),
             ),
           ],
-        ),
+        )),
       ),
     );
   }

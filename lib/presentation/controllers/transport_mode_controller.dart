@@ -1,11 +1,13 @@
 
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:triptery/constant/transport_modes.dart';
 import 'package:triptery/utils/datetime.dart';
 
 class TransportModeController extends GetxController {
-  var tempModes = <Map<String, dynamic>>[].obs; 
+  RxList<Map<String, dynamic>> tempModes = <Map<String, dynamic>>[].obs; 
 
   @override
   void onInit() {
@@ -95,9 +97,87 @@ class TransportModeController extends GetxController {
     for (var mode in tempModes) {
       if (mode["cost"] != null) {
         totalCost += mode["cost"]; //NOTE: int.parse() to convert string to int
-      } 
+      }
     }
     return totalCost;
+  }
+
+  void setTransportMode(int modeIndex, TransportMode mode) {
+    if (tempModes.isNotEmpty) {
+      tempModes[modeIndex]["mode"] = mode;
+    }
+    log("Transport mode set to: ${ tempModes[modeIndex]["mode"]}");
+  }
+
+  void setModeDuration(int modeIndex, String timeTaken){
+    //NOTE: timeTaken is in HH:MM format
+    if (timeTaken.isEmpty || !RegExp(r'^\d{2}:\d{2}$').hasMatch(timeTaken)) {
+      throw ArgumentError("Invalid time format. Use HH:MM.");
+    }
+
+    //check if timeTaken is valid
+    final parts = timeTaken.split(':');
+    final hours = int.parse(parts[0]);
+    final minutes = int.parse(parts[1]);
+    if (hours < 0 || minutes < 0 || minutes >= 60) {
+      throw ArgumentError("Invalid time format. Use HH:MM.");
+    }
+
+    if (tempModes.isNotEmpty) {
+      tempModes[modeIndex]["time_taken"] = timeTaken;
+    }
+    tempModes.refresh(); 
+    log("Mode duration set to: ${tempModes[modeIndex]["time_taken"]}");
+  }
+
+  void setDistance(int modeIndex, int distance){
+    //NOTE: distance is in km
+    if (distance < 0) {
+      throw ArgumentError("Distance cannot be negative");
+    }
+    // Assuming the first mode is the one to set the distance for
+    if (tempModes.isNotEmpty) {
+      tempModes[modeIndex]["distance"] = distance;
+    }
+    tempModes.refresh();
+    log("Distance set to: ${tempModes[modeIndex]["distance"]}");
+    
+  }
+
+  void setDistanceUnit(int modeIndex, String unit){
+    if (tempModes.isNotEmpty) {
+      tempModes[modeIndex]["distance_unit"] = unit;
+    }
+    tempModes.refresh();
+    log("Distance unit set to: ${tempModes[modeIndex]["distance_unit"]}");
+  }
+
+  void setCost(int modeIndex, int cost){
+    if (cost < 0) {
+      throw ArgumentError("Cost cannot be negative");
+    }
+
+    if (tempModes.isNotEmpty) {
+      tempModes[modeIndex]["cost"] = cost;
+    }
+    tempModes.refresh();
+    log("Cost set to: ${tempModes[modeIndex]["distance_unit"]}");
+  }
+
+  void setCostUnit(int modeIndex, String unit){
+    if (tempModes.isNotEmpty) {
+      tempModes[modeIndex]["cost_unit"] = unit;
+    }
+    tempModes.refresh();
+    log("Cost unit set to: ${tempModes[modeIndex]["cost_unit"]}");
+  }
+
+  void addNote(int modeIndex, String note) {
+    if (tempModes.isNotEmpty) {
+      tempModes[modeIndex]["note"] = note;
+    }
+    tempModes.refresh();
+    log("Note added: $note at index $modeIndex");
   }
 
 }

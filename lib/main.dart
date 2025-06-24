@@ -106,11 +106,9 @@ class MyApp extends StatelessWidget {
             if(!Get.isRegistered<TripController>()) {
               TripDI.init(); 
             }
-
             if(!Get.isRegistered<TransportModeController>()) {
               Get.put(TransportModeController());
             }
-
           }),
       )]
     );

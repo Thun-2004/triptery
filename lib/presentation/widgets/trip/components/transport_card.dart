@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/constant/transport_modes.dart';
+import 'package:triptery/presentation/controllers/transport_mode_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/note.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -10,9 +12,11 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 class TransportCard extends StatefulWidget {
   final TransportMode mode;
   final VoidCallback? onChangeIcon;
+  final int index;
 
   const TransportCard({
     super.key,
+    required this.index, 
     required this.mode,
     required this.onChangeIcon,
   });
@@ -25,6 +29,8 @@ class _TransportCardState extends State<TransportCard> {
   String transitMode = 'Subway';
   bool displayTransport = false;
   TransportMode transportMode = TransportMode.unSelected;
+  final TextEditingController stationController = TextEditingController();
+  final TransportModeController transportModeController = Get.find<TransportModeController>();
 
   List<String> get distanceValues => ['A', 'B', 'C'];
   List<String> get transitModes => ['N5', 'N6', 'N7'];
@@ -136,6 +142,41 @@ class _TransportCardState extends State<TransportCard> {
     });
   }
 
+  void _setModeDuration(String duration) {
+    transportModeController.setModeDuration(
+      widget.index,
+      duration,
+    );
+  }
+
+  void _setDistance(String distance) {
+    transportModeController.setDistance(
+      widget.index,
+      int.tryParse(distance) ?? 0,
+    );
+  }
+
+  void _setDistanceUnit(String distanceUnit) {
+    transportModeController.setDistanceUnit(
+      widget.index,
+      distanceUnit,
+    );
+  }
+
+  void _setCost(String cost) {
+    transportModeController.setCost(
+      widget.index,
+      int.tryParse(cost) ?? 0,
+    );
+  }
+
+  void _setCostUnit(String costUnit) {
+    transportModeController.setCostUnit(
+      widget.index,
+      costUnit,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -229,7 +270,6 @@ class _TransportCardState extends State<TransportCard> {
                         dropdownStyleData: DropdownStyleData(
                           maxHeight: 200,
                           width: 175,
-
                           // width: width.toDouble() / 2,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
@@ -290,25 +330,37 @@ class _TransportCardState extends State<TransportCard> {
             // runSpacing: 4,
             // direction: Axis.horizontal,
             children: [
-              // TextDropDown(
-              //   width: 75,
-              //   // height: 32,
-              //   values: ['Km', 'B', 'C'],
-              //   setValue: setDistanceValue,
-              // ),
-              EditableTimeBox(width: 75),
-              TextDropDown(
-                width: 75,
-                // height: 32,
-                values: ['Km', 'm'],
-                setValue: setDistanceValue,
+              Flexible(
+                child: EditableTimeBox(
+                  width: 75,
+                  initialValue: transportModeController.tempModes[widget.index]["time_taken"],
+                  onChange: _setModeDuration
+                )
+              ),      
+              Flexible(
+                child: TextDropDown(
+                  width: 75,
+                  // height: 32,
+                  values: ['km', 'm'], 
+                  initialValue: transportModeController.tempModes[widget.index]["distance"], //NOTE: initial value must match one of the values in dropdown
+                  initialUnit: transportModeController.tempModes[widget.index]["distance_unit"],
+                  setValue: setDistanceValue,
+                  textOnChange: _setDistance,
+                  dropDownOnChange: _setDistanceUnit
+                )
               ),
-              TextDropDown(
-                width: 75,
-                // height: 32,
-                values: ['THB', 'USD', 'EUR'],
-                setValue: setDistanceValue,
-              ),
+              Flexible(
+                child: TextDropDown(
+                  width: 75,
+                  // height: 32,
+                  values: ['THB', 'USD', 'EUR'],
+                  initialValue: transportModeController.tempModes[widget.index]["cost"], 
+                  initialUnit: transportModeController.tempModes[widget.index]["cost_unit"], 
+                  setValue: setDistanceValue,
+                  textOnChange: _setCost, 
+                  dropDownOnChange: _setCostUnit
+                )
+              )
             ],
           ),
 
@@ -324,28 +376,38 @@ class _TransportCardState extends State<TransportCard> {
   }
 }
 
-class TimeEdit extends StatelessWidget {
-  const TimeEdit({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-        
-      ],
-    );
-  }
-}
-
-class TextDropDown extends StatelessWidget {
+class TextDropDown extends StatefulWidget {
   final List<String> values;
   final void Function(String) setValue;
+  final int initialValue;
+  final String initialUnit;
   final int width;
+  final void Function(String) textOnChange;
+  final void Function(String) dropDownOnChange;
 
   const TextDropDown({
     required this.width,
     required this.values,
+    required this.initialValue,
+    required this.initialUnit,
     required this.setValue,
+    required this.textOnChange,
+    required this.dropDownOnChange,
     super.key,
   });
+
+  @override
+  State<TextDropDown> createState() => TextDropDownState();
+}
+
+class TextDropDownState extends State<TextDropDown> {
+  late String _dropDownValue;  
+
+  @override
+  void initState() {
+    super.initState();
+    _dropDownValue = widget.initialUnit;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -359,9 +421,9 @@ class TextDropDown extends StatelessWidget {
       child: Wrap(
         children: [
           Container(
-            width: width.toDouble() / 2,
-            // height: height.toDouble(),
-            child: TextField(
+            width: widget.width.toDouble() / 2,
+            child: TextFormField(
+              initialValue: widget.initialValue.toString(),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 2,
@@ -374,7 +436,10 @@ class TextDropDown extends StatelessWidget {
                 errorBorder: InputBorder.none,
                 disabledBorder: InputBorder.none,
               ),
-              controller: TextEditingController(text: 0.toString()),
+              onChanged: (value) {
+                widget.textOnChange(value);
+              },
+              // controller: TextEditingController(text: 0.toString()),
             ),
           ),
           const VerticalDivider(
@@ -386,7 +451,7 @@ class TextDropDown extends StatelessWidget {
           ),
           Expanded(
             child: Container(
-              width: width.toDouble() - 20,
+              width: widget.width.toDouble() - 20,
               // height: height.toDouble(),
               decoration: BoxDecoration(
                 // color: AppColors.black,
@@ -404,13 +469,16 @@ class TextDropDown extends StatelessWidget {
                 ),
 
                 child: DropdownButton2<String>(
-                  value: values.first,
+                  value: _dropDownValue,
                   isExpanded: true,
                   onChanged: (String? newValue) {
-                    if (newValue != null) setValue(newValue);
+                    setState((){
+                      _dropDownValue = newValue!;
+                    }); 
+                    widget.dropDownOnChange(newValue!);
                   },
                   items:
-                      values.map<DropdownMenuItem<String>>((String value) {
+                      widget.values.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Padding(
@@ -433,7 +501,7 @@ class TextDropDown extends StatelessWidget {
                   ),
                   dropdownStyleData: DropdownStyleData(
                     maxHeight: 200,
-                    width: width.toDouble(),
+                    width: widget.width.toDouble(),
 
                     // width: width.toDouble() / 2,
                     decoration: BoxDecoration(
@@ -458,9 +526,12 @@ class TextDropDown extends StatelessWidget {
   }
 }
 
+
 class EditableTimeBox extends StatefulWidget {
   final int width;
-  const EditableTimeBox({super.key, required this.width});
+  final String initialValue;
+  final void Function(String) onChange;
+  const EditableTimeBox({super.key, required this.width, required this.initialValue, required this.onChange});
 
   @override
   _EditableTimeBoxState createState() => _EditableTimeBoxState();
@@ -479,6 +550,8 @@ class _EditableTimeBoxState extends State<EditableTimeBox> {
   @override
   void initState() {
     super.initState();
+    hour = widget.initialValue.split(':')[0].padLeft(2, '0');
+    minute = widget.initialValue.split(':')[1].padLeft(2, '0');
     hourController.text = hour;
     minuteController.text = minute;
   }
@@ -488,6 +561,10 @@ class _EditableTimeBoxState extends State<EditableTimeBox> {
     hourController.dispose();
     minuteController.dispose();
     super.dispose();
+  }
+
+  void setTime() {
+    widget.onChange("${hour}:${minute}");
   }
 
   @override
@@ -520,6 +597,12 @@ class _EditableTimeBoxState extends State<EditableTimeBox> {
                             hour = value.padLeft(2, '0');
                             isHourEditing = false;
                           });
+                        },
+                        onChanged: (value){
+                          setState((){
+                            hour = value.padLeft(2, '0');
+                          });
+                          setTime();                          
                         },
                         decoration: InputDecoration(
                           isDense: true,
@@ -561,6 +644,12 @@ class _EditableTimeBoxState extends State<EditableTimeBox> {
                             isMinEditing = false;
                           });
                         },
+                        onChanged: (value){
+                          setState((){
+                            minute = value.padLeft(2, '0');  
+                          });
+                          setTime();                         
+                        },
                         decoration: InputDecoration(
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
@@ -583,7 +672,7 @@ class _EditableTimeBoxState extends State<EditableTimeBox> {
             // textSize: 12,
           ),
           SizedBox(width: 2),
-          Icon(Icons.access_time, color: Colors.black87),
+          Icon(Icons.access_time, color: Colors.black87, size: 16,),
         ],
       ),
     );
