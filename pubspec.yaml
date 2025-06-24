@@ -50,7 +50,7 @@ dependencies:
   provider: ^6.1.5
   get: ^4.7.2
   smooth_page_indicator: ^1.2.1
-  lucide_icons: ^0.262.0
+  lucide_icons: ^0.257.0
 
 dev_dependencies:
   flutter_test:
