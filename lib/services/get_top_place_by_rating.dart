@@ -9,7 +9,7 @@ Future<List<Place>> getTopPlacesByRatingService({int limit = 5}) async {
       .limit(limit);
 
   // 🔍 Check for null or empty
-  if (response == null || response.isEmpty) return [];
+  if (response.isEmpty) return [];
 
 
   return response.map<Place>((placeData) {

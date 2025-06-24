@@ -1,6 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../domain/entities/place/place.dart';
-import '../domain/repositories/to_place.dart';
 import 'dart:developer';
 
 Place mapJsonToPlace(Map<String, dynamic> json) {
@@ -47,7 +46,7 @@ Future<List<Place>> searchPlacesService(String query) async {
         .eq('deleted', false)
         .range(0, 9999); // Ensure we get enough data for search
 
-    if (response == null || response.isEmpty) {
+    if (response.isEmpty) {
       log('📭 No Supabase data found');
       return [];
     }

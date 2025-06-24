@@ -14,7 +14,6 @@ import '../pages/search_page.dart';
 import '../../domain/entities/place/place.dart';
 import '../../domain/entities/plan/plans.dart';
 import '../../domain/usecases/get_top_places.dart';
-import '../../domain/usecases/get_popular_activities.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

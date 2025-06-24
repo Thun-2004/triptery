@@ -10,7 +10,7 @@ Future<List<Plan>> getTopPlansService({int limit = 3}) async {
       .order('totalLikes', ascending: false)
       .limit(limit);
   print("📦 Supabase raw response: $response");
-  if (response == null || response.isEmpty) return [];
+  if (response.isEmpty) return [];
   return response.map<Plan>((data) {
     return Plan(
       id: data['id'],

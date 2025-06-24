@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:triptery/domain/repositories/place_repository_impl.dart';
+import 'package:triptery/presentation/widgets/notification/notification_page.dart';
 
 class HeaderSection extends StatefulWidget {
   final PlaceRepositoryImpl repository;
@@ -191,7 +192,13 @@ class _HeaderSectionState extends State<HeaderSection> {
                       Icons.notifications_none,
                       color: Colors.white,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const NotificationPage(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

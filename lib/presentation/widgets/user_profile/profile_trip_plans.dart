@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProfileTripPlans extends StatelessWidget {
-  const ProfileTripPlans({Key? key}) : super(key: key);
+  const ProfileTripPlans({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class ProfileTripPlans extends StatelessWidget {
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
-          ...trips.map((trip) => _TripCard(trip: trip)).toList(),
+          ...trips.map((trip) => _TripCard(trip: trip)),
         ],
       ),
     );

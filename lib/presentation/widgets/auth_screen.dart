@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
@@ -10,7 +8,6 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
 import 'package:get/get.dart';
-import 'dart:io';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});

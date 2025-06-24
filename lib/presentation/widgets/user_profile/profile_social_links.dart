@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ProfileSocialLinks extends StatelessWidget {
-  const ProfileSocialLinks({Key? key}) : super(key: key);
+  const ProfileSocialLinks({super.key});
 
   @override
   Widget build(BuildContext context) {

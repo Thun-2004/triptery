@@ -1,0 +1,90 @@
+[
+  {
+    "notificationId": "1",
+    "userId": "1001",
+    "userName": "Thun",
+    "userProfilePictureUrl": "assets/images/user_profile.png",
+    "tripId": "t1",
+    "notificationType": "liked",
+    "senderId": "1001",
+    "seen": false,
+    "createdAt": "2025-06-23T09:40:00Z"
+  },
+  {
+    "notificationId": "2",
+    "userId": "1002",
+    "userName": "spoonrocks",
+    "userProfilePictureUrl": "assets/images/user_profile.png",
+    "tripId": "t1",
+    "notificationType": "saved",
+    "senderId": "1002",
+    "seen": false,
+    "createdAt": "2025-06-23T08:00:00Z"
+  },
+  {
+    "notificationId": "3",
+    "userId": "1003",
+    "userName": "salmonjuseyo",
+    "userProfilePictureUrl": "assets/images/user_profile.png",
+    "tripId": "t2",
+    "notificationType": "review",
+    "senderId": "1003",
+    "seen": false,
+    "createdAt": "2025-06-23T07:00:00Z"
+  },
+  {
+    "notificationId": "4",
+    "userId": "1004",
+    "userName": "Thien",
+    "userProfilePictureUrl": "assets/images/user_profile.png",
+    "tripId": null,
+    "notificationType": "follow",
+    "senderId": "1004",
+    "seen": true,
+    "createdAt": "2025-06-19T10:00:00Z"
+  },
+  {
+    "notificationId": "5",
+    "userId": "1005",
+    "userName": "system",
+    "userProfilePictureUrl": "assets/images/user_profile.png",
+    "tripId": "t1",
+    "notificationType": "reminder",
+    "senderId": "system",
+    "seen": true,
+    "createdAt": "2025-06-18T09:00:00Z"
+  },
+  {
+    "notificationId": "6",
+    "userId": "1003",
+    "userName": "salmonjuseyo",
+    "userProfilePictureUrl": "assets/images/user_profile.png",
+    "tripId": "t2",
+    "notificationType": "post",
+    "senderId": "1003",
+    "seen": true,
+    "createdAt": "2025-06-17T08:00:00Z"
+  },
+  {
+    "notificationId": "7",
+    "userId": "1006",
+    "userName": "PPP",
+    "userProfilePictureUrl": "assets/images/user_profile.png",
+    "tripId": "t3",
+    "notificationType": "copy",
+    "senderId": "1006",
+    "seen": true,
+    "createdAt": "2025-06-01T10:00:00Z"
+  },
+  {
+    "notificationId": "8",
+    "userId": "1007",
+    "userName": "catlover",
+    "userProfilePictureUrl": "assets/images/user_profile.png",
+    "tripId": "t4",
+    "notificationType": "share",
+    "senderId": "1007",
+    "seen": false,
+    "createdAt": "2025-06-22T10:00:00Z"
+  }
+]

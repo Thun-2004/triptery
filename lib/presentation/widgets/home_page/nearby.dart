@@ -17,7 +17,7 @@ class NearbyPlans extends StatelessWidget {
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
-        ...plans.map((plan) => _buildPlanItem(context, plan)).toList(),
+        ...plans.map((plan) => _buildPlanItem(context, plan)),
       ],
     );
   }

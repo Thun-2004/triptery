@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../../domain/repositories/place_repository_impl.dart';
-import '../../../domain/entities/place/place.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final PlaceRepositoryImpl repository;

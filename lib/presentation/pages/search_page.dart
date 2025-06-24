@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:developer';
 import '../../domain/repositories/place_repository_impl.dart';
-import '../../domain/entities/place/place.dart';
 import '../widgets/home_page/search_bar.dart';
 
 class SearchPage extends StatefulWidget {

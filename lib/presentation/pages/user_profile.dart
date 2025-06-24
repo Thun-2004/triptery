@@ -8,7 +8,7 @@ import '../widgets/user_profile/profile_bookmark.dart';
 import '../widgets/user_profile/profile_tab_button.dart';
 
 class UserProfilePage extends StatefulWidget {
-  const UserProfilePage({Key? key}) : super(key: key);
+  const UserProfilePage({super.key});
 
   @override
   State<UserProfilePage> createState() => _UserProfilePageState();

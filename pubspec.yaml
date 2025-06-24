@@ -50,6 +50,7 @@ dependencies:
   provider: ^6.1.5
   get: ^4.7.2
   smooth_page_indicator: ^1.2.1
+  lucide_icons: ^0.262.0
 
 dev_dependencies:
   flutter_test:
@@ -91,6 +92,7 @@ flutter:
     - assets/images/salmonjuseyo.png
     - assets/images/goldenspoon.png
     - lib/data/mock/mock_response.json
+    - lib/data/mock/notification_mock.json
 
     
 
