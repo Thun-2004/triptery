@@ -21,7 +21,8 @@ class HeaderSection extends StatefulWidget {
 }
 
 class _HeaderSectionState extends State<HeaderSection> {
-  final PlanReviewController planReviewController = Get.find<PlanReviewController>();
+  final PlanReviewController planReviewController =
+      Get.find<PlanReviewController>();
   bool isClicked = false;
 
   void _openBottomModal() {
@@ -70,7 +71,9 @@ class _HeaderSectionState extends State<HeaderSection> {
                   color: AppColors.white,
                   image: DecorationImage(
                     image: NetworkImage(
-                      plan != null ? plan.coverImageUrl : 'https://i.pinimg.com/736x/39/58/56/395856fb254a9c67277ba2c635613923.jpg', // Replace with your image path
+                      plan != null
+                          ? plan.coverImageUrl
+                          : 'https://i.pinimg.com/736x/39/58/56/395856fb254a9c67277ba2c635613923.jpg', // Replace with your image path
                     ),
                     fit: BoxFit.cover,
                   ),
@@ -273,7 +276,8 @@ class _HeaderSectionState extends State<HeaderSection> {
                                       const SizedBox(width: 4),
 
                                       Tag(
-                                        text: '${planReviewController.rating.value} (${planReviewController.planReview.length})',
+                                        text:
+                                            '${planReviewController.rating.value} (${planReviewController.planReview.length})',
                                         textSize: 12,
                                         textColor: AppColors.black,
                                         tagColor: AppColors.white,
@@ -287,7 +291,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                           193,
                                           59,
                                         ),
-                                        onTap: openReviewPage, 
+                                        onTap: openReviewPage,
                                       ),
                                       const SizedBox(width: 5),
                                       Tag(

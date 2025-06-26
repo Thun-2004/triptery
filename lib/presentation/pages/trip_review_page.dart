@@ -148,6 +148,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
                   minimumSize: const Size.fromHeight(50),
                 ),
                 onPressed: () {
+                  //FIXME: chanage Navigate to push later
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => WriteReviewPage()),

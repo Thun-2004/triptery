@@ -14,16 +14,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
   final int maxChars = 500;
   String? reviewText;
   int rating = 0;
-//  {
-//     "id": "1",
-//     "userId": "1",
-//     "username": "Levi",
-//     "userProfilePictureUrl": "assets/images/user.jpg",
-//     "planId": "1",
-//     "rating": 5,
-//     "description": "Very good no titan",
-//     "createdAt": 1729113623000
-//   },
+  
   Widget buildStar(int index) {
     return GestureDetector(
       onTap: () => setState(() => rating = index),
@@ -177,7 +168,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
 
           // Review Button
           Positioned(
-            bottom: 30,
+            bottom: 50,
             left: 16,
             right: 16,
             child: ElevatedButton(

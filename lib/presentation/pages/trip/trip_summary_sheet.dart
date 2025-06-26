@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/pages/trip/trip_budget_sheet.dart';
 import 'package:triptery/presentation/pages/trip/trip_calendar_sheet.dart';
 import 'package:triptery/presentation/pages/trip/trip_group_sheet.dart';
 import 'package:triptery/presentation/pages/trip/trip_tag_sheet.dart';
+import 'package:triptery/presentation/widgets/base_ui/text.dart';
+import 'package:triptery/presentation/widgets/switch.dart';
 import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
 
 class TripSummaryWindow extends StatefulWidget {
@@ -12,8 +15,9 @@ class TripSummaryWindow extends StatefulWidget {
 
 class _TripSummaryWindowState extends State<TripSummaryWindow> {
   bool _isPublic = true;
-  bool _showCursor = false; 
+  bool _showCursor = false;
   final FocusNode _tripNameFocus = FocusNode();
+  final PageController _pageController = PageController();
 
   void _openTagModal() {
     showModalBottomSheet(
@@ -70,291 +74,357 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
   //TODO : adjust alignment of bottom sheet so that drag handle is shown
   @override
   Widget build(BuildContext context) {
-    return GestureDetector (
+    return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
       },
       child: Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
           ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-          child: Form(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-
-              children: [
-                Text('Review Summary'),
-
-                const SizedBox(height: 30),
-                Column(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+            child: Form(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(""),
+                        CustomText(
+                          text: '       Trip Setting',
+                          type: TextType.subHeading,
+                          color: AppColors.black,
+                          maxLines: 1,
+                        ),
+                        CustomText(
+                          text: 'Done',
+                          type: TextType.body,
+                          color: AppColors.black,
+                          maxLines: 1,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            'https://i.pinimg.com/736x/b5/ea/78/b5ea78bc0bac20e8bda063b4f168aeda.jpg',
+                            width: double.infinity,
+                            height: 160,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.black54,
+                          ),
+                          padding: EdgeInsets.all(8),
+                          child: Icon(Icons.camera_alt, color: Colors.white),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5, top: 15),
+                          child: Column(
                             children: [
-                              Expanded (
-                                child: Row(
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(Icons.location_on),
-
                                   Expanded(
-                                    child: TextFormField(
-                                      initialValue: 'Trip name',
-                                      autofocus: false,
-                                      focusNode: _tripNameFocus,
-                                      showCursor: _showCursor,
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                                        // labelText: 'Enter trip username',
-                                      ),
-                                      onTap: (){
-                                        setState(() {
-                                          _showCursor = true;
-                                        });
-                                      }
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          text: 'Trip Name',
+                                          type: TextType.subHeading,
+                                          color: AppColors.darkGray,
+                                          textSize: 14,
+                                        ),
+                                        TextFormField(
+                                          initialValue: 'Trip name',
+                                          autofocus: false,
+                                          focusNode: _tripNameFocus,
+                                          showCursor: _showCursor,
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none,
+                                            floatingLabelBehavior:
+                                                FloatingLabelBehavior.never,
+                                            // labelText: 'Enter trip username',
+                                          ),
+                                          onTap: () {
+                                            setState(() {
+                                              _showCursor = true;
+                                            });
+                                          },
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
-                              )
-                              ), 
-
-                              // IconButton(
-                              //   icon: Icon(Icons.arrow_back_ios,
-                              //     textDirection: TextDirection.rtl,
-                              //     size: 16),
-                              //   onPressed: () => _openTagModal(),
-                              // )
+                              ),
                             ],
                           ),
-                          const SizedBox(height: 10),
-                          Container(
-                            height: 100,
-                            width: 200,
-                            decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 225, 225, 225),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(20),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              CustomText(
+                                text: 'Trip Dates',
+                                type: TextType.subHeading,
+                                color: AppColors.darkGray,
+                                textSize: 14,
+                              ),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Icon(Icons.location_on),
-                                  Text('Party'),
-                                ],
-                              ),
-
-                              IconButton(
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  textDirection: TextDirection.rtl,
-                                  size: 16,
-                                ),
-                                onPressed: () => _openTripGroupModal(),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-
-                          Row(
-                            children: [
-                              const SizedBox(width: 10),
-                              Text("A couple"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.location_on),
-                                  Text('Trip Dates'),
-                                ],
-                              ),
-
-                              IconButton(
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  textDirection: TextDirection.rtl,
-                                  size: 16,
-                                ),
-                                onPressed: () => _openTripCalendarModal(),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-
-                          Row(
-                            children: [
-                              const SizedBox(width: 10),
-                              Text("May 25 to May 27, 2025"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.tag_rounded),
-                                  Text('Tags'),
-                                ],
-                              ),
-
-                              IconButton(
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  textDirection: TextDirection.rtl,
-                                  size: 16,
-                                ),
-                                onPressed: () => _openTagModal(),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const SizedBox(width: 10),
-                              TripTag(tag: 'Party'),
-                              TripTag(tag: 'Adventure'),
-                              TripTag(tag: 'Beach'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.location_on),
-                                  Text('Budget'),
-                                ],
-                              ),
-
-                              IconButton(
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  textDirection: TextDirection.rtl,
-                                  size: 16,
-                                ),
-                                onPressed: () => _openTripBudgetModal(),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-
-                          Row(
-                            children: [
-                              const SizedBox(width: 10),
-                              Text("Luxury"),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.location_on),
-                                  Text('Set visibility public'),
-                                ],
-                              ),
-
-                              Transform.scale(
-                                scale: 0.8,
-                                child: Switch(
-                                  value: _isPublic,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      _isPublic = value;
-                                    });
-                                  },
-                                  activeColor: const Color.fromARGB(
-                                    255,
-                                    81,
-                                    234,
-                                    160,
+                                  CustomText(
+                                    text: 'May 25 to May 27, 2025',
+                                    type: TextType.subHeading,
+                                    color: AppColors.black,
                                   ),
-                                ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_back_ios,
+                                      textDirection: TextDirection.rtl,
+                                      size: 16,
+                                    ),
+                                    onPressed: () => _openTripCalendarModal(),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: 'Party',
+                                type: TextType.subHeading,
+                                color: AppColors.darkGray,
+                                textSize: 14,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomText(
+                                    text: 'A couple',
+                                    type: TextType.subHeading,
+                                    color: AppColors.black,
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_back_ios,
+                                      textDirection: TextDirection.rtl,
+                                      size: 16,
+                                    ),
+                                    onPressed: () => _openTripGroupModal(),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: 'Budget',
+                                type: TextType.subHeading,
+                                color: AppColors.darkGray,
+                                textSize: 14,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomText(
+                                    text: 'Luxury',
+                                    type: TextType.subHeading,
+                                    color: AppColors.black,
+                                  ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_back_ios,
+                                      textDirection: TextDirection.rtl,
+                                      size: 16,
+                                    ),
+                                    onPressed: () => _openTripBudgetModal(),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: 'Invited Friends',
+                                type: TextType.subHeading,
+                                color: AppColors.darkGray,
+                                textSize: 14,
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    height: 32,
+                                    width:
+                                        60, // adjust width based on number of avatars
+                                    child: Stack(
+                                      children: [
+                                        Positioned(
+                                          left: 0,
+                                          child: CircleAvatar(
+                                            radius: 16,
+                                            backgroundImage: NetworkImage(
+                                              'https://i.pinimg.com/736x/cc/ef/e1/ccefe13166d611943acdaca183e2663c.jpg', // replace with real URL
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: 20,
+                                          child: CircleAvatar(
+                                            radius: 16,
+                                            backgroundImage: NetworkImage(
+                                              'https://i.pinimg.com/736x/c7/11/a5/c711a50ef7ee499797e24cfe9b18898b.jpg',
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 16,
+                                    color: Colors.grey,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: 'Visibility',
+                                type: TextType.subHeading,
+                                color: AppColors.darkGray,
+                                textSize: 14,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CustomText(
+                                    text: 'Private trip',
+                                    type: TextType.subHeading,
+                                    color: AppColors.black,
+                                  ),
+                                  // ToggleSwitch(),
+                                  Transform.scale(
+                                    scale: 0.8,
+                                    child: Switch(
+                                      value: _isPublic,
+                                      onChanged: (bool value) {
+                                        setState(() {
+                                          _isPublic = value;
+                                        });
+                                      },
+                                      activeColor: const Color.fromARGB(
+                                        255,
+                                        81,
+                                        234,
+                                        160,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CustomText(
+                                text: 'Tags',
+                                type: TextType.subHeading,
+                                color: AppColors.darkGray,
+                                textSize: 14,
+                              ),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  TripTag(tag: 'Party'),
+                                  TripTag(tag: 'Adventure'),
+                                  TripTag(tag: 'Beach'),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_back_ios,
+                                      textDirection: TextDirection.rtl,
+                                      size: 16,
+                                    ),
+                                    onPressed: () => _openTagModal(),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
+                    // Add your trip summary details here
                   ],
                 ),
-                // Add your trip summary details here
-              ],
+              ),
             ),
           ),
         ),
       ),
-    )
-    ); 
+    );
   }
 }
