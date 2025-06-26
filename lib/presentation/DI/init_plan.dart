@@ -6,6 +6,7 @@ import 'package:triptery/data/datasources/plan_data_source.dart';
 import 'package:triptery/data/repositories/plan_repository.dart';
 import 'package:triptery/domain/usecases/trip/get_plans.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
+import 'package:triptery/presentation/controllers/plan_review_controller.dart';
 
 //dependencies injection
 //help initialize controllers and dependencies
@@ -19,5 +20,14 @@ class PlanDI {
     final repository = PlanRepositoryImpl(planDataSource: planDataSource);
     final getPopularMovies = GetPlans(repository: repository);
     Get.put(PlanController(getPlans: getPopularMovies));
+  }
+}
+
+class PlanReviewDI {
+  static void init() {
+    final planReviewDataSource = PlanDataSource();
+    final repository = PlanRepositoryImpl(planDataSource: planReviewDataSource);
+    final getPlanReviews = GetPlanReviews(repository: repository);
+    Get.put(PlanReviewController(getPlanReviews: getPlanReviews));
   }
 }

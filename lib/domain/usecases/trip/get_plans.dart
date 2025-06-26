@@ -9,7 +9,7 @@ class GetPlans {
   GetPlans({required this.repository}); 
 
   Plan execute() {
-    return repository.getPlanById('1');
+    return repository.getPlanById(1);
   }
 }
 
@@ -17,7 +17,7 @@ class GetPlanReviews {
   final PlanRepositoryImpl repository; 
   GetPlanReviews({required this.repository}); 
 
-  List<PlanReview> execute(String planId) {
+  List<PlanReview> execute(int planId) {
     return repository.getPlanReviews(planId);
   }
 }

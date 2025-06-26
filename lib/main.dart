@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:triptery/presentation/DI/init_plan.dart';
 import 'package:triptery/presentation/DI/init_trip.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
+import 'package:triptery/presentation/controllers/plan_review_controller.dart';
 import 'package:triptery/presentation/controllers/transport_mode_controller.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:triptery/presentation/pages/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:triptery/presentation/pages/trip_review_page.dart';
+import 'package:triptery/presentation/pages/write_review_page.dart';
 import 'package:triptery/services/external/social_auth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -98,7 +101,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
         name: '/trip',
-          page: () => const TripPage(),
+          page: () => ReviewsPage(),
           binding: BindingsBuilder(() {
             if (!Get.isRegistered<PlanController>()) {
               PlanDI.init();
@@ -108,6 +111,9 @@ class MyApp extends StatelessWidget {
             }
             if(!Get.isRegistered<TransportModeController>()) {
               Get.put(TransportModeController());
+            }
+            if(!Get.isRegistered<PlanReviewController>()) {
+              PlanReviewDI.init();
             }
           }),
       )]

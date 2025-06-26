@@ -7,7 +7,7 @@ import 'package:triptery/constant/transport_modes.dart';
 import 'package:triptery/utils/datetime.dart';
 
 class TransportModeController extends GetxController {
-  RxList<Map<String, dynamic>> tempModes = <Map<String, dynamic>>[].obs; 
+  RxList<Map<String, dynamic>> tempModes = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {

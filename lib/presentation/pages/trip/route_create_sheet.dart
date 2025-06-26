@@ -10,7 +10,6 @@ import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/tag.dart';
 import 'package:triptery/presentation/widgets/trip/components/transport_card.dart';
 import 'package:timeline_tile/timeline_tile.dart';
-import 'package:triptery/utils/datetime.dart';
 import 'package:triptery/utils/icon.dart';
 
 //NOTE: save to cache when user not focus then to db

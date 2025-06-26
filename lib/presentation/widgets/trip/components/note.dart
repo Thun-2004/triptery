@@ -7,8 +7,8 @@ class Note extends StatelessWidget {
   final Function(String) onChanged;
   final Icon? placeholderIcon; //? = can be null or optional
   final String? placeholderText; //? = can be null or optional
-  // final TextEditingController controller; 
   final String? initialValue;
+  //NOTE: controller can't be used with initialValue, so we use initialValue instead otherwise error
 
   const Note({super.key, this.initialValue, required this.onChanged, this.placeholderIcon, this.placeholderText});
 
@@ -35,7 +35,6 @@ class Note extends StatelessWidget {
           borderSide: BorderSide.none,
         ),
       ),
-      // controller: controller,
       onChanged: ((value) => onChanged(value)),
       style: TextStyle(color: AppColors.black, fontSize: 12),
     );

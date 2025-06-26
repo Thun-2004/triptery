@@ -13,7 +13,7 @@ class PlanRepositoryImpl implements PlanRepository {
 
   //FIXME: change to future later on cuz this is a mock repository
   @override
-  Plan getPlanById(String planId){
+  Plan getPlanById(int planId){
     final result = planDataSource.getPlanbyId();
     final plan = PlanModel.fromJson(result).toEntity();
     return plan;
@@ -21,7 +21,7 @@ class PlanRepositoryImpl implements PlanRepository {
 
   //FIXME: change to future later on cuz this is a mock repository
   @override
-  List<PlanReview> getPlanReviews(String planId){
+  List<PlanReview> getPlanReviews(int planId){
     final result = planDataSource.getPlanReviews();
     final planReviews = result.map((review) => PlanReviewModel.fromJson(review).toEntity()).toList();
     return planReviews;
