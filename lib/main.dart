@@ -101,7 +101,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
         name: '/trip',
-          page: () => ReviewsPage(),
+          page: () => TripPage(),
           binding: BindingsBuilder(() {
             if (!Get.isRegistered<PlanController>()) {
               PlanDI.init();

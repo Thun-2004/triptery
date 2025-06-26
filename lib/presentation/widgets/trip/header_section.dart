@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/DI/init_plan.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
+import 'package:triptery/presentation/controllers/plan_review_controller.dart';
 import 'package:triptery/presentation/pages/trip/trip_summary_sheet.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:triptery/presentation/pages/trip_review_page.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/tag.dart';
 
@@ -19,6 +21,7 @@ class HeaderSection extends StatefulWidget {
 }
 
 class _HeaderSectionState extends State<HeaderSection> {
+  final PlanReviewController planReviewController = Get.find<PlanReviewController>();
   bool isClicked = false;
 
   void _openBottomModal() {
@@ -34,6 +37,11 @@ class _HeaderSectionState extends State<HeaderSection> {
         );
       },
     );
+  }
+
+  void openReviewPage() {
+    log("open review page");
+    Get.to(() => ReviewsPage());
   }
 
   @override
@@ -265,7 +273,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                       const SizedBox(width: 4),
 
                                       Tag(
-                                        text: '5.0 (986)',
+                                        text: '${planReviewController.rating.value} (${planReviewController.planReview.length})',
                                         textSize: 12,
                                         textColor: AppColors.black,
                                         tagColor: AppColors.white,
@@ -279,6 +287,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                           193,
                                           59,
                                         ),
+                                        onTap: openReviewPage, 
                                       ),
                                       const SizedBox(width: 5),
                                       Tag(
