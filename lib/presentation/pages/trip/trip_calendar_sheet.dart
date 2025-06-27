@@ -21,10 +21,10 @@ class TripCalendarWindowState extends State<TripCalendarWindow> {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.topCenter,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 30),
+        padding: const EdgeInsets.symmetric(vertical: 0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -36,7 +36,7 @@ class TripCalendarWindowState extends State<TripCalendarWindow> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
               child: Column(
                 children: [
                   CustomText(
@@ -56,10 +56,7 @@ class TripCalendarWindowState extends State<TripCalendarWindow> {
 
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: SizedBox(
-                height: 400,
-                child: Calendar()
-              ), 
+              child: SizedBox(height: 400, child: Calendar()),
             ),
           ],
         ),

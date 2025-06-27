@@ -20,10 +20,9 @@ class TripBudgetWindowState extends State<TripBudgetWindow> {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.topCenter,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 30),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -35,7 +34,7 @@ class TripBudgetWindowState extends State<TripBudgetWindow> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: [
                   CustomText(
@@ -45,8 +44,7 @@ class TripBudgetWindowState extends State<TripBudgetWindow> {
                   ),
                   const SizedBox(height: 20),
                   CustomText(
-                    text:
-                        'Select your estimated budget',
+                    text: 'Select your estimated budget',
                     type: TextType.body,
                     color: Colors.black,
                   ),
@@ -59,13 +57,14 @@ class TripBudgetWindowState extends State<TripBudgetWindow> {
               child: Column(
                 children:
                     modes.asMap().entries.map((entry) {
-                      final int index = entry.key; 
+                      final int index = entry.key;
                       final Map<String, String> mode = entry.value;
 
                       return GestureDetector(
                         onTap: () {
                           setState(() {
-                            _isSelectedIndex = _isSelectedIndex == index ? -1 : index; 
+                            _isSelectedIndex =
+                                _isSelectedIndex == index ? -1 : index;
                           });
                         },
                         child: Container(
@@ -79,8 +78,8 @@ class TripBudgetWindowState extends State<TripBudgetWindow> {
                           decoration: BoxDecoration(
                             border: Border.all(
                               color:
-                                  _isSelectedIndex == index ? 
-                                       const Color.fromARGB(255, 223, 107, 12)
+                                  _isSelectedIndex == index
+                                      ? const Color.fromARGB(255, 223, 107, 12)
                                       : Colors.white,
                             ),
                             borderRadius: BorderRadius.all(Radius.circular(10)),

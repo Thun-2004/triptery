@@ -6,6 +6,7 @@ import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/DI/init_plan.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/controllers/plan_review_controller.dart';
+import 'package:triptery/presentation/pages/trip/trip_flow_control_sheet.dart';
 import 'package:triptery/presentation/pages/trip/trip_summary_sheet.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/presentation/pages/trip_review_page.dart';
@@ -34,7 +35,7 @@ class _HeaderSectionState extends State<HeaderSection> {
       builder: (context) {
         return FractionallySizedBox(
           heightFactor: 0.9,
-          child: TripSummaryWindow(),
+          child: TripFlowControlSheet(),
         );
       },
     );

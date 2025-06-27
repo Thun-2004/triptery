@@ -43,33 +43,29 @@ class TripTagWindowState extends State<TripTagWindow> {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.topCenter,
       child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 30),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
+        height: 800,
+        decoration: BoxDecoration(color: Colors.white),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: [
                   CustomText(
-                    text: 'Tailor your adventure of your tastes 🌟', 
-                    type: TextType.heading, 
-                    color: Colors.black),
+                    text: 'Tailor your adventure of your tastes 🌟',
+                    type: TextType.heading,
+                    color: Colors.black,
+                  ),
                   const SizedBox(height: 20),
                   CustomText(
-                    text: 'Selected your travel preference to customize your trip plan.', 
-                    type: TextType.body, 
-                    color: Colors.black),
+                    text:
+                        'Selected your travel preference to customize your trip plan.',
+                    type: TextType.body,
+                    color: Colors.black,
+                  ),
                 ],
               ),
             ),
