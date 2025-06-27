@@ -12,10 +12,10 @@ class TripGroupWindowState extends State<TripGroupWindow> {
   int _isSelectedIndex = 0;
   final List<Map<String, String>> modes = [
     {"mode": "Only Me 🚶", "detail": "Traveling solo, just you."},
-    {"mode": "A Couple 🩷", "detail": "A romantic gataway for two."},
-    {"mode": "Family", "detail": "Quality time with your loved ones."},
-    {"mode": "Friends 🌟", "detail": "Adventure with your closest pals."},
-    {"mode": "Work 💼", "detail": "Bussiness or corporate travel."},
+    {"mode": "A Couple 👫", "detail": "2 people"},
+    {"mode": "Family 👨‍👩‍👦‍👦", "detail": "3-10 people"},
+    {"mode": "Friends 🌟", "detail": "2-12 people"},
+    {"mode": "Work 💼", "detail": "5-25 people"},
   ];
 
   @override

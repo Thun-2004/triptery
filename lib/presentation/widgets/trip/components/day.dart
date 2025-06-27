@@ -273,20 +273,46 @@ class _DayState extends State<Day> {
 
                                           if (index == _places.length - 1)
                                             const SizedBox(height: 10)
-                                          else if (index < _routes.length && _routes[index].day == widget.day)                                           
-                                          // else if (index < _places.length - 1 && index < _routes.length && _routes[index].day == widget.day && _places[index].placeId != null && _places[index + 1].placeId != null && routeOptions.isNotEmpty)                                           
-                                            RouteDropdown(
-                                              key: ValueKey(
-                                                'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
-                                              ),
 
-                                              choices: routeOptions,
-                                              pastChoice:
-                                                  _selectedIndex == index
-                                                      ? "Select route mode"
-                                                      : _routes[index].routeMode
-                                                          .toString(),
+                                          else ...[
+                                            Builder(
+                                              builder: (context) {
+                                                Trip? matchingRoute = _routes.firstWhereOrNull(
+                                                  (r) =>
+                                                      r.routeFrom == _places[index].placeId &&
+                                                      r.routeTo == _places[index + 1].placeId,
+                                                );
+
+                                                if (matchingRoute != null) {
+                                                  return RouteDropdown(
+                                                    key: ValueKey(
+                                                      'route-${_places[index].placeId}-${_places[index + 1].placeId}',
+                                                    ),
+                                                    choices: routeOptions,
+                                                    pastChoice: _selectedIndex == index
+                                                        ? "Select route mode"
+                                                        : matchingRoute.routeMode.toString(),
+                                                  );
+                                                } else {
+                                                  return SizedBox.shrink(); // fallback
+                                                }
+                                              },
                                             ),
+                                          ]
+
+                                          //else if (index < _routes.length && _routes[index].day == widget.day)                                     
+                                            // RouteDropdown(
+                                            //   key: ValueKey(
+                                            //     'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
+                                            //   ),
+
+                                            //   choices: routeOptions,
+                                            //   pastChoice:
+                                            //       _selectedIndex == index
+                                            //           ? "Select route mode"
+                                            //           : _routes[index].routeMode
+                                            //               .toString(),
+                                            // ),
                                         ],
                                       ),
                                     ),

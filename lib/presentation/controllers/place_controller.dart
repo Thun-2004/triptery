@@ -14,7 +14,7 @@ class PlaceController extends GetxController {
 
   void init() {
     if (recommendedPlaces.isEmpty && allPlaces.isNotEmpty) {
-      recommendedPlaces.value =
+      recommendedPlaces.value = 
           allPlaces.where((place) => int.parse(place.id) < 8).toList();
       log("Recommended places initialized: ${recommendedPlaces.length}");
     }

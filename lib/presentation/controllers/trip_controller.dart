@@ -297,75 +297,66 @@ class TripController extends GetxController {
     }
   }
 
+  //new
+  // void recalculateAllRoutes() {
+  //   routes.clear();
+
+  //   for (int i = 0; i < places.length - 1; i++) {
+  //     final fromPlace = places[i];
+  //     final toPlace = places[i + 1];
+  //     if (fromPlace.placeId != null && toPlace.placeId != null) {
+  //       routes.add(
+  //         Trip(
+  //           id: "route_${fromPlace.placeId}_${toPlace.placeId}_${i}_${DateTime.now().millisecondsSinceEpoch}",
+  //           planId: fromPlace.planId,
+  //           day: day.value,
+  //           type: TripType.route,
+  //           routeMode: RouteMode.unselected,
+  //           routeFrom: fromPlace.placeId,
+  //           routeTo: toPlace.placeId,
+  //           routeTotalTime: null,
+  //           routeTotalCost: null,
+  //           routeTotalDistance: null,
+  //           routeDistance: null,
+  //           routeNote: null,
+  //           note: null,
+  //         ),
+  //       );
+
+  //       final matched = findRouteOptions(fromPlace.placeId!, toPlace.placeId!);
+  //       log(
+  //         "🔁 Regenerated route from ${fromPlace.placeId} → ${toPlace.placeId}: ${matched.length} option(s)",
+  //       );
+  //     }
+  //   }
+  //   log("✅ Total routes regenerated: ${routes.length}");
+  // }
+
   void recalculateAllRoutes() {
-    // Clear all old routes
-    routes.clear();
+    final newRoutes = <Trip>[];
 
     for (int i = 0; i < places.length - 1; i++) {
       final fromPlace = places[i];
       final toPlace = places[i + 1];
 
       if (fromPlace.placeId != null && toPlace.placeId != null) {
-        routes.add(
+        newRoutes.add(
           Trip(
-            id: "${fromPlace.id}-${toPlace.id}", // generate unique route id
+            id: "route_${fromPlace.placeId}_${toPlace.placeId}_$i",
             planId: fromPlace.planId,
             day: day.value,
             type: TripType.route,
             routeMode: RouteMode.unselected,
             routeFrom: fromPlace.placeId,
             routeTo: toPlace.placeId,
-            routeTotalTime: null,
-            routeTotalCost: null,
-            routeTotalDistance: null,
-            routeDistance: null,
-            routeNote: null,
-            note: null,
           ),
-        );
-
-        final matched = findRouteOptions(fromPlace.placeId!, toPlace.placeId!);
-        log(
-          "🔁 Regenerated route from ${fromPlace.placeId} → ${toPlace.placeId}: ${matched.length} option(s)",
         );
       }
     }
-
+    // Important! Use assignAll to notify observers (Obx)
+    routes.assignAll(newRoutes);
     log("✅ Total routes regenerated: ${routes.length}");
   }
-  // void recalculateAllRoutes() {
-  //   final List<Trip> newRoutes = [];
-
-  //   for (int i = 0; i < places.length - 1; i++) {
-  //     final fromPlace = places[i];
-  //     final toPlace = places[i + 1];
-
-  //     final fromId = fromPlace.placeId;
-  //     final toId = toPlace.placeId;
-
-  //     if (fromId == null || toId == null) continue;
-
-  //     final routeId = "${fromPlace.id}-${toPlace.id}";
-  //     final matchedRoutes = findRouteOptions(fromId, toId);
-
-  //     newRoutes.add(
-  //       Trip(
-  //         id: routeId,
-  //         planId: fromPlace.planId,
-  //         day: day,
-  //         type: TripType.route,
-  //         routeMode: RouteMode.unselected,
-  //         routeFrom: fromId,
-  //         routeTo: toId,
-  //       ),
-  //     );
-
-  //     log("🔁 Regenerated route from $fromId → $toId: ${matchedRoutes.length} option(s)");
-  //   }
-
-  //   routes.assignAll(newRoutes);
-  //   log("✅ Total routes regenerated: ${newRoutes.length}");
-  // }
 
   void handleReorder(int oldIndex, int newIndex, int selectedIndex) {
     if (oldIndex < newIndex) {
@@ -395,7 +386,6 @@ class TripController extends GetxController {
       final timeB = format.parse(b.arrivalTime!);
       return timeA.compareTo(timeB);
     });
-    
   }
 
   // void addPlace(index) {
@@ -423,7 +413,7 @@ class TripController extends GetxController {
         continue;
       } else {
         places.removeAt(ind);
-        routes.removeAt(ind); 
+        routes.removeAt(ind);
       }
     }
     deletedItems.clear();
@@ -456,28 +446,28 @@ class TripController extends GetxController {
 
   void addPlaceToTripRoute(int prevPlaceIndex) {
     log('day index: ${day.value}');
-    for(Place place in selectedPlaces) {
+    for (Place place in selectedPlaces) {
       Trip _place = Trip(
         id: place.id,
         planId: "1",
-        day:1,
+        day: 1,
         // day:day.value,
         type: TripType.dest,
         placeId: place.id,
         placeName: place.name,
         placeDescription: place.description,
         placeImageUrl: place.imageUrl,
-        arrivalTime: incrementHour(places[prevPlaceIndex].arrivalTime!) ,
+        arrivalTime: incrementHour(places[prevPlaceIndex].arrivalTime!),
       );
       Trip _route = Trip(
         id: place.id,
         planId: "1",
-        day:1,
+        day: 1,
         //day:day.value,
         type: TripType.dest,
         routeMode: RouteMode.unselected,
-        routeFrom: places[prevPlaceIndex].placeId.toString(), 
-        routeTo: place.id.toString(),  
+        routeFrom: places[prevPlaceIndex].placeId.toString(),
+        routeTo: place.id.toString(),
         routeTotalTime: null,
         routeTotalCost: null,
         routeTotalDistance: null,
@@ -502,23 +492,22 @@ class TripController extends GetxController {
         routeNote: null,
         note: "Added to trip",
       );
-      
+
       places.insert(prevPlaceIndex + 1, _place);
       routes.insert(prevPlaceIndex + 1, _route);
 
-      //card after = time of added places + 1 
-      if(prevPlaceIndex > 0 && prevPlaceIndex < places.length - 1) {
+      //card after = time of added places + 1
+      if (prevPlaceIndex > 0 && prevPlaceIndex < places.length - 1) {
         routes.insert(prevPlaceIndex + 2, _route2);
-        for(int i = prevPlaceIndex + 2; i < places.length; i++) {
-          places[i].arrivalTime = incrementHour(places[i].arrivalTime!); 
+        for (int i = prevPlaceIndex + 2; i < places.length; i++) {
+          places[i].arrivalTime = incrementHour(places[i].arrivalTime!);
         }
       }
     }
-    selectedPlaces.clear(); 
+    selectedPlaces.clear();
     places.assignAll([...places]);
     routes.assignAll([...routes]);
   }
 
   //FIXME: create day flow(add button -> add new route -> if no route/trip exists = add button)
-  
 }

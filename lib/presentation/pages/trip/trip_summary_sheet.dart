@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
-import 'package:triptery/presentation/widgets/switch.dart';
 import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
 
 class TripSummaryWindow extends StatefulWidget {
@@ -43,7 +42,6 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
     super.dispose();
   }
 
-  //TODO : adjust alignment of bottom sheet so that drag handle is shown
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -67,7 +65,7 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                       child: Image.network(
                         'https://i.pinimg.com/736x/b5/ea/78/b5ea78bc0bac20e8bda063b4f168aeda.jpg',
                         width: double.infinity,
-                        height: 160,
+                        height: 140,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -226,7 +224,7 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
+                      padding: const EdgeInsets.only(bottom: 15, right: 14),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -267,11 +265,7 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                                   ],
                                 ),
                               ),
-                              const Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16,
-                                color: Colors.grey,
-                              ),
+                              const Icon(Icons.arrow_forward_ios, size: 16),
                             ],
                           ),
                         ],
@@ -334,11 +328,15 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                           ),
 
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              TripTag(tag: 'Party'),
-                              TripTag(tag: 'Adventure'),
-                              TripTag(tag: 'Beach'),
+                              Row(
+                                children: [
+                                  TripTag(tag: 'Party'),
+                                  TripTag(tag: 'Adventure'),
+                                  TripTag(tag: 'Beach'),
+                                ],
+                              ),
                               IconButton(
                                 icon: Icon(
                                   Icons.arrow_back_ios,

@@ -31,6 +31,11 @@ class PlanController extends GetxController {
       isLoading(false); 
     }
   }
+
+  void updatePlan(Plan newPlan) {
+    plan.value = newPlan;
+    log("🔄 Plan updated: ${plan.value?.name}");
+  }
   //FIXME: Add methods loading to เเบ่ง load plan/trip อาจจะ load plan ก่อนแล้วค่อย load trip but add to the same response
   //FIXME: Add another fields in Plan to show all trips in the plan like plan.trips = [Trip1, Trip2, Trip3]
 }

@@ -26,7 +26,7 @@ class PlanDataSource {
       "dayStart" : "2025-02-01T00:00:00.000",
       "dayEnd": "2025-02-02T00:00:00.000",
       "dayCount": 2,
-      "location": "Pattaya, Thailand",  
+      "location": "Pattaya, Thailand",
       "note" : "A fun trip to Pattaya with friends.",
       "visibility": "public",
       "budget": 0,

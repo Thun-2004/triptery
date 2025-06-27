@@ -33,6 +33,7 @@ class _TripFlowControlSheetState extends State<TripFlowControlSheet> {
     );
   }
 
+  //add padding to this 
   Widget _buildTripTagSection() {
     return Center(child: TripTagWindow());
   }
@@ -100,6 +101,15 @@ class _TripFlowControlSheetState extends State<TripFlowControlSheet> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[400],
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -127,7 +137,7 @@ class _TripFlowControlSheetState extends State<TripFlowControlSheet> {
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
-                    height: 688,
+                    height: 670,
                     child: AnimatedSwitcher(
                       duration: Duration(milliseconds: 300),
                       transitionBuilder: (
