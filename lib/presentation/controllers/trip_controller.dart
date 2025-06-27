@@ -326,7 +326,6 @@ class TripController extends GetxController {
         );
       }
     }
-    // Important! Use assignAll to notify observers (Obx)
     routes.assignAll(newRoutes);
     log("✅ current routes regenerated: ${routes.length}");
   }
@@ -337,13 +336,14 @@ class TripController extends GetxController {
     }
 
     //swap time
-    String tempTime = places[newIndex].arrivalTime ?? '';
-    places[newIndex].arrivalTime = places[oldIndex].arrivalTime;
-    places[oldIndex].arrivalTime = tempTime;
+    // String tempTime = places[oldIndex].arrivalTime ?? '';
+    // places[oldIndex].arrivalTime = places[newIndex].arrivalTime;
+    // places[newIndex].arrivalTime = tempTime;
 
     //swap place
     final Trip item = places.removeAt(oldIndex);
     places.insert(newIndex, item);
+    adjustTimeWithDurations();
 
     //recalculate routes
     selectedIndex = -1;
@@ -352,20 +352,32 @@ class TripController extends GetxController {
     print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
   }
 
-  // void sortPlacebyTimes(int placeIndex, String initialTime, String finalTime) {
-  //   final format = DateFormat('hh:mm a');
-  //   final initial = format.parse(initialTime);
-  //   final finalT = format.parse(finalTime);
-  //   final diff = finalT.difference(initial);
+  //temp time swap
+  void adjustTimeWithDurations() {
+    //sort time list
+    //filled places_arrival
 
-  //   for (int i = 0; i < places.length; i++) {
-  //     if (i > placeIndex) {
-  //       DateTime current = format.parse(places[i].arrivalTime!);
-  //       DateTime newTime = current.add(diff);
-  //       places[i].arrivalTime = format.format(newTime);
-  //     }
-  //   }
-  // }
+    // List<String> arrivalTimes = plac
+    List<String> arrivalTimes =
+        places.map((place) => place.arrivalTime ?? '').toList();
+    arrivalTimes.sort((a, b) {
+      final format = DateFormat('hh:mm a');
+      try {
+        final timeA = format.parseStrict(a.trim());
+        final timeB = format.parseStrict(b.trim());
+        return timeA.compareTo(timeB);
+      } catch (e) {
+        return 0;
+      }
+    });
+
+    //change places arrival time to the sorted time
+    for (int i = 0; i < places.length; i++) {
+      if (i < arrivalTimes.length) {
+        places[i].arrivalTime = arrivalTimes[i];
+      }
+    }
+  }
 
   void sortPlacebyTimes(int placeIndex, String initialTime, String finalTime) {
     final format = DateFormat('hh:mm a');
