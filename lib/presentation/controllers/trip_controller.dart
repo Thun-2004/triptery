@@ -256,7 +256,7 @@ class TripController extends GetxController {
         );
         log("TripService: Added place ${trip.placeName} with id ${trip.id}");
 
-        if (trip.routeFrom != null) {
+        if (trip.routeFrom != null && trip.routeTo != null) {
           routes.add(
             Trip(
               id: trip.id,
@@ -279,6 +279,12 @@ class TripController extends GetxController {
         }
       }
     }
+
+    for (int i = 0; i < routes.length; i++) {
+      log(
+        "TripService: Route $i - From: ${routes[i].routeFrom}, To: ${routes[i].routeTo}, Mode: ${routes[i].routeMode}",
+      );
+    }
   }
 
   List<Map<String, String>> findRouteOptions(String placeId1, String placeId2) {
@@ -297,41 +303,6 @@ class TripController extends GetxController {
     }
   }
 
-  //new
-  // void recalculateAllRoutes() {
-  //   routes.clear();
-
-  //   for (int i = 0; i < places.length - 1; i++) {
-  //     final fromPlace = places[i];
-  //     final toPlace = places[i + 1];
-  //     if (fromPlace.placeId != null && toPlace.placeId != null) {
-  //       routes.add(
-  //         Trip(
-  //           id: "route_${fromPlace.placeId}_${toPlace.placeId}_${i}_${DateTime.now().millisecondsSinceEpoch}",
-  //           planId: fromPlace.planId,
-  //           day: day.value,
-  //           type: TripType.route,
-  //           routeMode: RouteMode.unselected,
-  //           routeFrom: fromPlace.placeId,
-  //           routeTo: toPlace.placeId,
-  //           routeTotalTime: null,
-  //           routeTotalCost: null,
-  //           routeTotalDistance: null,
-  //           routeDistance: null,
-  //           routeNote: null,
-  //           note: null,
-  //         ),
-  //       );
-
-  //       final matched = findRouteOptions(fromPlace.placeId!, toPlace.placeId!);
-  //       log(
-  //         "🔁 Regenerated route from ${fromPlace.placeId} → ${toPlace.placeId}: ${matched.length} option(s)",
-  //       );
-  //     }
-  //   }
-  //   log("✅ Total routes regenerated: ${routes.length}");
-  // }
-
   void recalculateAllRoutes() {
     final newRoutes = <Trip>[];
 
@@ -339,10 +310,12 @@ class TripController extends GetxController {
       final fromPlace = places[i];
       final toPlace = places[i + 1];
 
-      if (fromPlace.placeId != null && toPlace.placeId != null) {
+      if (fromPlace.placeId != null &&
+          toPlace.placeId != null &&
+          i < places.length - 2) {
         newRoutes.add(
           Trip(
-            id: "route_${fromPlace.placeId}_${toPlace.placeId}_$i",
+            id: "route-${places[i].placeId}-${places[i + 1].placeId}",
             planId: fromPlace.planId,
             day: day.value,
             type: TripType.route,
@@ -355,7 +328,7 @@ class TripController extends GetxController {
     }
     // Important! Use assignAll to notify observers (Obx)
     routes.assignAll(newRoutes);
-    log("✅ Total routes regenerated: ${routes.length}");
+    log("✅ current routes regenerated: ${routes.length}");
   }
 
   void handleReorder(int oldIndex, int newIndex, int selectedIndex) {
@@ -379,13 +352,56 @@ class TripController extends GetxController {
     print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
   }
 
-  void sortPlacebyTimes() {
+  // void sortPlacebyTimes(int placeIndex, String initialTime, String finalTime) {
+  //   final format = DateFormat('hh:mm a');
+  //   final initial = format.parse(initialTime);
+  //   final finalT = format.parse(finalTime);
+  //   final diff = finalT.difference(initial);
+
+  //   for (int i = 0; i < places.length; i++) {
+  //     if (i > placeIndex) {
+  //       DateTime current = format.parse(places[i].arrivalTime!);
+  //       DateTime newTime = current.add(diff);
+  //       places[i].arrivalTime = format.format(newTime);
+  //     }
+  //   }
+  // }
+
+  void sortPlacebyTimes(int placeIndex, String initialTime, String finalTime) {
     final format = DateFormat('hh:mm a');
-    places.sort((a, b) {
-      final timeA = format.parse(a.arrivalTime!);
-      final timeB = format.parse(b.arrivalTime!);
-      return timeA.compareTo(timeB);
-    });
+    initialTime = initialTime.trim();
+    finalTime = finalTime.trim();
+
+    if (initialTime.isEmpty || finalTime.isEmpty) {
+      log(
+        "❌ Cannot parse empty time strings: initialTime='$initialTime', finalTime='$finalTime'",
+      );
+      return;
+    }
+
+    try {
+      final initial = format.parseStrict(initialTime);
+      final finalT = format.parseStrict(finalTime);
+      final diff = finalT.difference(initial);
+
+      log(
+        "✅ Time difference: ${diff.inHours} hours and ${diff.inMinutes % 60} minutes",
+      );
+
+      for (int i = 0; i < places.length; i++) {
+        if (i > placeIndex) {
+          String arrival = places[i].arrivalTime ?? "";
+          DateTime current = format.parseStrict(arrival.trim());
+          DateTime newTime = current.add(diff);
+          places[i].arrivalTime = format.format(newTime);
+          log(
+            "Updated place ${places[i].placeName} arrival time to ${places[i].arrivalTime}",
+          );
+        }
+      }
+    } catch (e) {
+      log("❌ Error parsing time: $e");
+    }
   }
 
   // void addPlace(index) {

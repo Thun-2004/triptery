@@ -9,9 +9,11 @@ import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:triptery/presentation/pages/trip/add_place_sheet.dart';
 import 'package:triptery/presentation/widgets/add_button.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
+import 'package:triptery/presentation/widgets/time_picker.dart';
 import 'package:triptery/presentation/widgets/trip/components/place_card.dart';
 import 'package:triptery/presentation/widgets/trip/components/route_dropdown.dart';
 import 'package:triptery/presentation/widgets/trip/trip_body.dart';
+import 'package:triptery/utils/datetime.dart';
 
 //FIXME: change reorderable to widget
 class EditRoutePage extends StatefulWidget {
@@ -72,6 +74,24 @@ class _EditRoutePageState extends State<EditRoutePage> {
     });
   }
 
+  void showTimePicker(String initialTime, Function(TimeOfDay) setTimeOnChange) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      backgroundColor: AppColors.white,
+      builder: (context) {
+        return FractionallySizedBox(
+          heightFactor: 0.3,
+          child: TimePickerCupertino(
+            initialTime: initialTime,
+            setTimeOnChange: setTimeOnChange,
+          ),
+        );
+      },
+    );
+  }
+
   isExtended() {
     setState(() {
       isExpanded = !isExpanded;
@@ -81,7 +101,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
   void _selectDay(int day) {
     setState(() {
       selectedDay = day;
-      tripController.day.value = day; 
+      tripController.day.value = day;
     });
   }
 
@@ -199,7 +219,6 @@ class _EditRoutePageState extends State<EditRoutePage> {
           Obx(() {
             if (tripController.deletedItemsObs.isEmpty)
               return const SizedBox.shrink();
-
             return AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               alignment: Alignment.bottomCenter,
@@ -244,7 +263,9 @@ class _EditRoutePageState extends State<EditRoutePage> {
               List<Trip> _places = tripController.getPlaces;
               List<Trip> _routes = tripController.getRoutes;
 
-              log("Visible places: ${_places.map((e) => '${e.placeName} (Day ${e.day})').toList()}");
+              log(
+                "Visible places: ${_places.map((e) => '${e.placeName} (Day ${e.day})').toList()}",
+              );
 
               return ReorderableListView.builder(
                 //NOTE reorderable list view is scrollable on its own
@@ -255,6 +276,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
 
                 onReorder: handleReorder,
                 itemBuilder: (context, index) {
+                  String? initialTime = _places[index].arrivalTime!;
                   List<Map<String, String>> routeOptions =
                       index < _places.length - 1 &&
                               _places[index].placeId != null &&
@@ -264,6 +286,23 @@ class _EditRoutePageState extends State<EditRoutePage> {
                             _places[index + 1].placeId!,
                           )
                           : [];
+
+                  void setTimeOnChange(TimeOfDay selectedTime) {
+                    setState(() {
+                      var _initialTime = _places[index].arrivalTime;
+                      var _changedTime = convertTo12HourWithMeridian(
+                        selectedTime.format(context),
+                      );
+                      _places[index].arrivalTime = _changedTime;
+                      log("${_places[index].arrivalTime}");
+                      tripController.sortPlacebyTimes(
+                        index,
+                        _initialTime!,
+                        _changedTime,
+                      );
+                    });
+                  }
+
                   return Padding(
                     key: ValueKey('place-${_places[index].placeId}-$index'),
                     padding: const EdgeInsets.only(bottom: 0.0),
@@ -289,10 +328,26 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                             color: AppColors.orange_950,
                                             size: 16,
                                           ),
-                                          CustomText(
-                                            text: _places[index].arrivalTime!,
-                                            type: TextType.body,
-                                            color: AppColors.orange_950,
+                                          TextButton(
+                                            style: TextButton.styleFrom(
+                                              padding: EdgeInsets.zero,
+                                              tapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                              minimumSize: Size(0, 0),
+                                            ),
+                                            onPressed: (() {
+                                              showTimePicker(
+                                                initialTime,
+                                                setTimeOnChange,
+                                              );
+                                            }),
+                                            child: Text(
+                                              _places[index].arrivalTime!,
+                                              style: TextStyle(
+                                                color: AppColors.orange_950,
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -341,20 +396,40 @@ class _EditRoutePageState extends State<EditRoutePage> {
 
                                     if (index == _places.length - 1)
                                       const SizedBox(height: 10)
-                                    else if (index < _places.length - 1 &&
-                                        index < _routes.length &&_routes[index].day == selectedDay && _places[index].placeId != null && _places[index + 1].placeId != null )
-                                      RouteDropdown(
-                                        key: ValueKey(
-                                          'route-${_places[index].placeId}-${_places[index + 1].placeId}-$index',
-                                        ),
+                                    else ...[
+                                      Builder(
+                                        builder: (context) {
+                                          Trip? matchingRoute = _routes
+                                              .firstWhereOrNull(
+                                                (r) =>
+                                                    r.routeFrom ==
+                                                        _places[index]
+                                                            .placeId &&
+                                                    r.routeTo ==
+                                                        _places[index + 1]
+                                                            .placeId,
+                                              );
 
-                                        choices: routeOptions,
-                                        pastChoice:
-                                            _selectedIndex == index
-                                                ? "Select route mode"
-                                                : _routes[index].routeMode
-                                                    .toString(),
+                                          if (matchingRoute != null &&
+                                              _places[index].day ==
+                                                  selectedDay) {
+                                            return RouteDropdown(
+                                              key: ValueKey(
+                                                'route-${_places[index].placeId}-${_places[index + 1].placeId}',
+                                              ),
+                                              choices: routeOptions,
+                                              pastChoice:
+                                                  _selectedIndex == index
+                                                      ? "Select route mode"
+                                                      : matchingRoute.routeMode
+                                                          .toString(),
+                                            );
+                                          } else {
+                                            return SizedBox.shrink(); // fallback
+                                          }
+                                        },
                                       ),
+                                    ],
 
                                     Obx(() {
                                       if (tripController

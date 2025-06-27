@@ -181,10 +181,12 @@ class _DayState extends State<Day> {
 
                         void setTimeOnChange(TimeOfDay selectedTime) {
                           setState(() {
-                            _places[index].arrivalTime = convertTo12HourWithMeridian(selectedTime.format(context));
+                            var _initialTime = _places[index].arrivalTime; 
+                            var _changedTime = selectedTime.format(context);
+                            _places[index].arrivalTime = convertTo12HourWithMeridian(_changedTime);
                             log("${_places[index].arrivalTime}"); 
+                            tripController.sortPlacebyTimes(index, _initialTime!, _changedTime);
                           });
-                          tripController.sortPlacebyTimes(); 
                         }
                         return Padding(
                           key: ValueKey('place-$index'),
