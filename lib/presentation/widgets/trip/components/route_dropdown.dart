@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
+import 'package:triptery/presentation/controllers/transport_mode_controller.dart';
 import 'package:triptery/presentation/pages/trip/route_create_sheet.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/drop_down_area.dart';
@@ -9,7 +11,6 @@ import 'package:triptery/presentation/widgets/tag.dart';
 //TODO : Fix overflow issue with long text in dropdown
 //TODO : Add currency converter for price
 //TODO : AnimatedContainer, DropDown2, use contentPadding, Textformfield
-
 class RouteDropdown extends StatefulWidget {
   RouteDropdown({
     super.key,
@@ -28,6 +29,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
   var selected = 0;
   bool isSelected = false;
   late String currentChoice;
+  final transportModeController = Get.find<TransportModeController>();
   late final List<Map<String, String>> routes;
 
   void toggleExpand() {
@@ -150,6 +152,70 @@ class _RouteDropdownState extends State<RouteDropdown> {
               if (routesToDisplay.isEmpty)
                 const SizedBox.shrink()
               else
+                //add transport mode route dropdown
+                //FIXME: restructure transportMode controller to connect with route choice
+                ...List.generate(transportModeController.tempModes.length, (i) {
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              routesToDisplay[i]["mode"] ?? 'Unknown mode',
+                              style: TextStyle(
+                                color: AppColors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+
+                            Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    CustomText(
+                                      text: "${transportModeController.calcTotalTime().toString()} min",
+                                      type: TextType.heading,
+                                      textSize: 12,
+                                      color: AppColors.black,
+                                    ),
+                                    Text(
+                                      "${transportModeController.calcTotalDistance()} km - ${transportModeController.calcTotalCost()} THB",
+                                      style: TextStyle(
+                                        color: AppColors.black,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 4),
+                              ],
+                            ),
+                          ],
+                        ),
+                        // subtitle: Text(
+                        //   "${routesToDisplay[i]["time"] ?? 'Unknown time'} · ${routesToDisplay[i]["price"] ?? 'Unknown price'}",
+                        // ),
+                        leading: Radio<int>(
+                          value: i,
+                          groupValue: selected,
+                          onChanged: (int? value) {
+                            setState(() {
+                              selected = value!;
+                              currentChoice =
+                                  routesToDisplay[i]["mode"] ?? 'Unknown mode';
+                              widget.pastChoice = currentChoice;
+                            });
+                          },
+                        ),
+                      )
+                    ]
+                  ); 
+                }), 
+                
                 ...List.generate(routesToDisplay.length, (i) {
                   return Column(
                     children: [

@@ -435,8 +435,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                       if (tripController
                                               .isEditingPlaceOrderObs
                                               .value &&
-                                          index < _places.length - 1 &&
-                                          _places[index].day == selectedDay) {
+                                          index < _places.length - 1 && _places[index].day == selectedDay) {
                                         return AddButton(
                                           text: "+ Add Place",
                                           textSize: 14,
@@ -496,3 +495,6 @@ class _EditRoutePageState extends State<EditRoutePage> {
     );
   }
 }
+
+
+//FIXME: delete from last not wotking

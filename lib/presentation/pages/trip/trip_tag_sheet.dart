@@ -44,24 +44,21 @@ class TripTagWindowState extends State<TripTagWindow> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Column(
-                children: [
-                  CustomText(
-                    text: 'Tailor your adventure of your tastes 🌟',
-                    type: TextType.heading,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(height: 20),
-                  CustomText(
-                    text:
-                        'Selected your travel preference to customize your trip plan.',
-                    type: TextType.body,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
+            Column(
+              children: [
+                CustomText(
+                  text: 'Tailor your adventure of your tastes 🌟',
+                  type: TextType.heading,
+                  color: Colors.black,
+                ),
+                const SizedBox(height: 20),
+                CustomText(
+                  text:
+                      'Selected your travel preference to customize your trip plan.',
+                  type: TextType.body,
+                  color: Colors.black,
+                ),
+              ],
             ),
 
             Padding(

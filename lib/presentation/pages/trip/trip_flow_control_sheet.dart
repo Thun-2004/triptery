@@ -33,7 +33,7 @@ class _TripFlowControlSheetState extends State<TripFlowControlSheet> {
     );
   }
 
-  //add padding to this 
+  //add padding to this
   Widget _buildTripTagSection() {
     return Center(child: TripTagWindow());
   }
@@ -121,17 +121,24 @@ class _TripFlowControlSheetState extends State<TripFlowControlSheet> {
                         },
                         icon: Icon(Icons.arrow_back, color: AppColors.black),
                       ),
+
                       CustomText(
                         text: 'Trip Setting',
                         type: TextType.subHeading,
                         color: AppColors.black,
                         maxLines: 1,
                       ),
-                      CustomText(
-                        text: 'Done',
-                        type: TextType.body,
-                        color: AppColors.black,
-                        maxLines: 1,
+
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          overlayColor: AppColors.lightGray,
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child: const CustomText(
+                          text: 'Done',
+                          type: TextType.subHeading,
+                          color: Colors.black,
+                        ),
                       ),
                     ],
                   ),

@@ -26,32 +26,25 @@ class TripGroupWindowState extends State<TripGroupWindow> {
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                children: [
-                  CustomText(
-                    text: 'Who is going? 🧳',
-                    type: TextType.heading,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(height: 20),
-                  CustomText(
-                    text:
-                        'Let’s get started by selecting who you’re traveling with.',
-                    type: TextType.body,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
+            Column(
+              children: [
+                CustomText(
+                  text: 'Who is going? 🧳',
+                  type: TextType.heading,
+                  color: Colors.black,
+                ),
+                const SizedBox(height: 20),
+                CustomText(
+                  text:
+                      'Let’s get started by selecting who you’re traveling with.',
+                  type: TextType.body,
+                  color: Colors.black,
+                ),
+              ],
             ),
 
             Padding(

@@ -23,33 +23,24 @@ class TripBudgetWindowState extends State<TripBudgetWindow> {
       alignment: Alignment.topCenter,
       child: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
+        decoration: BoxDecoration(color: Colors.white),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                children: [
-                  CustomText(
-                    text: 'Set your trip budget 💰',
-                    type: TextType.heading,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(height: 20),
-                  CustomText(
-                    text: 'Select your estimated budget',
-                    type: TextType.body,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
+            Column(
+              children: [
+                CustomText(
+                  text: 'Set your trip budget 💰',
+                  type: TextType.heading,
+                  color: Colors.black,
+                ),
+                const SizedBox(height: 20),
+                CustomText(
+                  text: 'Select your estimated budget',
+                  type: TextType.body,
+                  color: Colors.black,
+                ),
+              ],
             ),
 
             Padding(

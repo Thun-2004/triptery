@@ -19,7 +19,7 @@ class PlanController extends GetxController {
     super.onInit();
     fetchPlan();
     log("🚀 PlanController initialized");
-  }
+  } 
 
   Future<void> fetchPlan() async {
     try {

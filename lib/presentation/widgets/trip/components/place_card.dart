@@ -32,7 +32,7 @@ class PlaceCard extends StatefulWidget {
 class _PlaceCardState extends State<PlaceCard> {
   bool isActivityExpanded = false;
   bool isChecked = false;
-  // final bool isChecked = tripController.deletedItemsObs.contains(widget.index); 
+  // final bool isChecked = tripController.deletedItemsObs.contains(widget.index);
   List<String> itemsToShow = [
     "Not Ping pong show",
     "Martini at the bar",
@@ -84,7 +84,6 @@ class _PlaceCardState extends State<PlaceCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.min,
@@ -95,21 +94,6 @@ class _PlaceCardState extends State<PlaceCard> {
                             type: TextType.subHeading,
                             color: AppColors.black,
                           ),
-
-                          if (widget.isEdit == true) //NOTE : check if isEdit is true
-                            Checkbox(
-                              isError: true,
-                              tristate: true,
-                              value: isChecked,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked = value ?? false;
-                                  if (widget.addDeletedItem != null) {
-                                    widget.addDeletedItem!(widget.index);
-                                  }
-                                });
-                              },
-                            ),
                         ],
                       ),
 
@@ -154,6 +138,20 @@ class _PlaceCardState extends State<PlaceCard> {
                     ],
                   ),
                 ),
+                if (widget.isEdit == true)
+                  Checkbox(
+                    isError: true,
+                    tristate: true,
+                    value: isChecked,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isChecked = value ?? false;
+                        if (widget.addDeletedItem != null) {
+                          widget.addDeletedItem!(widget.index);
+                        }
+                      });
+                    },
+                  ),
               ],
             ),
             Column(

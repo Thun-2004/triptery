@@ -24,34 +24,24 @@ class TripCalendarWindowState extends State<TripCalendarWindow> {
       alignment: Alignment.topCenter,
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
+        decoration: BoxDecoration(color: Colors.white),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-              child: Column(
-                children: [
-                  CustomText(
-                    text: 'when will your adventure begin and end? 🗓️',
-                    type: TextType.heading,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(height: 20),
-                  CustomText(
-                    text: 'Choose the dates for your tips',
-                    type: TextType.body,
-                    color: Colors.black,
-                  ),
-                ],
-              ),
+            Column(
+              children: [
+                CustomText(
+                  text: 'When will your adventure begin and end? 🗓️',
+                  type: TextType.heading,
+                  color: Colors.black,
+                ),
+                const SizedBox(height: 20),
+                CustomText(
+                  text: 'Choose the dates for your tips',
+                  type: TextType.body,
+                  color: Colors.black,
+                ),
+              ],
             ),
 
             Padding(

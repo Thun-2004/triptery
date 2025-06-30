@@ -12,44 +12,18 @@ class TransportModeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    tempModes.add(
-      {
-        "mode": TransportMode.walk,
-        "station": null,
-        "time_taken": "00:21",
-        "distance": 21,
-        "distance_unit": "km",
-        "cost": 47,
-        "cost_unit": "THB",
-        "note": "Walk to MRT Huai Kwang", //FIXME : fix overflow text
-      } as Map<String, dynamic>,
-    );
-
-    tempModes.add(
-      {
-        "mode": TransportMode.car,
-        "station": null,
-        "time_taken": "00:21",
-        "distance": 21,
-        "distance_unit": "km",
-        "cost": 47,
-        "cost_unit": "THB",
-        "note": "Walk to MRT Huai Kwang",
-      } as Map<String, dynamic>,
-    );
-    
-    tempModes.add(
-      {
-        "mode": TransportMode.car,
-        "station": null,
-        "time_taken": "00:21",
-        "distance": 21,
-        "distance_unit": "km",
-        "cost": 47,
-        "cost_unit": "THB",
-        "note": "Walk to MRT Huai Kwang",
-      } as Map<String, dynamic>,
-    );
+    // tempModes.add(
+    //   {
+    //     "mode": TransportMode.walk,
+    //     "station": null,
+    //     "time_taken": "00:21",
+    //     "distance": 21,
+    //     "distance_unit": "km",
+    //     "cost": 47,
+    //     "cost_unit": "THB",
+    //     "note": "Walk to MRT Huai Kwang", //FIXME : fix overflow text
+    //   } as Map<String, dynamic>,
+    // );
   }
 
   void addMode(TransportMode mode) {
@@ -57,14 +31,19 @@ class TransportModeController extends GetxController {
       {
         "mode": mode,
         "station": null,
-        "time_taken": "00:21",
-        "distance": 21,
+        "time_taken": "00:00",
+        "distance": 0,
         "distance_unit": "km",
-        "cost": 47,
+        "cost": 0,
         "cost_unit": "THB",
-        "note": "Walk to MRT Huai Kwang",
+        "note": "",
       }
     );
+  }
+
+  void clearModes() {
+    tempModes.clear();
+    log("Transport modes cleared");
   }
 
   int calcTotalTime() {

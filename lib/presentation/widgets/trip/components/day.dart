@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:triptery/constant/colors.dart';
+import 'package:triptery/presentation/controllers/transport_mode_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/time_picker.dart';
 import 'package:triptery/presentation/widgets/trip/components/place_card.dart';
@@ -12,7 +13,6 @@ import 'package:triptery/domain/entities/trip/trip.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/utils/datetime.dart';
-
 
 class Day extends StatefulWidget {
   const Day({super.key, required this.day, required this.date});
@@ -285,7 +285,8 @@ class _DayState extends State<Day> {
                                                       r.routeTo == _places[index + 1].placeId,
                                                 );
 
-                                                if (matchingRoute != null) {
+                                                if (matchingRoute != null &&
+                                               _routes[index].day == widget.day) {
                                                   return RouteDropdown(
                                                     key: ValueKey(
                                                       'route-${_places[index].placeId}-${_places[index + 1].placeId}',

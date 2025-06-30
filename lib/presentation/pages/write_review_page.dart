@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:triptery/domain/entities/trip/plan_review.dart';
+import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/controllers/plan_review_controller.dart';
 
 class WriteReviewPage extends StatefulWidget {
@@ -10,11 +11,13 @@ class WriteReviewPage extends StatefulWidget {
 
 class _WriteReviewPageState extends State<WriteReviewPage> {
   final TextEditingController _reviewController = TextEditingController();
-  final PlanReviewController planReviewController = Get.find<PlanReviewController>();
+  final PlanReviewController planReviewController =
+      Get.find<PlanReviewController>();
+  late PlanController planController;
   final int maxChars = 500;
   String? reviewText;
   int rating = 0;
-  
+
   Widget buildStar(int index) {
     return GestureDetector(
       onTap: () => setState(() => rating = index),
@@ -24,6 +27,12 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
         size: 40,
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    planController = Get.find<PlanController>();
   }
 
   @override
@@ -57,7 +66,8 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.network(
-                          'https://i.pinimg.com/736x/e3/cc/52/e3cc52244f9b6810a0321b35fe249fbf.jpg',
+                          planController.plan.value!.coverImageUrl ??
+                              'https://i.pinimg.com/736x/e3/cc/52/e3cc52244f9b6810a0321b35fe249fbf.jpg',
                           width: 60,
                           height: 60,
                           fit: BoxFit.cover,
@@ -67,9 +77,9 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
-                              "Eat & Trip in Osaka",
+                              planController.plan.value!.name ?? "Trip Name",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -85,7 +95,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                                 ),
                                 SizedBox(width: 4),
                                 Text(
-                                  "Osaka, Japan",
+                                  "Pattaya, Thailand",
                                   style: TextStyle(color: Colors.grey),
                                 ),
                               ],
@@ -158,9 +168,10 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                     ),
                     counterText: "${_reviewController.text.length}/$maxChars",
                   ),
-                  onChanged: (_) => setState(() {
-                    reviewText = _reviewController.text;
-                  }),
+                  onChanged:
+                      (_) => setState(() {
+                        reviewText = _reviewController.text;
+                      }),
                 ),
               ],
             ),
@@ -180,7 +191,7 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                 ),
               ),
               onPressed: () {
-                //FIXME: Add validation for rating and reviewText and change this to dynamic data later
+                //FIXME:Add validation for rating and reviewText and change this to dynamic data later
                 PlanReview newReview = PlanReview(
                   id: "1",
                   userId: "1",
@@ -192,13 +203,12 @@ class _WriteReviewPageState extends State<WriteReviewPage> {
                   createdAt: DateTime.now().millisecondsSinceEpoch,
                 );
                 planReviewController.addPlanReview(1, newReview);
-                Navigator.pop(context); 
+                Navigator.pop(context);
               },
               child: const Text(
                 "Review",
                 style: TextStyle(fontSize: 16, color: Colors.white),
               ),
-
             ),
           ),
         ],

@@ -334,21 +334,15 @@ class TripController extends GetxController {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
-
-    //swap time
-    // String tempTime = places[oldIndex].arrivalTime ?? '';
-    // places[oldIndex].arrivalTime = places[newIndex].arrivalTime;
-    // places[newIndex].arrivalTime = tempTime;
-
-    //swap place
+   
     final Trip item = places.removeAt(oldIndex);
     places.insert(newIndex, item);
+    //swap place
     adjustTimeWithDurations();
 
     //recalculate routes
     selectedIndex = -1;
     recalculateAllRoutes();
-
     print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
   }
 
@@ -356,8 +350,6 @@ class TripController extends GetxController {
   void adjustTimeWithDurations() {
     //sort time list
     //filled places_arrival
-
-    // List<String> arrivalTimes = plac
     List<String> arrivalTimes =
         places.map((place) => place.arrivalTime ?? '').toList();
     arrivalTimes.sort((a, b) {

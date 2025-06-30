@@ -25,6 +25,7 @@ class _HeaderSectionState extends State<HeaderSection> {
   final PlanReviewController planReviewController =
       Get.find<PlanReviewController>();
   bool isClicked = false;
+  bool isLiked = false;
 
   void _openBottomModal() {
     showModalBottomSheet(
@@ -54,6 +55,7 @@ class _HeaderSectionState extends State<HeaderSection> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      //FIXME: change to planController
       final plan = Get.find<PlanController>().plan.value;
 
       return Container(
@@ -101,6 +103,27 @@ class _HeaderSectionState extends State<HeaderSection> {
                     stops: const [0.5, 0.6, 0.7, 1.0],
                   ),
                 ),
+              ),
+            ),
+
+            Positioned(
+              bottom: 120,
+              right: 5,
+              child: IconButton(
+                icon:
+                    isLiked
+                        ? Icon(Icons.favorite, color: AppColors.pink)
+                        : Icon(
+                          LucideIcons.heart,
+                          size: 24,
+                          color: AppColors.white,
+                        ),
+                color: AppColors.white.withOpacity(0.8),
+                onPressed: () {
+                  setState(() {
+                    isLiked = !isLiked;
+                  });
+                },
               ),
             ),
 
@@ -211,7 +234,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                   Row(
                                     children: [
                                       Icon(
-                                        LucideIcons.calendar,
+                                        Icons.calendar_today,
                                         size: 16,
                                         color: AppColors.black,
                                       ),
@@ -230,7 +253,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                   Row(
                                     children: [
                                       Icon(
-                                        LucideIcons.mapPin,
+                                        Icons.location_pin,
                                         size: 16,
                                         color: AppColors.black,
                                       ),

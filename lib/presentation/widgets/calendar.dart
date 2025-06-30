@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:triptery/constant/colors.dart';
 
 class Calendar extends StatefulWidget {
   @override
   State<Calendar> createState() => _CalendarState();
 }
 
+//where to change color of range date
 class _CalendarState extends State<Calendar> {
   late DateTime _focusedDay;
   late DateTime _firstDay;
@@ -26,12 +28,25 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       child: TableCalendar(
         headerStyle: HeaderStyle(
           formatButtonVisible: false, // Hides the "2 weeks" button
           titleCentered: true,
+        ),
+        calendarStyle: CalendarStyle(
+          rangeHighlightColor: AppColors.orange_50, // ✅ your desired color
+          withinRangeTextStyle: TextStyle(
+            color: Colors.white,
+          ), // text color inside range
+          rangeStartDecoration: BoxDecoration(
+            color: AppColors.orange_800, // start date circle color
+            shape: BoxShape.circle,
+          ),
+          rangeEndDecoration: BoxDecoration(
+            color: AppColors.orange_800, // end date circle color
+            shape: BoxShape.circle,
+          ),
         ),
 
         focusedDay: _focusedDay,
@@ -42,7 +57,7 @@ class _CalendarState extends State<Calendar> {
             _focusedDay = focusedDay;
           });
         },
-      
+
         rangeSelectionMode: RangeSelectionMode.enforced,
         rangeStartDay: _rangeStart, // Your state variable
         rangeEndDay: _rangeEnd, // Your state variable
