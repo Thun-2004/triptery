@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:triptery/domain/entities/trip/plan.dart';
+import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
@@ -9,13 +12,46 @@ class TripBudgetWindow extends StatefulWidget {
 }
 
 class TripBudgetWindowState extends State<TripBudgetWindow> {
+  final PlanController planController = Get.find<PlanController>();
   int _isSelectedIndex = 0;
   final List<Map<String, String>> modes = [
-    {"mode": "Cheap 💰", "detail": "Budget - friendly, economical travel."},
-    {"mode": "Balanced 💼", "detail": "Moderate spending for a balanced trip."},
-    {"mode": "Luxury 💎", "detail": "High-end, indulgent experiences."},
-    {"mode": "Flexible 💫", "detail": "No budget restrictions."},
+    {
+      "key": "cheap",
+      "mode": "Cheap 💰",
+      "detail": "Budget - friendly, economical travel.",
+    },
+    {
+      "key": "balanced",
+      "mode": "Balanced 💼",
+      "detail": "Moderate spending for a balanced trip.",
+    },
+    {
+      "key": "luxury",
+      "mode": "Luxury 💎",
+      "detail": "High-end, indulgent experiences.",
+    },
   ];
+
+  int getBudgetIndex(Budget budget) {
+    switch (budget) {
+      case Budget.cheap:
+        return 0;
+      case Budget.balanced:
+        return 1;
+      case Budget.luxury:
+        return 2;
+      default:
+        return -1; // Return -1 if budget is not recognized
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isSelectedIndex = getBudgetIndex(
+      planController.plan.value?.budget ?? Budget.cheap,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +93,7 @@ class TripBudgetWindowState extends State<TripBudgetWindow> {
                             _isSelectedIndex =
                                 _isSelectedIndex == index ? -1 : index;
                           });
+                          planController.updatePlanBudget(Budget.values[index]);
                         },
                         child: Container(
                           width: double.infinity,

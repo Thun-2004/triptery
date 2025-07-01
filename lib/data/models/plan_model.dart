@@ -2,20 +2,21 @@ import 'package:triptery/domain/entities/trip/plan.dart';
 
 class PlanModel {
   final String id;
-  final String name;
+  String name;
   final String ownerId;
   final String ownerName;
-  final String ownerProfilePictureUrl;
-  final String coverImageUrl;
-  final int totalCopied;
-  final int totalLikes;
-  final DateTime dayStart;
-  final DateTime dayEnd;
-  final int dayCount; 
-  final String location;
-  final String note;
-  final PlanVisibility visibility; 
-  final int budget; 
+  String ownerProfilePictureUrl;
+  String coverImageUrl;
+  int totalCopied;
+  int totalLikes;
+  DateTime dayStart;
+  DateTime dayEnd;
+  int dayCount;
+  String location;
+  String note;
+  PlanVisibility visibility;
+  Budget budget;
+  Party party; 
   final DateTime createdAt;
 
   PlanModel({
@@ -29,10 +30,11 @@ class PlanModel {
     required this.totalLikes,
     required this.dayStart,
     required this.dayEnd,
-    required this.dayCount, 
-    required this.location, 
+    required this.dayCount,
+    required this.location,
     required this.note,
     required this.visibility,
+    required this.party, 
     required this.budget,
     required this.createdAt,
   });
@@ -56,7 +58,12 @@ class PlanModel {
       visibility: PlanVisibility.values.firstWhere(
         (e) => e.toString().split('.').last == json['visibility'],
       ), 
-      budget: json['budget'],
+      party: Party.values.firstWhere(
+        (e) => e.toString().split('.').last == json['party'],
+      ),
+      budget: Budget.values.firstWhere(
+        (e) => e.toString().split('.').last == json['budget'],
+      ), // Assuming budget is stored as an index
       createdAt: DateTime.parse(json['createdAt'])
     );
   }
@@ -77,6 +84,7 @@ class PlanModel {
       location: location,
       note: note,
       visibility: visibility,
+      party: party,
       budget: budget,
       createdAt: createdAt
     );

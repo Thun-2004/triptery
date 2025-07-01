@@ -57,6 +57,32 @@ class PlanController extends GetxController {
     }
   }
 
+  void updatePlanParty(Party newParty) {
+    if (plan.value != null) {
+      plan.value?.party = newParty;
+      plan.refresh(); //FIXME: shouldn't use refresh
+      if (planWithTag.value != null) {
+        planWithTag.value!.plan.party = plan.value!.party;
+      }
+      log("🔄 Plan party updated: ${plan.value?.party}");
+    } else {
+      log("❗️ Cannot update party, plan is null");
+    }
+  }
+
+  void updatePlanBudget(Budget newBudget) {
+    if (plan.value != null) {
+      plan.value?.budget = newBudget;
+      plan.refresh(); //FIXME: shouldn't use refresh
+      if (planWithTag.value != null) {
+        planWithTag.value!.plan.budget = plan.value!.budget;
+      }
+      log("🔄 Plan budget updated: ${plan.value?.budget}");
+    } else {
+      log("❗️ Cannot update budget, plan is null");
+    }
+  }
+
   Future<void> fetchPlanWithTag(int planId) async {
     try {
       isLoading(true);

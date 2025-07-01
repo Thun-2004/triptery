@@ -5,6 +5,7 @@ import 'package:triptery/domain/entities/trip/plan.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
+import 'package:triptery/utils/enum_to_string.dart';
 
 class TripSummaryWindow extends StatefulWidget {
   const TripSummaryWindow({
@@ -187,7 +188,7 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomText(
-                                  text: 'A couple',
+                                  text: partyToString(planController.plan.value?.party ?? Party.onlyMe),
                                   type: TextType.subHeading,
                                   color: AppColors.black,
                                 ),
@@ -220,7 +221,7 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomText(
-                                  text: 'Luxury',
+                                  text: budgetToString(planController.plan.value?.budget ?? Budget.cheap),
                                   type: TextType.subHeading,
                                   color: AppColors.black,
                                 ),

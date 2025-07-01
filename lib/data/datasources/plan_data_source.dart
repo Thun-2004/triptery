@@ -29,7 +29,8 @@ class PlanDataSource {
       "location": "Pattaya, Thailand",
       "note" : "A fun trip to Pattaya with friends.",
       "visibility": "public",
-      "budget": 0,
+      "budget": "cheap", 
+      "party": "friends",
       "createdAt" : "2025-02-01T00:00:00.000"
     }; 
     return mock_response;

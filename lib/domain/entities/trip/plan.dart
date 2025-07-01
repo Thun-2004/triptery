@@ -1,4 +1,6 @@
 enum PlanVisibility { public, private }
+enum Party { onlyMe, couple, family, friends, work }
+enum Budget { cheap, balanced, luxury }
 
 class Plan {
   final String id;
@@ -15,7 +17,8 @@ class Plan {
   String location;
   String note;
   PlanVisibility visibility;
-  int budget;
+  Budget budget;
+  Party party; 
   final DateTime createdAt;
 
   Plan({
@@ -33,6 +36,7 @@ class Plan {
     required this.location,
     required this.note,
     required this.visibility,
+    required this.party, 
     required this.budget,
     required this.createdAt,
   });

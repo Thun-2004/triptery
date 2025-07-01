@@ -19,7 +19,8 @@ final Plan mockPlans = Plan(
   location: "Pattaya, Thailand",
   note: "A fun trip to Pattaya with friends.",
   visibility: PlanVisibility.public,
-  budget: 0,
+  budget: Budget.cheap, // Assuming Budget is an enum and you want to store it as an index
+  party: Party.friends,
   createdAt: DateTime.now()
 );
 
