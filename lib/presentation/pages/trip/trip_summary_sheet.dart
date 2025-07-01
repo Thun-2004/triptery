@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:triptery/constant/colors.dart';
+import 'package:triptery/domain/entities/trip/plan.dart';
+import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
 
@@ -25,6 +28,13 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
   bool _isPublic = true;
   bool _showCursor = false;
   final FocusNode _tripNameFocus = FocusNode();
+  final planController = Get.find<PlanController>();
+
+  double _estimateTagWidth(String tag) {
+    const basePadding = 16; // adjust based on your TripTag padding
+    const charWidth = 8; // approximate per character
+    return tag.length * charWidth + basePadding * 2;
+  }
 
   @override
   void initState() {
@@ -99,7 +109,12 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                                       textSize: 14,
                                     ),
                                     TextFormField(
-                                      initialValue: 'Trip name',
+                                      initialValue:
+                                          planController
+                                              .planWithTagValue
+                                              ?.plan
+                                              .name ??
+                                          'Untitled',
                                       autofocus: false,
                                       focusNode: _tripNameFocus,
                                       showCursor: _showCursor,
@@ -295,7 +310,14 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                               Transform.scale(
                                 scale: 0.8,
                                 child: Switch(
-                                  value: _isPublic,
+                                  value:
+                                      planController
+                                                  .planWithTagValue
+                                                  ?.plan
+                                                  .visibility ==
+                                              PlanVisibility.public
+                                          ? true
+                                          : false,
                                   onChanged: (bool value) {
                                     setState(() {
                                       _isPublic = value;
@@ -327,25 +349,52 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                             textSize: 14,
                           ),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
+                          LayoutBuilder(
+                            builder: (context, constraints) {
+                              double maxWidth = constraints.maxWidth;
+
+                              double usedWidth = 0;
+                              int shownCount = 0;
+
+                              List<Widget> tagWidgets = [];
+
+                              final tags =
+                                  planController.planWithTagValue?.tags ?? [];
+
+                              for (var tag in tags) {
+                                double tagWidth = _estimateTagWidth(tag.name);
+
+                                if (usedWidth + tagWidth > maxWidth - 50) {
+                                  break;
+                                }
+
+                                usedWidth += tagWidth;
+                                shownCount += 1;
+
+                                tagWidgets.add(TripTag(tagId: tag.id, tagName: tag.name));
+                              }
+
+                              int remaining = tags.length - shownCount;
+                              if (remaining > 0) {
+                                tagWidgets.add(TripTag(tagId: "-1", tagName: "+$remaining"));
+                              }
+
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  TripTag(tag: 'Party'),
-                                  TripTag(tag: 'Adventure'),
-                                  TripTag(tag: 'Beach'),
+                                  Row(children: tagWidgets),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_back_ios,
+                                      textDirection: TextDirection.rtl,
+                                      size: 16,
+                                    ),
+                                    onPressed: widget.onChangeTag,
+                                  ),
                                 ],
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  textDirection: TextDirection.rtl,
-                                  size: 16,
-                                ),
-                                onPressed: widget.onChangeTag,
-                              ),
-                            ],
+                              );
+                            },
                           ),
                         ],
                       ),

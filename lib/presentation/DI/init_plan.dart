@@ -3,7 +3,9 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:triptery/data/datasources/plan_data_source.dart';
+import 'package:triptery/data/datasources/tag_data_source.dart';
 import 'package:triptery/data/repositories/plan_repository.dart';
+import 'package:triptery/data/repositories/tag_repository.dart';
 import 'package:triptery/domain/usecases/trip/get_plans.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/controllers/plan_review_controller.dart';
@@ -17,8 +19,10 @@ import 'package:triptery/presentation/controllers/plan_review_controller.dart';
 class PlanDI {
   static void init() {
     final planDataSource = PlanDataSource();
-    final repository = PlanRepositoryImpl(planDataSource: planDataSource);
-    final getPopularMovies = GetPlans(repository: repository);
+    final tagDataSource = TagDataSource(); 
+    final planRepository = PlanRepositoryImpl(planDataSource: planDataSource);
+    final tagRepository = TagRepositoryImpl(tagDataSource: tagDataSource);
+    final getPopularMovies = GetPlans(planRepository: planRepository, tagRepository: tagRepository);
     Get.put(PlanController(getPlans: getPopularMovies));
   }
 }

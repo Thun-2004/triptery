@@ -1,15 +1,26 @@
 
 
 import 'package:triptery/data/repositories/plan_repository.dart';
+import 'package:triptery/data/repositories/tag_repository.dart';
+import 'package:triptery/domain/entities/trip/plan_with_tag.dart';
 import 'package:triptery/domain/entities/trip/plan.dart';
 import 'package:triptery/domain/entities/trip/plan_review.dart';
+import 'package:triptery/domain/repositories/tag_repository.dart';
 
 class GetPlans {
-  final PlanRepositoryImpl repository; 
-  GetPlans({required this.repository}); 
+  final PlanRepositoryImpl planRepository; 
+  final TagRepositoryImpl tagRepository;
+
+  GetPlans({required this.planRepository, required this.tagRepository}); 
 
   Plan execute() {
-    return repository.getPlanById(1);
+    return planRepository.getPlanById(1);
+  }
+
+  PlanWithTag getPlanWithTag(int planId) {
+    final plan = planRepository.getPlanById(planId);
+    final tags = tagRepository.getTagsByPlanId(planId);
+    return PlanWithTag(plan: plan, tags: tags);
   }
 }
 

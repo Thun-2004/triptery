@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/DI/init_plan.dart';
+import 'package:triptery/presentation/DI/init_tag.dart';
 import 'package:triptery/presentation/DI/init_trip.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/controllers/plan_review_controller.dart';
+import 'package:triptery/presentation/controllers/tag_controller.dart';
 import 'package:triptery/presentation/controllers/transport_mode_controller.dart';
 import 'package:triptery/presentation/pages/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,7 +27,7 @@ import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:get/get.dart';
 import 'package:triptery/utils/ui.dart' show NoBounceScrollBehavior;
 
-//NOTE: add middleware every time you add a new page in case bypassing 
+//NOTE: add middleware every time you add a new page in case bypassing
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await dotenv.load(fileName: ".env");
@@ -94,29 +96,33 @@ class MyApp extends StatelessWidget {
           margin: const EdgeInsets.all(8),
         ),
       ),
+
       // home: const LoginPage(),
       // home: const TripPage(),
-
       initialRoute: '/trip', //NOTE: works because it defines the entry point
       getPages: [
         GetPage(
-        name: '/trip',
+          name: '/trip',
           page: () => TripPage(),
           binding: BindingsBuilder(() {
             if (!Get.isRegistered<PlanController>()) {
               PlanDI.init();
             }
-            if(!Get.isRegistered<TripController>()) {
-              TripDI.init(); 
+            if (!Get.isRegistered<TripController>()) {
+              TripDI.init();
             }
-            if(!Get.isRegistered<TransportModeController>()) {
+            if (!Get.isRegistered<TransportModeController>()) {
               Get.put(TransportModeController());
             }
-            if(!Get.isRegistered<PlanReviewController>()) {
+            if (!Get.isRegistered<PlanReviewController>()) {
               PlanReviewDI.init();
             }
+            if (!Get.isRegistered<TagController>()) {
+              TagDI.init();
+            }
           }),
-      )]
+        ),
+      ],
     );
   }
 }

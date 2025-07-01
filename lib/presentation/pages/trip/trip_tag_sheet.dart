@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:triptery/presentation/controllers/tag_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
@@ -9,30 +11,7 @@ class TripTagWindow extends StatefulWidget {
 }
 
 class TripTagWindowState extends State<TripTagWindow> {
-  //temp
-  List<String> tags = [
-    'Adventure Travel 🏞️',
-    'City Breaks  🌇',
-    'Cultural Exploration 🏛️',
-    'Glamping ⛺️',
-    'Beach Vacation 🏖️',
-    'Nature Escape 🌿',
-    'Relaxing Getaways 🏨',
-    'Road Trips 🚙',
-    'Food Tourism 🥗',
-    'Backpacking 🎒',
-    'Cruise Vacations 🚢',
-    'Staycations 🏡',
-    'Skiing/Snowboarding ⛷️',
-    'Wine Tours 🍷',
-    'Wildlife Safaris 🦁',
-    'Art Galleries 🎨',
-    'Historical Sites 🏰',
-    'Eco-Tourism 🌿',
-  ];
-
-  //temp
-  List<String> selectedTags = [];
+  final tagController = Get.find<TagController>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +42,30 @@ class TripTagWindowState extends State<TripTagWindow> {
 
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                children:
-                    tags.map((tag) {
-                      return TripTag(tag: tag);
-                    }).toList(),
-              ),
+              child: Obx(() {
+                return Wrap(
+                  spacing: 12,
+                  runSpacing: 12,
+                  children: [
+                    ...List.generate(tagController.tagsValue.length ?? 0, (
+                      index,
+                    ) {
+                      return TripTag(
+                        tagId: tagController.tagsValue[index].id.toString(),
+                        tagName: tagController.tagsValue[index].name,
+                        isSelected: tagController.selectedTags.any(
+                          (tag) => tag.id == tagController.tagsValue[index].id,
+                        ),
+                        onClick: (id) {
+                          tagController.toggleTag(
+                            tagController.tagsValue[index].id,
+                          );
+                        },
+                      );
+                    }),
+                  ],
+                );
+              }),
             ),
           ],
         ),
