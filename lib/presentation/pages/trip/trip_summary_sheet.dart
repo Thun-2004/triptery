@@ -33,7 +33,6 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
   bool _showCursor = false;
   final FocusNode _tripNameFocus = FocusNode();
   final planController = Get.find<PlanController>();
-  File? _image;
   final _picker = ImagePicker();
 
   double _estimateTagWidth(String tag) {
@@ -46,8 +45,8 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      _image = File(pickedFile.path);
       planController.updatePlanCoverImage(pickedFile.path);
+      print('Picked image: ${pickedFile.path}');
       setState(() {});
     }
   }
@@ -89,7 +88,7 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child:
-                          _image == null
+                          planController.plan.value == null
                               ? Image.network(
                                 'https://i.pinimg.com/736x/b5/ea/78/b5ea78bc0bac20e8bda063b4f168aeda.jpg',
                                 width: double.infinity,
@@ -97,7 +96,10 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                                 fit: BoxFit.cover,
                               )
                               : Image.file(
-                                _image!,
+                                File(
+                                  planController.plan.value?.coverImageUrl ??
+                                      '',
+                                ),
                                 width: double.infinity,
                                 height: 140,
                                 fit: BoxFit.cover,

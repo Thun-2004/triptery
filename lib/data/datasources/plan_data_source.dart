@@ -20,7 +20,7 @@ class PlanDataSource {
       "ownerId" : "1",
       "ownerName": "Levi",
       "ownerProfilePictureUrl" : "assets/images/user.jpg",
-      "coverImageUrl" : "https://i.pinimg.com/736x/b5/ea/78/b5ea78bc0bac20e8bda063b4f168aeda.jpg",
+      "coverImageUrl" : "/Users/benn/Library/Developer/CoreSimulator/Devices/F307C51E-8567-4F8F-903B-D11B2BA3042A/data/Containers/Data/Application/5D591FA4-479C-488B-BE8F-89DF5D9B37E8/tmp/image_picker_C5A1E4BE-D236-48B8-B791-59B4C570D205-20556-00000A35570D8F9C.jpg",
       "totalCopied" : 50,
       "totalLikes" : 20,
       "dayStart" : "2025-02-01T00:00:00.000",
