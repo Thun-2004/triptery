@@ -1,17 +1,18 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:triptery/constant/colors.dart';
-import 'package:triptery/presentation/DI/init_plan.dart';
+import 'package:triptery/domain/entities/trip/plan.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/controllers/plan_review_controller.dart';
 import 'package:triptery/presentation/pages/trip/trip_flow_control_sheet.dart';
-import 'package:triptery/presentation/pages/trip/trip_summary_sheet.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/presentation/pages/trip_review_page.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/tag.dart';
+import 'package:triptery/utils/enum_to_string.dart';
 
 class HeaderSection extends StatefulWidget {
   final VoidCallback toggleMap;
@@ -51,6 +52,7 @@ class _HeaderSectionState extends State<HeaderSection> {
   @override
   void initState() {
     super.initState();
+    // openReviewPage();
   }
 
   @override
@@ -58,6 +60,7 @@ class _HeaderSectionState extends State<HeaderSection> {
     return Obx(() {
       //FIXME: change to planController
       var plan = planController.plan.value;
+      File _image = File(plan?.coverImageUrl ?? '');
 
       return Container(
         height: 350,
@@ -74,11 +77,12 @@ class _HeaderSectionState extends State<HeaderSection> {
                 decoration: BoxDecoration(
                   color: AppColors.white,
                   image: DecorationImage(
-                    image: NetworkImage(
-                      plan != null
-                          ? plan.coverImageUrl
-                          : 'https://i.pinimg.com/736x/39/58/56/395856fb254a9c67277ba2c635613923.jpg', // Replace with your image path
-                    ),
+                    image:
+                        plan != null
+                            ? FileImage(_image)
+                            : NetworkImage(
+                              'https://i.pinimg.com/736x/39/58/56/395856fb254a9c67277ba2c635613923.jpg',
+                            ),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -227,9 +231,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                   ),
                                 ],
                               ),
-
                               const SizedBox(height: 2),
-
                               Row(
                                 children: [
                                   Row(
@@ -272,87 +274,103 @@ class _HeaderSectionState extends State<HeaderSection> {
                               const SizedBox(height: 3),
 
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  Icon(
+                                    Icons.person,
+                                    size: 20,
+                                    color: AppColors.black,
+                                  ),
+                                  CustomText(
+                                    text: partyToStringNumber(
+                                      planController.plan.value?.party ??
+                                          Party.onlyMe,
+                                    ),
+                                    type: TextType.body,
+                                    color: AppColors.black,
+                                  ),
+                                  const SizedBox(width: 4),
                                   Row(
                                     children: [
-                                      Icon(
-                                        Icons.person,
-                                        size: 20,
-                                        color: AppColors.black,
-                                      ),
-                                      const CustomText(
-                                        text: '2',
-                                        type: TextType.body,
-                                        color: AppColors.black,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Row(
-                                        children: List.generate(
-                                          3,
-                                          (_) => const Icon(
-                                            LucideIcons.dollarSign,
-                                            size: 16,
-                                            color: AppColors.black,
-                                          ),
+                                      ...List.generate(
+                                        budgetToDollarSign(
+                                          planController.plan.value?.budget ??
+                                              Budget.cheap,
+                                        ),
+                                        (_) => const Icon(
+                                          LucideIcons.dollarSign,
+                                          size: 16,
+                                          color: AppColors.orange_800,
                                         ),
                                       ),
-                                      const SizedBox(width: 4),
-
-                                      Tag(
-                                        text:
-                                            '${planReviewController.rating.value} (${planReviewController.planReview.length})',
-                                        textSize: 12,
-                                        textColor: AppColors.black,
-                                        tagColor: AppColors.white,
-                                        height: 22,
-                                        borderRadius: 4,
-                                        borderColor: AppColors.gray,
-                                        icon: Icons.star,
-                                        iconColor: const Color.fromARGB(
-                                          255,
-                                          255,
-                                          193,
-                                          59,
+                                      ...List.generate(
+                                        3 -
+                                            budgetToDollarSign(
+                                              planController
+                                                      .plan
+                                                      .value
+                                                      ?.budget ??
+                                                  Budget.cheap,
+                                            ),
+                                        (_) => const Icon(
+                                          LucideIcons.dollarSign,
+                                          size: 16,
+                                          color: AppColors.darkGray,
                                         ),
-                                        onTap: openReviewPage,
                                       ),
-                                      const SizedBox(width: 5),
-                                      Tag(
-                                        text:
-                                            plan != null
-                                                ? plan.totalLikes.toString()
-                                                : '-',
-                                        textSize: 12,
-                                        textColor: AppColors.black,
-                                        tagColor: AppColors.white,
-                                        height: 22,
-                                        borderRadius: 4,
-                                        borderColor: AppColors.gray,
-                                        icon: LucideIcons.heart,
-                                        iconColor: AppColors.black,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Tag(
-                                        text:
-                                            plan != null
-                                                ? plan.totalLikes.toString()
-                                                : '-',
-                                        textSize: 12,
-                                        textColor: AppColors.black,
-                                        tagColor: AppColors.white,
-                                        height: 22,
-                                        borderRadius: 4,
-                                        borderColor: AppColors.gray,
-                                        icon: LucideIcons.clipboardList,
-                                        iconColor: AppColors.black,
-                                      ),
-
-                                      const SizedBox(width: 8),
                                     ],
                                   ),
+                                  const SizedBox(width: 4),
 
+                                  Tag(
+                                    text:
+                                        '${planReviewController.rating.value} (${planReviewController.planReview.length})',
+                                    textSize: 12,
+                                    textColor: AppColors.black,
+                                    tagColor: AppColors.white,
+                                    height: 22,
+                                    borderRadius: 4,
+                                    borderColor: AppColors.gray,
+                                    icon: Icons.star,
+                                    iconColor: const Color.fromARGB(
+                                      255,
+                                      255,
+                                      193,
+                                      59,
+                                    ),
+                                    onTap: openReviewPage,
+                                  ),
+                                  Tag(
+                                    text:
+                                        plan != null
+                                            ? plan.totalLikes.toString()
+                                            : '-',
+                                    textSize: 12,
+                                    textColor: AppColors.black,
+                                    tagColor: AppColors.white,
+                                    height: 22,
+                                    borderRadius: 4,
+                                    borderColor: AppColors.gray,
+                                    icon: LucideIcons.heart,
+                                    iconColor: AppColors.black,
+                                  ),
+                                  Tag(
+                                    text:
+                                        plan != null
+                                            ? plan.totalLikes.toString()
+                                            : '-',
+                                    textSize: 12,
+                                    textColor: AppColors.black,
+                                    tagColor: AppColors.white,
+                                    height: 22,
+                                    borderRadius: 4,
+                                    borderColor: AppColors.gray,
+                                    icon: LucideIcons.clipboardList,
+                                    iconColor: AppColors.black,
+                                  ),
+
+                                  const SizedBox(width: 8),
+                                  Spacer(),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 0,

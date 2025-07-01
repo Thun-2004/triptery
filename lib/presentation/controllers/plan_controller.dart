@@ -83,6 +83,19 @@ class PlanController extends GetxController {
     }
   }
 
+  void updatePlanCoverImage(String newCoverImageUrl) {
+    if (plan.value != null) {
+      plan.value?.coverImageUrl = newCoverImageUrl;
+      plan.refresh(); //FIXME: shouldn't use refresh
+      if (planWithTag.value != null) {
+        planWithTag.value!.plan.coverImageUrl = plan.value!.coverImageUrl;
+      }
+      log("🔄 Plan cover image updated: ${plan.value?.coverImageUrl}");
+    } else {
+      log("❗️ Cannot update cover image, plan is null");
+    }
+  }
+
   Future<void> fetchPlanWithTag(int planId) async {
     try {
       isLoading(true);

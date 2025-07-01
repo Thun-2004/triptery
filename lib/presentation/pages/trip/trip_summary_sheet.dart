@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:triptery/constant/colors.dart';
@@ -6,6 +8,7 @@ import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
 import 'package:triptery/utils/enum_to_string.dart';
+import 'package:image_picker/image_picker.dart';
 
 class TripSummaryWindow extends StatefulWidget {
   const TripSummaryWindow({
@@ -30,11 +33,23 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
   bool _showCursor = false;
   final FocusNode _tripNameFocus = FocusNode();
   final planController = Get.find<PlanController>();
+  File? _image;
+  final _picker = ImagePicker();
 
   double _estimateTagWidth(String tag) {
     const basePadding = 16; // adjust based on your TripTag padding
     const charWidth = 8; // approximate per character
     return tag.length * charWidth + basePadding * 2;
+  }
+
+  pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
+      planController.updatePlanCoverImage(pickedFile.path);
+      setState(() {});
+    }
   }
 
   @override
@@ -73,20 +88,35 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        'https://i.pinimg.com/736x/b5/ea/78/b5ea78bc0bac20e8bda063b4f168aeda.jpg',
-                        width: double.infinity,
-                        height: 140,
-                        fit: BoxFit.cover,
-                      ),
+                      child:
+                          _image == null
+                              ? Image.network(
+                                'https://i.pinimg.com/736x/b5/ea/78/b5ea78bc0bac20e8bda063b4f168aeda.jpg',
+                                width: double.infinity,
+                                height: 140,
+                                fit: BoxFit.cover,
+                              )
+                              : Image.file(
+                                _image!,
+                                width: double.infinity,
+                                height: 140,
+                                fit: BoxFit.cover,
+                              ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black54,
+
+                    GestureDetector(
+                      onTap: () {
+                        pickImage();
+                      },
+                      // onTap: _pickFile,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.black54,
+                        ),
+                        padding: EdgeInsets.all(8),
+                        child: Icon(Icons.camera_alt, color: Colors.white),
                       ),
-                      padding: EdgeInsets.all(8),
-                      child: Icon(Icons.camera_alt, color: Colors.white),
                     ),
                   ],
                 ),
@@ -112,7 +142,9 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                                         textSize: 14,
                                       ),
                                       TextFormField(
-                                        initialValue: planController.plan.value?.name ?? 'Untitled',
+                                        initialValue:
+                                            planController.plan.value?.name ??
+                                            'Untitled',
                                         autofocus: false,
                                         focusNode: _tripNameFocus,
                                         showCursor: _showCursor,
@@ -188,7 +220,10 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomText(
-                                  text: partyToString(planController.plan.value?.party ?? Party.onlyMe),
+                                  text: partyToString(
+                                    planController.plan.value?.party ??
+                                        Party.onlyMe,
+                                  ),
                                   type: TextType.subHeading,
                                   color: AppColors.black,
                                 ),
@@ -221,7 +256,10 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomText(
-                                  text: budgetToString(planController.plan.value?.budget ?? Budget.cheap),
+                                  text: budgetToString(
+                                    planController.plan.value?.budget ??
+                                        Budget.cheap,
+                                  ),
                                   type: TextType.subHeading,
                                   color: AppColors.black,
                                 ),

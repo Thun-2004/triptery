@@ -16,17 +16,17 @@ class TripBudgetWindowState extends State<TripBudgetWindow> {
   int _isSelectedIndex = 0;
   final List<Map<String, String>> modes = [
     {
-      "key": "cheap",
+     
       "mode": "Cheap 💰",
       "detail": "Budget - friendly, economical travel.",
     },
     {
-      "key": "balanced",
+     
       "mode": "Balanced 💼",
       "detail": "Moderate spending for a balanced trip.",
     },
     {
-      "key": "luxury",
+     
       "mode": "Luxury 💎",
       "detail": "High-end, indulgent experiences.",
     },

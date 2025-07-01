@@ -15,6 +15,21 @@ String partyToString(Party party) {
   }
 }
 
+String partyToStringNumber(Party party) {
+  switch (party) {
+    case Party.onlyMe:
+      return '1';
+    case Party.couple:
+      return '2';
+    case Party.family:
+      return '3-10';
+    case Party.friends:
+      return '2-12';
+    case Party.work:
+      return '5-25';
+  }
+}
+
 String budgetToString(Budget budget) {
   switch (budget) {
     case Budget.cheap:
@@ -23,5 +38,16 @@ String budgetToString(Budget budget) {
       return 'Balanced 💵';
     case Budget.luxury:
       return 'Luxury 💎';
+  }
+}
+
+int budgetToDollarSign(Budget budget) {
+  switch (budget) {
+    case Budget.cheap:
+      return 1;
+    case Budget.balanced:
+      return 2;
+    case Budget.luxury:
+      return 3;
   }
 }

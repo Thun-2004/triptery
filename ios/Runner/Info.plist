@@ -52,6 +52,13 @@
     <array>
       <string>com.googleusercontent.apps.984517736433-7mfdksmgse5omhgmi3gb5vk9bpt6oa1i</string>
     </array>
+	<!-- image access -->
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Pick an image from gallery</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Pick image from camera</string>
+	
 </dict>
 </plist>
 

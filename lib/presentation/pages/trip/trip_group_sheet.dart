@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:triptery/domain/entities/trip/plan.dart';
+import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
@@ -9,6 +12,7 @@ class TripGroupWindow extends StatefulWidget {
 }
 
 class TripGroupWindowState extends State<TripGroupWindow> {
+  final PlanController planController = Get.find<PlanController>();
   int _isSelectedIndex = 0;
   final List<Map<String, String>> modes = [
     {"mode": "Only Me 🚶", "detail": "Traveling solo, just you."},
@@ -18,15 +22,38 @@ class TripGroupWindowState extends State<TripGroupWindow> {
     {"mode": "Work 💼", "detail": "5-25 people"},
   ];
 
+  int getBudgetIndex(Party party) {
+    switch (party) {
+      case Party.onlyMe:
+        return 0;
+      case Party.couple:
+        return 1;
+      case Party.family:
+        return 2;
+      case Party.friends:
+        return 3;
+      case Party.work:
+        return 4;
+      default:
+        return -1; // Return -1 if budget is not recognized
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isSelectedIndex = getBudgetIndex(
+      planController.plan.value?.party ?? Party.onlyMe,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
+        decoration: BoxDecoration(color: Colors.white),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -61,6 +88,7 @@ class TripGroupWindowState extends State<TripGroupWindow> {
                             _isSelectedIndex =
                                 _isSelectedIndex == index ? -1 : index;
                           });
+                          planController.updatePlanParty(Party.values[index]);
                         },
                         child: Container(
                           width: double.infinity,

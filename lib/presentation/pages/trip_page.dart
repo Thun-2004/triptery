@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
@@ -18,9 +17,9 @@ class TripPage extends StatefulWidget {
 }
 
 class _TripPageState extends State<TripPage> {
-  bool showMap = false; 
+  bool showMap = false;
   Mode mode = Mode.normal;
-  
+
   void toggleMap() {
     setState(() {
       showMap = !showMap;
@@ -28,11 +27,16 @@ class _TripPageState extends State<TripPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         top: false, //elimiate top margin
-        bottom: false, 
+        bottom: false,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -55,7 +59,7 @@ class _TripPageState extends State<TripPage> {
           ),
         ),
       ),
-     
+
       floatingActionButton: FloatingActionButton(
         // onPressed: () => setState(() => tripController.toggleEditPlaceOrder()),
         onPressed: () {
@@ -63,7 +67,7 @@ class _TripPageState extends State<TripPage> {
             context,
             MaterialPageRoute(builder: (context) => EditRoutePage()),
           );
-        }, 
+        },
 
         elevation: 4,
         shape: const CircleBorder(),
@@ -81,14 +85,9 @@ class _TripPageState extends State<TripPage> {
               ],
             ),
           ),
-          child: Icon(
-            LucideIcons.pencilLine,
-            color: Colors.white,
-            size: 28,
-          ),
+          child: Icon(LucideIcons.pencilLine, color: Colors.white, size: 28),
         ),
       ),
     );
   }
 }
-

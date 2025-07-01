@@ -53,6 +53,8 @@ dependencies:
   timeline_tile: ^2.0.0
   dropdown_button2: ^2.3.9
   open_file: ^3.5.10
+  file_picker: ^10.2.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

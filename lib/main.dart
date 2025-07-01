@@ -101,6 +101,7 @@ class MyApp extends StatelessWidget {
       // home: const TripPage(),
       initialRoute: '/trip', //NOTE: works because it defines the entry point
       getPages: [
+        //FIXME: load from the beginning => set delay 
         GetPage(
           name: '/trip',
           page: () => TripPage(),
