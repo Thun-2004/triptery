@@ -23,7 +23,6 @@ class PlanController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // fetchPlan();
     fetchPlanWithTag(1);
     log("🚀 PlanController initialized");
   }
@@ -93,6 +92,23 @@ class PlanController extends GetxController {
       log("🔄 Plan cover image updated: ${plan.value?.coverImageUrl}");
     } else {
       log("❗️ Cannot update cover image, plan is null");
+    }
+  }
+
+  void updateTimeRange(DateTime start, DateTime end) {
+    if (plan.value != null) {
+      plan.value?.dayStart = start;
+      plan.value?.dayEnd = end;
+      plan.value?.dayCount = end.difference(start).inDays + 1; // Include both start and end days
+      plan.refresh(); //FIXME: shouldn't use refresh
+      if (planWithTag.value != null) {
+        planWithTag.value!.plan.dayStart = plan.value!.dayStart;
+        planWithTag.value!.plan.dayEnd = plan.value!.dayEnd;
+        planWithTag.value!.plan.dayCount = plan.value!.dayCount;
+      }
+      log("🔄 Plan time range updated: ${plan.value?.dayStart} to ${plan.value?.dayEnd}");
+    } else {
+      log("❗️ Cannot update time range, plan is null");
     }
   }
 

@@ -7,6 +7,7 @@ import 'package:triptery/domain/entities/trip/plan.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
+import 'package:triptery/utils/datetime.dart';
 import 'package:triptery/utils/enum_to_string.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -189,7 +190,12 @@ class _TripSummaryWindowState extends State<TripSummaryWindow> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomText(
-                                  text: 'May 25 to May 27, 2025',
+                                  text: dateTimetoStringRange(
+                                    planController.plan.value?.dayStart ??
+                                        DateTime.now(),
+                                    planController.plan.value?.dayEnd ??
+                                        DateTime.now(),
+                                  ),
                                   type: TextType.subHeading,
                                   color: AppColors.black,
                                 ),

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:triptery/constant/colors.dart';
+import 'package:triptery/presentation/controllers/plan_controller.dart';
 
 class Calendar extends StatefulWidget {
   @override
   State<Calendar> createState() => _CalendarState();
+
+  const Calendar({super.key});
 }
 
 //where to change color of range date
@@ -16,6 +20,7 @@ class _CalendarState extends State<Calendar> {
   bool isRangeSelectionMode = false;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+  final planController = Get.find<PlanController>();
 
   @override
   void initState() {
@@ -24,6 +29,8 @@ class _CalendarState extends State<Calendar> {
     _focusedDay = DateTime.now();
     _firstDay = DateTime.now().subtract(Duration(days: 365));
     _lastDay = DateTime.now().add(Duration(days: 365));
+    _rangeStart = planController.plan.value?.dayStart;
+    _rangeEnd = planController.plan.value?.dayEnd;
   }
 
   @override
@@ -59,8 +66,8 @@ class _CalendarState extends State<Calendar> {
         },
 
         rangeSelectionMode: RangeSelectionMode.enforced,
-        rangeStartDay: _rangeStart, // Your state variable
-        rangeEndDay: _rangeEnd, // Your state variable
+        rangeStartDay: _rangeStart, // Your state variable for range start
+        rangeEndDay: _rangeEnd, // Your state variable for range end
         selectedDayPredicate: (day) => isSameDay(_selectedDay, day), // optional
 
         onDaySelected: (selectedDay, focusedDay) {
@@ -77,6 +84,9 @@ class _CalendarState extends State<Calendar> {
             _selectedDay = null;
             _rangeStart = start;
             _rangeEnd = end;
+            if (_rangeStart != null && _rangeEnd != null) {
+              planController.updateTimeRange(_rangeStart!, _rangeEnd!);
+            }
             _focusedDay = focusedDay;
           });
         },

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/calendar.dart';
-import 'package:triptery/presentation/widgets/trip/components/trip_tag.dart';
-import 'package:triptery/presentation/widgets/base_ui/text.dart';
 
 class TripCalendarWindow extends StatefulWidget {
   @override
@@ -10,13 +8,6 @@ class TripCalendarWindow extends StatefulWidget {
 }
 
 class TripCalendarWindowState extends State<TripCalendarWindow> {
-  int _isSelectedIndex = 0;
-  final List<Map<String, String>> modes = [
-    {"mode": "Cheap 💰", "detail": "Budget - friendly, economical travel."},
-    {"mode": "Balanced 💼", "detail": "Moderate spending for a balanced trip."},
-    {"mode": "Luxury 💎", "detail": "High-end, indulgent experiences."},
-    {"mode": "Flexible 💫", "detail": "No budget restrictions."},
-  ];
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,8 @@ import 'package:triptery/domain/entities/trip/trip.dart';
 
 String formatDateWithOrdinal(DateTime date) {
   final String daySuffix = _getDaySuffix(date.day);
-  final String formatted = DateFormat('EEEE, d').format(date) +
+  final String formatted =
+      DateFormat('EEEE, d').format(date) +
       daySuffix +
       DateFormat(' MMMM yyyy').format(date);
   return formatted;
@@ -23,7 +24,6 @@ String _getDaySuffix(int day) {
       return 'th';
   }
 }
-
 
 String incrementHour(String timeString) {
   final time = DateTime.parse("2023-01-01 ${convertTo24Hour(timeString)}");
@@ -48,7 +48,8 @@ String convertTo24Hour(String time) {
 }
 
 String formatTo12Hour(DateTime time) {
-  final hour = time.hour > 12 ? time.hour - 12 : (time.hour == 0 ? 12 : time.hour);
+  final hour =
+      time.hour > 12 ? time.hour - 12 : (time.hour == 0 ? 12 : time.hour);
   final meridian = time.hour >= 12 ? 'PM' : 'AM';
   final minute = time.minute.toString().padLeft(2, '0');
   return '$hour:$minute $meridian';
@@ -69,4 +70,10 @@ int convertToMinutes(String time) {
   final hours = int.tryParse(parts[0]) ?? 0;
   final minutes = int.tryParse(parts[1]) ?? 0;
   return hours * 60 + minutes;
+}
+
+String dateTimetoStringRange(DateTime start, DateTime end) {
+  final startDate = DateFormat('MMM d').format(start);
+  final endDate = DateFormat('MMM d').format(end);
+  return '$startDate to $endDate ${start.year}';
 }
