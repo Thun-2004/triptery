@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:triptery/domain/entities/tag/tag.dart';
 import 'package:triptery/domain/entities/trip/plan_with_tag.dart';
 import 'package:triptery/domain/entities/trip/plan.dart';
 import 'package:triptery/domain/usecases/trip/get_plans.dart';
@@ -8,20 +9,22 @@ import 'package:triptery/domain/usecases/trip/get_plans.dart';
 // This controller is responsible for managing the state of the plan data in the application.
 
 class PlanController extends GetxController {
-  final GetPlans getPlans; 
+  final GetPlans getPlans;
 
   PlanController({required this.getPlans});
-  var plan = Rx<Plan?>(null);
+
   var isLoading = true.obs;
 
   var planWithTag = Rx<PlanWithTag?>(null);
-  PlanWithTag? get planWithTagValue => planWithTag.value; 
+  var plan = Rx<Plan?>(null);
+  var tags = RxList<Tag>([]);
+  PlanWithTag? get planWithTagValue => planWithTag.value;
 
   @override
   void onInit() {
     super.onInit();
-    fetchPlan();
-    fetchPlanWithTag(1); 
+    // fetchPlan();
+    fetchPlanWithTag(1);
     log("🚀 PlanController initialized");
   }
 
@@ -32,7 +35,7 @@ class PlanController extends GetxController {
       plan.value = result;
       log("✅ Plan fetched: ${plan.value?.name}");
     } finally {
-      isLoading(false); 
+      isLoading(false);
     }
   }
 
@@ -41,17 +44,32 @@ class PlanController extends GetxController {
     log("🔄 Plan updated: ${plan.value?.name}");
   }
 
+  void updatePlanName(String newName) {
+    if (plan.value != null) {
+      plan.value?.name = newName;
+      plan.refresh(); //FIXME: shouldn't use refresh
+      if (planWithTag.value != null) {
+        planWithTag.value!.plan.name = plan.value!.name;
+      }
+      log("🔄 Plan name updated: ${plan.value?.name}");
+    } else {
+      log("❗️ Cannot update name, plan is null");
+    }
+  }
+
   Future<void> fetchPlanWithTag(int planId) async {
     try {
       isLoading(true);
       final result = getPlans.getPlanWithTag(planId);
+      plan.value = result.plan;
+      tags.value = result.tags; // Assuming PlanWithTag has a tags field
       planWithTag.value = result;
       log("✅ Plan with tags fetched: ${plan.value?.name}");
-      // You can also handle tags here if needed
     } finally {
       isLoading(false);
     }
   }
+
   //FIXME: Add methods loading to เเบ่ง load plan/trip อาจจะ load plan ก่อนแล้วค่อย load trip but add to the same response
   //FIXME: Add another fields in Plan to show all trips in the plan like plan.trips = [Trip1, Trip2, Trip3]
 }

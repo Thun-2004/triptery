@@ -45,21 +45,12 @@ class TagController extends GetxController {
   void toggleTag(String tagId) {
     Tag tag = tags.firstWhere((tag) => tag.id == tagId);
 
-    // try {
-    //   selectedTags.firstWhere((tag) => tag.id == tagId);
-    // } catch (e) {
-    //   log("Tag with id $tagId not found in selected tags");
-    //   return;
-    // }
-
     if (!selectedTags.contains(tag)) {
       selectedTags.add(tag);
       getTagsUseCases.updateSelectedTags(
         tagId,
         planController.planWithTagValue!.plan.id,
       );
-      //print all selected tags
-      log("Selected tags: ${selectedTags.map((tag) => tag.name).join(', ')}");
     } else {
       selectedTags.remove(tag);
     }

@@ -24,6 +24,7 @@ class HeaderSection extends StatefulWidget {
 class _HeaderSectionState extends State<HeaderSection> {
   final PlanReviewController planReviewController =
       Get.find<PlanReviewController>();
+  final planController = Get.find<PlanController>();
   bool isClicked = false;
   bool isLiked = false;
 
@@ -56,7 +57,7 @@ class _HeaderSectionState extends State<HeaderSection> {
   Widget build(BuildContext context) {
     return Obx(() {
       //FIXME: change to planController
-      final plan = Get.find<PlanController>().plan.value;
+      var plan = planController.plan.value;
 
       return Container(
         height: 350,

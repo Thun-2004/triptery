@@ -1,24 +1,21 @@
-enum PlanVisibility {
-  public,
-  private,
-}
+enum PlanVisibility { public, private }
 
 class Plan {
   final String id;
-  final String name;
+  String name;
   final String ownerId;
   final String ownerName;
-  final String ownerProfilePictureUrl;
-  final String coverImageUrl;
-  final int totalCopied;
-  final int totalLikes;
-  final DateTime dayStart;
-  final DateTime dayEnd;
-  final int dayCount; 
-  final String location; 
-  final String note;
-  final PlanVisibility visibility; 
-  final int budget; 
+  String ownerProfilePictureUrl;
+  String coverImageUrl;
+  int totalCopied;
+  int totalLikes;
+  DateTime dayStart;
+  DateTime dayEnd;
+  int dayCount;
+  String location;
+  String note;
+  PlanVisibility visibility;
+  int budget;
   final DateTime createdAt;
 
   Plan({
@@ -32,8 +29,8 @@ class Plan {
     required this.totalLikes,
     required this.dayStart,
     required this.dayEnd,
-    required this.dayCount, 
-    required this.location, 
+    required this.dayCount,
+    required this.location,
     required this.note,
     required this.visibility,
     required this.budget,
@@ -41,4 +38,3 @@ class Plan {
   });
 
 }
-
