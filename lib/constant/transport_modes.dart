@@ -11,6 +11,8 @@ enum TransportMode {
   boat,
   airplane,
   walk,
-  unSelected
+  unSelected, 
+  motorcycle
 }
+
 

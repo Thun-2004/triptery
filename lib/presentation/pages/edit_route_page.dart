@@ -25,475 +25,490 @@ class EditRoutePage extends StatefulWidget {
 }
 
 class _EditRoutePageState extends State<EditRoutePage> {
-  final tripController = Get.find<TripController>();
-  bool isExpanded = false;
-  int _selectedIndex = 0;
-  // late bool _isEditing;
-  int selectedDay = 1;
-
-  void _onCardSelected(int index) {
-    setState(() {
-      if (_selectedIndex == index) {
-        _selectedIndex = -1;
-      } else {
-        _selectedIndex = index;
-      }
-    });
-  }
-
-  void handleReorder(int oldIndex, int newIndex) {
-    setState(() {
-      tripController.handleReorder(oldIndex, newIndex, _selectedIndex);
-    });
-  }
-
-  void recalculateAllRoutes() {
-    tripController.recalculateAllRoutes();
-  }
-
-  void addPlace(index) {
-    // tripService.addPlace(index);
-    // setState(() {});
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      backgroundColor: AppColors.white,
-      builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.7,
-          child: AddPlaceSheet(prevPlaceId: index),
-        );
-      },
-    );
-  }
-
-  void addDeletedPlaceCards(int index) {
-    setState(() {
-      tripController.addDeletedPlaceCards(index);
-    });
-  }
-
-  void showTimePicker(String initialTime, Function(TimeOfDay) setTimeOnChange) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      showDragHandle: true,
-      backgroundColor: AppColors.white,
-      builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.3,
-          child: TimePickerCupertino(
-            initialTime: initialTime,
-            setTimeOnChange: setTimeOnChange,
-          ),
-        );
-      },
-    );
-  }
-
-  isExtended() {
-    setState(() {
-      isExpanded = !isExpanded;
-    });
-  }
-
-  void _selectDay(int day) {
-    setState(() {
-      selectedDay = day;
-      tripController.day.value = day;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.black.withOpacity(0.1),
-                  offset: const Offset(0, 4),
-                  blurRadius: 4,
-                  spreadRadius: 0,
-                ),
-              ],
-            ),
-            padding: const EdgeInsets.only(
-              top: 50,
-              left: 16,
-              right: 16,
-              bottom: 8,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.black),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    CustomText(
-                      text: "Edit Route",
-                      type: TextType.heading,
-                      color: AppColors.black,
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        overlayColor: AppColors.lightGray,
-                      ),
-                      onPressed: () => Navigator.pop(context),
-                      child: const CustomText(
-                        text: 'Done',
-                        type: TextType.subHeading,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: SizedBox(
-                    height: 40,
-                    child: Obx(() {
-                      PlanController planController =
-                          Get.find<PlanController>();
-
-                      if (planController.plan.value == null) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      return ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          ...List.generate(
-                            planController.plan.value!.dayCount ?? 0,
-                            (index) {
-                              int day = index + 1;
-                              return Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: DayButton(
-                                      text: 'Day $day',
-                                      onPressed: () {
-                                        _selectDay(day);
-                                      },
-                                      index: day,
-                                      selectedDay: selectedDay,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-
-                          AddButton(
-                            onPressed: () {
-                              // Your logic here
-                            },
-                            text: '+',
-                            textSize: 16,
-                            textColor: AppColors.orange_950,
-                            width: 50,
-                            height: 28,
-                          ),
-                        ],
-                      );
-                    }),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          //selected deletion
-          Obx(() {
-            if (tripController.deletedItemsObs.isEmpty)
-              return const SizedBox.shrink();
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              alignment: Alignment.bottomCenter,
-              height: 50,
-              // height: isExpanded ? 50 : 0,
-              padding: const EdgeInsets.only(right: 16, left: 30),
-              decoration: BoxDecoration(color: AppColors.red),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomText(
-                    text: "Select All",
-                    type: TextType.subHeading,
-                    color: AppColors.darkBlue,
-                  ),
-                  CustomText(
-                    text: "${tripController.deletedItemsObs.length} Selected",
-                    type: TextType.subHeading,
-                    color: AppColors.white,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          LucideIcons.trash2,
-                          color: AppColors.darkBlue,
-                        ),
-                        onPressed: () {
-                          tripController.deleteAllPlaceCards();
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }),
-          //scrollable content
-          Expanded(
-            child: Obx(() {
-              List<Trip> _places = tripController.getPlaces;
-              List<Trip> _routes = tripController.getRoutes;
-
-              log(
-                "Visible places: ${_places.map((e) => '${e.placeName} (Day ${e.day})').toList()}",
-              );
-
-              return ReorderableListView.builder(
-                //NOTE reorderable list view is scrollable on its own
-                buildDefaultDragHandles: true,
-                scrollDirection: Axis.vertical,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemCount: _places.length,
-
-                onReorder: handleReorder,
-                itemBuilder: (context, index) {
-                  String? initialTime = _places[index].arrivalTime!;
-                  List<Map<String, String>> routeOptions =
-                      index < _places.length - 1 &&
-                              _places[index].placeId != null &&
-                              _places[index + 1].placeId != null
-                          ? tripController.findRouteOptions(
-                            _places[index].placeId!,
-                            _places[index + 1].placeId!,
-                          )
-                          : [];
-
-                  void setTimeOnChange(TimeOfDay selectedTime) {
-                    setState(() {
-                      var _initialTime = _places[index].arrivalTime;
-                      var _changedTime = convertTo12HourWithMeridian(
-                        selectedTime.format(context),
-                      );
-                      _places[index].arrivalTime = _changedTime;
-                      log("${_places[index].arrivalTime}");
-                      tripController.sortPlacebyTimes(
-                        index,
-                        _initialTime!,
-                        _changedTime,
-                      );
-                    });
-                  }
-
-                  return Padding(
-                    key: ValueKey('place-${_places[index].placeId}-$index'),
-                    padding: const EdgeInsets.only(bottom: 0.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.all(0),
-                                child: Column(
-                                  children: [
-                                    const SizedBox(height: 4),
-                                    if (_places[index].day == selectedDay &&
-                                        index <= _places.length - 1 &&
-                                        _places[index].placeId != null)
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Icon(
-                                            LucideIcons.clock,
-                                            color: AppColors.orange_950,
-                                            size: 16,
-                                          ),
-                                          TextButton(
-                                            style: TextButton.styleFrom(
-                                              padding: EdgeInsets.zero,
-                                              tapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
-                                              minimumSize: Size(0, 0),
-                                            ),
-                                            onPressed: (() {
-                                              showTimePicker(
-                                                initialTime,
-                                                setTimeOnChange,
-                                              );
-                                            }),
-                                            child: Text(
-                                              _places[index].arrivalTime!,
-                                              style: TextStyle(
-                                                color: AppColors.orange_950,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                    if (_places[index].day == selectedDay &&
-                                        index <= _places.length - 1 &&
-                                        _places[index].placeId != null)
-                                      GestureDetector(
-                                        onTap: () => _onCardSelected(index),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color:
-                                                  _selectedIndex == index
-                                                      ? Colors.blue
-                                                      : Colors.transparent,
-                                              width: 2,
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
-                                          ),
-                                          child: Obx(
-                                            () => PlaceCard(
-                                              index: index,
-                                              placeId: _places[index].placeId!,
-                                              placeName:
-                                                  _places[index].placeName!,
-                                              placeDescription:
-                                                  _places[index]
-                                                      .placeDescription!,
-                                              placeImage:
-                                                  _places[index].placeImageUrl!,
-                                              arrivalTime:
-                                                  _places[index].arrivalTime!,
-                                              addDeletedItem:
-                                                  addDeletedPlaceCards,
-                                              isEdit:
-                                                  tripController
-                                                      .isEditingPlaceOrderObs
-                                                      .value,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-
-                                    if (index == _places.length - 1)
-                                      const SizedBox(height: 10)
-                                    else ...[
-                                      Builder(
-                                        builder: (context) {
-                                          Trip? matchingRoute = _routes
-                                              .firstWhereOrNull(
-                                                (r) =>
-                                                    r.routeFrom ==
-                                                        _places[index]
-                                                            .placeId &&
-                                                    r.routeTo ==
-                                                        _places[index + 1]
-                                                            .placeId,
-                                              );
-
-                                          if (matchingRoute != null &&
-                                              _places[index].day ==
-                                                  selectedDay) {
-                                            return RouteDropdown(
-                                              key: ValueKey(
-                                                'route-${_places[index].placeId}-${_places[index + 1].placeId}',
-                                              ),
-                                              choices: routeOptions,
-                                              pastChoice:
-                                                  _selectedIndex == index
-                                                      ? "Select route mode"
-                                                      : matchingRoute.routeMode
-                                                          .toString(),
-                                            );
-                                          } else {
-                                            return SizedBox.shrink(); // fallback
-                                          }
-                                        },
-                                      ),
-                                    ],
-
-                                    Obx(() {
-                                      if (tripController
-                                              .isEditingPlaceOrderObs
-                                              .value &&
-                                          index < _places.length - 1 && _places[index].day == selectedDay) {
-                                        return AddButton(
-                                          text: "+ Add Place",
-                                          textSize: 14,
-                                          textColor: AppColors.orange_950,
-                                          width: double.infinity,
-                                          height: 30,
-                                          onPressed: () => addPlace(index),
-                                        );
-                                      } else {
-                                        return const SizedBox.shrink();
-                                      }
-                                    }),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            }),
-          ),
-
-          //FIXME: add day info
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (() {
-          tripController.toggleEditPlaceOrder();
-          // setState(() {
-          //   _isEditing = tripController.isEditingPlaceOrder;
-          // });
-        }),
-
-        elevation: 4,
-        shape: const CircleBorder(),
-        child: Container(
-          width: 56,
-          height: 56,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                const Color(0xFFFEB755), // Light orange
-                const Color(0xFFFE7D57), // Darker orange
-              ],
-            ),
-          ),
-          child: Icon(LucideIcons.pencilLine, color: Colors.white, size: 28),
-        ),
-      ),
-    );
+    return Text("hello"); 
   }
+  // final tripController = Get.find<TripController>();
+  // bool isExpanded = false;
+  // int _selectedIndex = 0;
+  // // late bool _isEditing;
+  // int selectedDay = 1;
+
+  // void _onCardSelected(int index) {
+  //   setState(() {
+  //     if (_selectedIndex == index) {
+  //       _selectedIndex = -1;
+  //     } else {
+  //       _selectedIndex = index;
+  //     }
+  //   });
+  // }
+
+  // void handleReorder(int oldIndex, int newIndex) {
+  //   setState(() {
+  //     tripController.handleReorder(oldIndex, newIndex, _selectedIndex);
+  //   });
+  // }
+
+  // void recalculateAllRoutes() {
+  //   tripController.recalculateAllRoutes();
+  // }
+
+  // void addPlace(index) {
+  //   // tripService.addPlace(index);
+  //   // setState(() {});
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     showDragHandle: true,
+  //     backgroundColor: AppColors.white,
+  //     builder: (context) {
+  //       return FractionallySizedBox(
+  //         heightFactor: 0.7,
+  //         child: AddPlaceSheet(prevPlaceId: index),
+  //       );
+  //     },
+  //   );
+  // }
+
+  // void addDeletedPlaceCards(int index) {
+  //   setState(() {
+  //     tripController.addDeletedPlaceCards(index);
+  //   });
+  // }
+
+  // void showTimePicker(String initialTime, Function(TimeOfDay) setTimeOnChange) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     showDragHandle: true,
+  //     backgroundColor: AppColors.white,
+  //     builder: (context) {
+  //       return FractionallySizedBox(
+  //         heightFactor: 0.3,
+  //         child: TimePickerCupertino(
+  //           initialTime: initialTime,
+  //           setTimeOnChange: setTimeOnChange,
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  // isExtended() {
+  //   setState(() {
+  //     isExpanded = !isExpanded;
+  //   });
+  // }
+
+  // void _selectDay(int day) {
+  //   setState(() {
+  //     selectedDay = day;
+  //     tripController.day.value = day;
+  //   });
+  // }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     body: Column(
+  //       children: [
+  //         Container(
+  //           decoration: BoxDecoration(
+  //             color: AppColors.white,
+  //             boxShadow: [
+  //               BoxShadow(
+  //                 color: AppColors.black.withOpacity(0.1),
+  //                 offset: const Offset(0, 4),
+  //                 blurRadius: 4,
+  //                 spreadRadius: 0,
+  //               ),
+  //             ],
+  //           ),
+  //           padding: const EdgeInsets.only(
+  //             top: 50,
+  //             left: 16,
+  //             right: 16,
+  //             bottom: 8,
+  //           ),
+  //           child: Column(
+  //             children: [
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                 children: [
+  //                   IconButton(
+  //                     icon: const Icon(Icons.arrow_back, color: Colors.black),
+  //                     onPressed: () => Navigator.pop(context),
+  //                   ),
+  //                   CustomText(
+  //                     text: "Edit Route",
+  //                     type: TextType.heading,
+  //                     color: AppColors.black,
+  //                   ),
+  //                   TextButton(
+  //                     style: TextButton.styleFrom(
+  //                       overlayColor: AppColors.lightGray,
+  //                     ),
+  //                     onPressed: () => Navigator.pop(context),
+  //                     child: const CustomText(
+  //                       text: 'Done',
+  //                       type: TextType.subHeading,
+  //                       color: Colors.black,
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //               Padding(
+  //                 padding: const EdgeInsets.symmetric(vertical: 8),
+  //                 child: SizedBox(
+  //                   height: 40,
+  //                   child: Obx(() {
+  //                     PlanController planController =
+  //                         Get.find<PlanController>();
+
+  //                     if (planController.plan.value == null) {
+  //                       return const Center(child: CircularProgressIndicator());
+  //                     }
+  //                     return ListView(
+  //                       scrollDirection: Axis.horizontal,
+  //                       children: [
+  //                         ...List.generate(
+  //                           planController.plan.value!.dayCount ?? 0,
+  //                           (index) {
+  //                             int day = index + 1;
+  //                             return Row(
+  //                               children: [
+  //                                 Padding(
+  //                                   padding: const EdgeInsets.only(right: 10),
+  //                                   child: DayButton(
+  //                                     text: 'Day $day',
+  //                                     onPressed: () {
+  //                                       _selectDay(day);
+  //                                     },
+  //                                     index: day,
+  //                                     selectedDay: selectedDay,
+  //                                   ),
+  //                                 ),
+  //                               ],
+  //                             );
+  //                           },
+  //                         ),
+
+  //                         AddButton(
+  //                           onPressed: () {
+  //                             // Your logic here
+  //                           },
+  //                           text: '+',
+  //                           textSize: 16,
+  //                           textColor: AppColors.orange_950,
+  //                           width: 50,
+  //                           height: 28,
+  //                         ),
+  //                       ],
+  //                     );
+  //                   }),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+
+  //         //selected deletion
+  //         Obx(() {
+  //           if (tripController.deletedItemsObs.isEmpty)
+  //             return const SizedBox.shrink();
+  //           return AnimatedContainer(
+  //             duration: const Duration(milliseconds: 300),
+  //             alignment: Alignment.bottomCenter,
+  //             height: 50,
+  //             // height: isExpanded ? 50 : 0,
+  //             padding: const EdgeInsets.only(right: 16, left: 30),
+  //             decoration: BoxDecoration(color: AppColors.red),
+  //             child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //               children: [
+  //                 CustomText(
+  //                   text: "Select All",
+  //                   type: TextType.subHeading,
+  //                   color: AppColors.darkBlue,
+  //                 ),
+  //                 CustomText(
+  //                   text: "${tripController.deletedItemsObs.length} Selected",
+  //                   type: TextType.subHeading,
+  //                   color: AppColors.white,
+  //                 ),
+  //                 Row(
+  //                   mainAxisAlignment: MainAxisAlignment.end,
+  //                   children: [
+  //                     IconButton(
+  //                       icon: const Icon(
+  //                         LucideIcons.trash2,
+  //                         color: AppColors.darkBlue,
+  //                       ),
+  //                       onPressed: () {
+  //                         tripController.deleteAllPlaceCards();
+  //                       },
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ],
+  //             ),
+  //           );
+  //         }),
+  //         //scrollable content
+  //         Expanded(
+  //           child: Obx(() {
+  //             List<Trip> _places = tripController.getPlaces;
+  //             List<Trip> _routes = tripController.getRoutes;
+
+  //             log(
+  //               "Visible places: ${_places.map((e) => '${e.placeName} (Day ${e.day})').toList()}",
+  //             );
+
+  //             return ReorderableListView.builder(
+  //               //NOTE reorderable list view is scrollable on its own
+  //               buildDefaultDragHandles: true,
+  //               scrollDirection: Axis.vertical,
+  //               padding: const EdgeInsets.symmetric(horizontal: 16),
+  //               itemCount: _places.length,
+
+  //               onReorder: handleReorder,
+  //               itemBuilder: (context, index) {
+  //                 String? initialTime = _places[index].arrivalTime!;
+  //                 List<Map<String, String>> routeOptions =
+  //                     index < _places.length - 1 &&
+  //                             _places[index].placeId != null &&
+  //                             _places[index + 1].placeId != null
+  //                         ? tripController.findRouteOptions(
+  //                           _places[index].placeId!,
+  //                           _places[index + 1].placeId!,
+  //                         )
+  //                         : [];
+
+  //                 void setTimeOnChange(TimeOfDay selectedTime) {
+  //                   setState(() {
+  //                     var _initialTime = _places[index].arrivalTime;
+  //                     var _changedTime = convertTo12HourWithMeridian(
+  //                       selectedTime.format(context),
+  //                     );
+  //                     _places[index].arrivalTime = _changedTime;
+  //                     log("${_places[index].arrivalTime}");
+  //                     tripController.sortPlacebyTimes(
+  //                       index,
+  //                       _initialTime!,
+  //                       _changedTime,
+  //                     );
+  //                   });
+  //                 }
+
+  //                 return Padding(
+  //                   key: ValueKey('place-${_places[index].placeId}-$index'),
+  //                   padding: const EdgeInsets.only(bottom: 0.0),
+  //                   child: Row(
+  //                     children: [
+  //                       Expanded(
+  //                         child: Column(
+  //                           children: [
+  //                             Container(
+  //                               margin: EdgeInsets.all(0),
+  //                               child: Column(
+  //                                 children: [
+  //                                   const SizedBox(height: 4),
+  //                                   if (_places[index].day == selectedDay &&
+  //                                       index <= _places.length - 1 &&
+  //                                       _places[index].placeId != null)
+  //                                     Row(
+  //                                       mainAxisAlignment:
+  //                                           MainAxisAlignment.end,
+  //                                       children: [
+  //                                         Icon(
+  //                                           LucideIcons.clock,
+  //                                           color: AppColors.orange_950,
+  //                                           size: 16,
+  //                                         ),
+  //                                         TextButton(
+  //                                           style: TextButton.styleFrom(
+  //                                             padding: EdgeInsets.zero,
+  //                                             tapTargetSize:
+  //                                                 MaterialTapTargetSize
+  //                                                     .shrinkWrap,
+  //                                             minimumSize: Size(0, 0),
+  //                                           ),
+  //                                           onPressed: (() {
+  //                                             showTimePicker(
+  //                                               initialTime,
+  //                                               setTimeOnChange,
+  //                                             );
+  //                                           }),
+  //                                           child: Text(
+  //                                             _places[index].arrivalTime!,
+  //                                             style: TextStyle(
+  //                                               color: AppColors.orange_950,
+  //                                             ),
+  //                                           ),
+  //                                         ),
+  //                                       ],
+  //                                     ),
+
+  //                                   if (_places[index].day == selectedDay &&
+  //                                       index <= _places.length - 1 &&
+  //                                       _places[index].placeId != null)
+  //                                     GestureDetector(
+  //                                       onTap: () => _onCardSelected(index),
+  //                                       child: Container(
+  //                                         decoration: BoxDecoration(
+  //                                           border: Border.all(
+  //                                             color:
+  //                                                 _selectedIndex == index
+  //                                                     ? Colors.blue
+  //                                                     : Colors.transparent,
+  //                                             width: 2,
+  //                                           ),
+  //                                           borderRadius: BorderRadius.circular(
+  //                                             8,
+  //                                           ),
+  //                                         ),
+  //                                         child: Obx(
+  //                                           () => PlaceCard(
+  //                                             index: index,
+  //                                             placeId: int.parse(
+  //                                               _places[index].placeId!,
+  //                                             ),
+  //                                             placeName:
+  //                                                 _places[index].placeName!,
+  //                                             placeDescription:
+  //                                                 _places[index]
+  //                                                     .placeDescription!,
+  //                                             placeImage:
+  //                                                 _places[index].placeImageUrl!,
+  //                                             arrivalTime:
+  //                                                 _places[index].arrivalTime!,
+  //                                             addDeletedItem:
+  //                                                 addDeletedPlaceCards,
+  //                                             timeSpent: "4:00",
+  //                                             moneySpent: 2000,
+  //                                             activities: [
+  //                                               "Activity 1",
+  //                                               "Activity 2",
+  //                                             ],
+  //                                             note: "This is a note",
+  //                                             isEdit:
+  //                                                 tripController
+  //                                                     .isEditingPlaceOrderObs
+  //                                                     .value,
+  //                                           ),
+  //                                         ),
+  //                                       ),
+  //                                     ),
+
+  //                                   if (index == _places.length - 1)
+  //                                     const SizedBox(height: 10)
+  //                                   else ...[
+  //                                     Builder(
+  //                                       builder: (context) {
+  //                                         Trip? matchingRoute = _routes
+  //                                             .firstWhereOrNull(
+  //                                               (r) =>
+  //                                                   r.routeFrom ==
+  //                                                       _places[index]
+  //                                                           .placeId &&
+  //                                                   r.routeTo ==
+  //                                                       _places[index + 1]
+  //                                                           .placeId,
+  //                                             );
+
+  //                                         if (matchingRoute != null &&
+  //                                             _places[index].day ==
+  //                                                 selectedDay) {
+  //                                           return RouteDropdown(
+  //                                             key: ValueKey(
+  //                                               'route-${_places[index].placeId}-${_places[index + 1].placeId}',
+  //                                             ),
+  //                                             choices: routeOptions,
+  //                                             pastChoice:
+  //                                                 _selectedIndex == index
+  //                                                     ? "Select route mode"
+  //                                                     : matchingRoute.routeMode
+  //                                                         .toString(),
+  //                                           );
+  //                                         } else {
+  //                                           return SizedBox.shrink(); // fallback
+  //                                         }
+  //                                       },
+  //                                     ),
+  //                                   ],
+
+  //                                   Obx(() {
+  //                                     if (tripController
+  //                                             .isEditingPlaceOrderObs
+  //                                             .value &&
+  //                                         index < _places.length - 1 &&
+  //                                         _places[index].day == selectedDay) {
+  //                                       return AddButton(
+  //                                         text: "+ Add Place",
+  //                                         textSize: 14,
+  //                                         textColor: AppColors.orange_950,
+  //                                         width: double.infinity,
+  //                                         height: 30,
+  //                                         onPressed: () => addPlace(index),
+  //                                       );
+  //                                     } else {
+  //                                       return const SizedBox.shrink();
+  //                                     }
+  //                                   }),
+  //                                 ],
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 );
+  //               },
+  //             );
+  //           }),
+  //         ),
+
+  //         //FIXME: add day info
+  //       ],
+  //     ),
+  //     floatingActionButton: FloatingActionButton(
+  //       onPressed: (() {
+  //         tripController.toggleEditPlaceOrder();
+  //         // setState(() {
+  //         //   _isEditing = tripController.isEditingPlaceOrder;
+  //         // });
+  //       }),
+
+  //       elevation: 4,
+  //       shape: const CircleBorder(),
+  //       child: Container(
+  //         width: 56,
+  //         height: 56,
+  //         decoration: BoxDecoration(
+  //           shape: BoxShape.circle,
+  //           gradient: LinearGradient(
+  //             begin: Alignment.topLeft,
+  //             end: Alignment.bottomRight,
+  //             colors: [
+  //               const Color(0xFFFEB755), // Light orange
+  //               const Color(0xFFFE7D57), // Darker orange
+  //             ],
+  //           ),
+  //         ),
+  //         child: Icon(LucideIcons.pencilLine, color: Colors.white, size: 28),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 

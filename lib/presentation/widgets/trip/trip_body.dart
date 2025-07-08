@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/presentation/controllers/plan_controller.dart';
-import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:triptery/presentation/widgets/trip/components/day.dart';
 import 'package:triptery/presentation/widgets/trip/components/day_list.dart';
@@ -31,7 +28,7 @@ class _TripBodyState extends State<TripBody> {
   int selectedDay = 0;
   late Widget dayMode;
   List<Trip> trips = mockTrips;
-  late final PlanController planController; 
+  late final PlanController planController;
 
   List<int> get days {
     return trips
@@ -52,7 +49,10 @@ class _TripBodyState extends State<TripBody> {
     super.initState();
     planController = Get.find<PlanController>();
     if (planController.plan.value != null) {
-      dayMode = DayList(dateFrom: planController.plan.value!.dayStart, dayCount: planController.plan.value!.dayCount);
+      dayMode = DayList(
+        dateFrom: planController.plan.value!.dayStart,
+        dayCount: planController.plan.value!.dayCount,
+      );
     } else {
       dayMode = const Center(child: CircularProgressIndicator());
     }
@@ -84,7 +84,6 @@ class _TripBodyState extends State<TripBody> {
               child: SizedBox(
                 height: 40,
                 child: Obx(() {
-
                   if (planController.plan.value == null) {
                     return const SizedBox();
                   }
@@ -102,24 +101,27 @@ class _TripBodyState extends State<TripBody> {
                       ),
                       const SizedBox(width: 10),
 
-                      ...List.generate(planController.plan.value!.dayCount ?? 0, (index) {
-                        int day = index + 1;
-                        return Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: DayButton(
-                                text: 'Day $day',
-                                onPressed: () {
-                                  _selectDay(day);                              
-                                },
-                                index: day,
-                                selectedDay: selectedDay,
+                      ...List.generate(
+                        planController.plan.value!.dayCount ?? 0,
+                        (index) {
+                          int day = index + 1;
+                          return Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: DayButton(
+                                  text: 'Day $day',
+                                  onPressed: () {
+                                    _selectDay(day);
+                                  },
+                                  index: day,
+                                  selectedDay: selectedDay,
+                                ),
                               ),
-                            ),
-                          ],
-                        );
-                      }),
+                            ],
+                          );
+                        },
+                      ),
                     ],
                   );
                 }),
@@ -127,21 +129,27 @@ class _TripBodyState extends State<TripBody> {
             ),
           ),
           Obx(() {
-            final plan = planController.plan.value; 
-            if(plan == null){
+            final plan = planController.plan.value;
+            if (plan == null) {
               return const Center(child: CircularProgressIndicator());
             }
             return Container(
               height: 845,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-              child: selectedDay == 0
-                ? DayList(dateFrom: plan.dayStart, dayCount: plan.dayCount)
-                : Day(
-                    day: selectedDay,
-                    date: plan.dayStart.add(Duration(days: selectedDay - 1)),
-                  ),
-            ); 
-          }), 
+              child:
+                  selectedDay == 0
+                      ? DayList(
+                        dateFrom: plan.dayStart,
+                        dayCount: plan.dayCount,
+                      )
+                      : Day(
+                        day: selectedDay,
+                        date: plan.dayStart.add(
+                          Duration(days: selectedDay - 1),
+                        ),
+                      ),
+            );
+          }),
           const SizedBox(height: 16),
 
           //Add your trip details here

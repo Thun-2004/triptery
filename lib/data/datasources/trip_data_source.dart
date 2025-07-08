@@ -102,4 +102,12 @@ class TripDataSource {
     ];
     return mockTrips;
   }
+
+  List<Map<String, Object?>> getTripById(String tripId) {
+    // This is a mock implementation. Replace with actual data fetching logic.
+    final trips = getAllTrips();
+    return trips.where((trip) => trip["id"] == tripId).toList();
+  }
+
+  
 }

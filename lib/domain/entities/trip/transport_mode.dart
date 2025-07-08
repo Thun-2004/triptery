@@ -1,8 +1,9 @@
 
 //create trnsport model class
 //FIXME: add more transport modes if needed
-enum TripType { route, dest }
-enum TransportMode { car, bus, train, carRent, taxi, skyTrain, subway, boat, airplane, walk, motorcycle, publicTransit, unselected }
+import 'package:triptery/domain/entities/trip/trip.dart';
+import 'package:triptery/constant/transport_modes.dart'; 
+
 
 class Transport {
   final String id;

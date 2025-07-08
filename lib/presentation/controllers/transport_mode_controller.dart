@@ -1,4 +1,3 @@
-
 import 'dart:developer';
 
 import 'package:get/get.dart';
@@ -9,36 +8,27 @@ import 'package:triptery/utils/datetime.dart';
 class TransportModeController extends GetxController {
   RxList<Map<String, dynamic>> tempModes = <Map<String, dynamic>>[].obs;
 
+  TransportModeController() {
+    // Initialize with a default mode if needed
+    addMode(TransportMode.walk);
+  }
+
   @override
   void onInit() {
     super.onInit();
-    // tempModes.add(
-    //   {
-    //     "mode": TransportMode.walk,
-    //     "station": null,
-    //     "time_taken": "00:21",
-    //     "distance": 21,
-    //     "distance_unit": "km",
-    //     "cost": 47,
-    //     "cost_unit": "THB",
-    //     "note": "Walk to MRT Huai Kwang", //FIXME : fix overflow text
-    //   } as Map<String, dynamic>,
-    // );
   }
 
   void addMode(TransportMode mode) {
-    tempModes.add(
-      {
-        "mode": mode,
-        "station": null,
-        "time_taken": "00:00",
-        "distance": 0,
-        "distance_unit": "km",
-        "cost": 0,
-        "cost_unit": "THB",
-        "note": "",
-      }
-    );
+    tempModes.add({
+      "mode": mode,
+      "station": null,
+      "time_taken": "00:00",
+      "distance": 0,
+      "distance_unit": "km",
+      "cost": 0,
+      "cost_unit": "THB",
+      "note": "",
+    });
   }
 
   void clearModes() {
@@ -65,7 +55,7 @@ class TransportModeController extends GetxController {
           totalDistance += mode["distance"];
         } else if (mode["distance_unit"] == "meters") {
           totalDistance += mode["distance"] / 1000; // Convert meters to km
-        } 
+        }
       }
     }
     return totalDistance;
@@ -85,10 +75,11 @@ class TransportModeController extends GetxController {
     if (tempModes.isNotEmpty) {
       tempModes[modeIndex]["mode"] = mode;
     }
-    log("Transport mode set to: ${ tempModes[modeIndex]["mode"]}");
+    tempModes.refresh();
+    log("Transport mode set to: ${tempModes[modeIndex]["mode"]}");
   }
 
-  void setModeDuration(int modeIndex, String timeTaken){
+  void setModeDuration(int modeIndex, String timeTaken) {
     //NOTE: timeTaken is in HH:MM format
     if (timeTaken.isEmpty || !RegExp(r'^\d{2}:\d{2}$').hasMatch(timeTaken)) {
       throw ArgumentError("Invalid time format. Use HH:MM.");
@@ -105,11 +96,11 @@ class TransportModeController extends GetxController {
     if (tempModes.isNotEmpty) {
       tempModes[modeIndex]["time_taken"] = timeTaken;
     }
-    tempModes.refresh(); 
+    tempModes.refresh();
     log("Mode duration set to: ${tempModes[modeIndex]["time_taken"]}");
   }
 
-  void setDistance(int modeIndex, int distance){
+  void setDistance(int modeIndex, int distance) {
     //NOTE: distance is in km
     if (distance < 0) {
       throw ArgumentError("Distance cannot be negative");
@@ -120,10 +111,9 @@ class TransportModeController extends GetxController {
     }
     tempModes.refresh();
     log("Distance set to: ${tempModes[modeIndex]["distance"]}");
-    
   }
 
-  void setDistanceUnit(int modeIndex, String unit){
+  void setDistanceUnit(int modeIndex, String unit) {
     if (tempModes.isNotEmpty) {
       tempModes[modeIndex]["distance_unit"] = unit;
     }
@@ -131,7 +121,7 @@ class TransportModeController extends GetxController {
     log("Distance unit set to: ${tempModes[modeIndex]["distance_unit"]}");
   }
 
-  void setCost(int modeIndex, int cost){
+  void setCost(int modeIndex, int cost) {
     if (cost < 0) {
       throw ArgumentError("Cost cannot be negative");
     }
@@ -143,7 +133,7 @@ class TransportModeController extends GetxController {
     log("Cost set to: ${tempModes[modeIndex]["distance_unit"]}");
   }
 
-  void setCostUnit(int modeIndex, String unit){
+  void setCostUnit(int modeIndex, String unit) {
     if (tempModes.isNotEmpty) {
       tempModes[modeIndex]["cost_unit"] = unit;
     }
@@ -165,31 +155,52 @@ class TransportModeController extends GetxController {
     }
     tempModes.refresh();
   }
-
 }
 
-// List<Map<String, dynamic>> tempModes = [
-  //   {
-  //     "planId": 1,
-  //     "day": 1,
-  //     "total_time": 21,
-  //     "total_cost": 47,
-  //     "total_distance": 21,
-  //     "fromPlaceId": "placeId1",
-  //     "toPlaceId": "placeId2",
-  //     "tripDetail" : [
-  //       {
-  //         "name": TransportMode.unSelected,
-  //         "station": "Ratchada Market",
-  //         "time_taken": "00:21",
-  //         "distance": 21,
-  //         "distance_unit": "km",
-  //         "cost": 47,
-  //         "cost_unit" : "THB",
-  //         "note": "Walk to MRT Huai Kwang",
-  //       }
-  //     ],
-  //     "createdAt": DateTime.now().toIso8601String(),
-  //     "approved": false,
-  //   },
-  // ];
+List<Map<String, dynamic>> tempModes = [
+  {
+    "id": 1,
+    "planId": 1,
+    "day": 1,
+    "creatorId": "user123",
+    "total_time": 21,
+    "total_cost": 47,
+    "total_distance": 21,
+    "fromPlaceId": "placeId1",
+    "toPlaceId": "placeId2",
+    "tripDetail": [
+      {
+        "mode": TransportMode.car,
+        "station": null,
+        "time_taken": "00:21",
+        "distance": 21,
+        "distance_unit": "km",
+        "cost": 47,
+        "cost_unit": "THB",
+        "note": "Walk to MRT Huai Kwang",
+      },
+      {
+        "mode": TransportMode.train,
+        "station": "Ratchada Market",
+        "time_taken": "00:21",
+        "distance": 21,
+        "distance_unit": "km",
+        "cost": 47,
+        "cost_unit": "THB",
+        "note": "Walk to MRT Huai Kwang",
+      },
+      {
+        "mode": TransportMode.boat,
+        "station": null,
+        "time_taken": "00:21",
+        "distance": 21,
+        "distance_unit": "km",
+        "cost": 47,
+        "cost_unit": "THB",
+        "note": "Walk to MRT Huai Kwang",
+      },
+    ],
+    "createdAt": DateTime.now().toIso8601String(),
+    "approved": false,
+  },
+];

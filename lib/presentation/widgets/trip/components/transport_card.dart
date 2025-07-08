@@ -16,7 +16,7 @@ class TransportCard extends StatefulWidget {
 
   const TransportCard({
     super.key,
-    required this.index, 
+    required this.index,
     required this.mode,
     required this.onChangeIcon,
   });
@@ -29,8 +29,8 @@ class _TransportCardState extends State<TransportCard> {
   String transitMode = 'Subway';
   bool displayTransport = false;
   TransportMode transportMode = TransportMode.unSelected;
-  final TextEditingController stationController = TextEditingController();
-  final TransportModeController transportModeController = Get.find<TransportModeController>();
+  final TransportModeController transportModeController =
+      Get.find<TransportModeController>();
 
   List<String> get distanceValues => ['A', 'B', 'C'];
   List<String> get transitModes => ['N5', 'N6', 'N7'];
@@ -143,10 +143,7 @@ class _TransportCardState extends State<TransportCard> {
   }
 
   void _setModeDuration(String duration) {
-    transportModeController.setModeDuration(
-      widget.index,
-      duration,
-    );
+    transportModeController.setModeDuration(widget.index, duration);
   }
 
   void _setDistance(String distance) {
@@ -157,31 +154,19 @@ class _TransportCardState extends State<TransportCard> {
   }
 
   void _setDistanceUnit(String distanceUnit) {
-    transportModeController.setDistanceUnit(
-      widget.index,
-      distanceUnit,
-    );
+    transportModeController.setDistanceUnit(widget.index, distanceUnit);
   }
 
   void _setCost(String cost) {
-    transportModeController.setCost(
-      widget.index,
-      int.tryParse(cost) ?? 0,
-    );
+    transportModeController.setCost(widget.index, int.tryParse(cost) ?? 0);
   }
 
   void _setCostUnit(String costUnit) {
-    transportModeController.setCostUnit(
-      widget.index,
-      costUnit,
-    );
+    transportModeController.setCostUnit(widget.index, costUnit);
   }
 
   void _editNote(String note) {
-    transportModeController.addNote(
-      widget.index,
-      note,
-    );
+    transportModeController.addNote(widget.index, note);
   }
 
   @override
@@ -324,14 +309,21 @@ class _TransportCardState extends State<TransportCard> {
                   width: 170,
                   height: 32,
                   child: TextFormField(
-                    initialValue: transportModeController.tempModes[widget.index]["note"] ?? '',
+                    initialValue:
+                        transportModeController.tempModes[widget
+                            .index]["note"] ??
+                        '',
                     showCursor: true,
                     decoration: const InputDecoration(
                       hintText: 'station...',
                       border: UnderlineInputBorder(),
                       contentPadding: EdgeInsets.all(8),
                     ),
-                    onChanged: ((text)=> transportModeController.editTag(widget.index, text)),
+                    onChanged:
+                        ((text) => transportModeController.editTag(
+                          widget.index,
+                          text,
+                        )),
                   ),
                 ),
             ],
@@ -346,40 +338,51 @@ class _TransportCardState extends State<TransportCard> {
               Flexible(
                 child: EditableTimeBox(
                   width: 75,
-                  initialValue: transportModeController.tempModes[widget.index]["time_taken"],
-                  onChange: _setModeDuration
-                )
-              ),      
+                  initialValue:
+                      transportModeController.tempModes[widget
+                          .index]["time_taken"],
+                  onChange: _setModeDuration,
+                ),
+              ),
               Flexible(
                 child: TextDropDown(
                   width: 75,
                   // height: 32,
-                  values: ['km', 'm'], 
-                  initialValue: transportModeController.tempModes[widget.index]["distance"], //NOTE: initial value must match one of the values in dropdown
-                  initialUnit: transportModeController.tempModes[widget.index]["distance_unit"],
+                  values: ['km', 'm'],
+                  initialValue:
+                      transportModeController.tempModes[widget
+                          .index]["distance"], //NOTE: initial value must match one of the values in dropdown
+                  initialUnit:
+                      transportModeController.tempModes[widget
+                          .index]["distance_unit"],
                   setValue: setDistanceValue,
                   textOnChange: _setDistance,
-                  dropDownOnChange: _setDistanceUnit
-                )
+                  dropDownOnChange: _setDistanceUnit,
+                ),
               ),
               Flexible(
                 child: TextDropDown(
                   width: 75,
                   // height: 32,
                   values: ['THB', 'USD', 'EUR'],
-                  initialValue: transportModeController.tempModes[widget.index]["cost"], 
-                  initialUnit: transportModeController.tempModes[widget.index]["cost_unit"], 
+                  initialValue:
+                      transportModeController.tempModes[widget.index]["cost"],
+                  initialUnit:
+                      transportModeController.tempModes[widget
+                          .index]["cost_unit"],
                   setValue: setDistanceValue,
-                  textOnChange: _setCost, 
-                  dropDownOnChange: _setCostUnit
-                )
-              )
+                  textOnChange: _setCost,
+                  dropDownOnChange: _setCostUnit,
+                ),
+              ),
             ],
           ),
 
           const SizedBox(height: 12),
           Note(
-            initialValue: transportModeController.tempModes[widget.index]["note"] ?? 'Some note',
+            initialValue:
+                transportModeController.tempModes[widget.index]["note"] ??
+                'Some note',
             placeholderText: "Note",
             onChanged: _editNote,
           ),
@@ -414,7 +417,7 @@ class TextDropDown extends StatefulWidget {
 }
 
 class TextDropDownState extends State<TextDropDown> {
-  late String _dropDownValue;  
+  late String _dropDownValue;
 
   @override
   void initState() {
@@ -425,29 +428,25 @@ class TextDropDownState extends State<TextDropDown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: 32,
+      height: 44,
       decoration: BoxDecoration(
-        //color: AppColors.lightGray,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: AppColors.gray, width: 1.5),
       ),
       child: Wrap(
         children: [
           Container(
+            height: 44,
             width: widget.width.toDouble() / 2,
             child: TextFormField(
               initialValue: widget.initialValue.toString(),
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 2,
-                  vertical: 5,
+                  vertical: 11,
                 ),
                 hintText: 'Enter your text here',
                 border: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                enabledBorder: InputBorder.none,
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
               ),
               onChanged: (value) {
                 widget.textOnChange(value);
@@ -464,6 +463,7 @@ class TextDropDownState extends State<TextDropDown> {
           ),
           Expanded(
             child: Container(
+              height: 44,
               width: widget.width.toDouble() - 20,
               // height: height.toDouble(),
               decoration: BoxDecoration(
@@ -485,13 +485,15 @@ class TextDropDownState extends State<TextDropDown> {
                   value: _dropDownValue,
                   isExpanded: true,
                   onChanged: (String? newValue) {
-                    setState((){
+                    setState(() {
                       _dropDownValue = newValue!;
-                    }); 
+                    });
                     widget.dropDownOnChange(newValue!);
                   },
                   items:
-                      widget.values.map<DropdownMenuItem<String>>((String value) {
+                      widget.values.map<DropdownMenuItem<String>>((
+                        String value,
+                      ) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Padding(
@@ -539,12 +541,16 @@ class TextDropDownState extends State<TextDropDown> {
   }
 }
 
-
 class EditableTimeBox extends StatefulWidget {
   final int width;
   final String initialValue;
   final void Function(String) onChange;
-  const EditableTimeBox({super.key, required this.width, required this.initialValue, required this.onChange});
+  const EditableTimeBox({
+    super.key,
+    required this.width,
+    required this.initialValue,
+    required this.onChange,
+  });
 
   @override
   _EditableTimeBoxState createState() => _EditableTimeBoxState();
@@ -611,11 +617,11 @@ class _EditableTimeBoxState extends State<EditableTimeBox> {
                             isHourEditing = false;
                           });
                         },
-                        onChanged: (value){
-                          setState((){
+                        onChanged: (value) {
+                          setState(() {
                             hour = value.padLeft(2, '0');
                           });
-                          setTime();                          
+                          setTime();
                         },
                         decoration: InputDecoration(
                           isDense: true,
@@ -657,11 +663,11 @@ class _EditableTimeBoxState extends State<EditableTimeBox> {
                             isMinEditing = false;
                           });
                         },
-                        onChanged: (value){
-                          setState((){
-                            minute = value.padLeft(2, '0');  
+                        onChanged: (value) {
+                          setState(() {
+                            minute = value.padLeft(2, '0');
                           });
-                          setTime();                         
+                          setTime();
                         },
                         decoration: InputDecoration(
                           isDense: true,
@@ -685,7 +691,7 @@ class _EditableTimeBoxState extends State<EditableTimeBox> {
             // textSize: 12,
           ),
           SizedBox(width: 2),
-          Icon(Icons.access_time, color: Colors.black87, size: 16,),
+          Icon(Icons.access_time, color: Colors.black87, size: 16),
         ],
       ),
     );

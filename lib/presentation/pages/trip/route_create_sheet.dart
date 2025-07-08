@@ -243,6 +243,11 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                         ? EdgeInsets.only(bottom: 0)
                                         : EdgeInsets.only(bottom: 16),
                                 child: TransportCard(
+                                  key: ValueKey(
+                                    transportModeController
+                                            .tempModes[index]["id"] ??
+                                        index,
+                                  ),
                                   index: index,
                                   mode:
                                       transportModeController

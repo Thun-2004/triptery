@@ -12,16 +12,24 @@ class PlaceCard extends StatefulWidget {
     required this.placeDescription,
     required this.placeImage,
     required this.arrivalTime,
+    required this.timeSpent, 
+    required this.moneySpent,
+    required this.activities,
+    required this.note, 
     this.addDeletedItem,
     this.isEdit,
   });
 
   final int index;
-  final String placeId;
+  final int placeId;
   final String placeName;
   final String placeDescription;
   final String placeImage;
   final String arrivalTime;
+  final String timeSpent;
+  final int moneySpent;
+  final List<String> activities; 
+  final String note; // Optional, can be empty if not set
   final Function(int)? addDeletedItem;
   final bool? isEdit;
 
@@ -113,7 +121,7 @@ class _PlaceCardState extends State<PlaceCard> {
                               Icon(LucideIcons.clockFading, size: 16),
                               const SizedBox(width: 3),
                               CustomText(
-                                text: "2 hours",
+                                text: widget.timeSpent,
                                 textSize: 12,
                                 type: TextType.body,
                                 color: AppColors.black,
@@ -126,7 +134,7 @@ class _PlaceCardState extends State<PlaceCard> {
                               Icon(LucideIcons.circleDollarSign, size: 16),
                               const SizedBox(width: 3),
                               CustomText(
-                                text: "2,000 Baht",
+                                text: "${widget.moneySpent.toString()} THB",
                                 textSize: 12,
                                 type: TextType.body,
                                 color: AppColors.black,
@@ -198,13 +206,13 @@ class _PlaceCardState extends State<PlaceCard> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children:
                         isActivityExpanded
-                            ? List.generate((itemsToShow.length / 2).ceil(), (
+                            ? List.generate((widget.activities.length / 2).ceil(), (
                               i,
                             ) {
-                              final left = itemsToShow[i * 2];
+                              final left = widget.activities[i * 2];
                               final right =
-                                  (i * 2 + 1 < itemsToShow.length)
-                                      ? itemsToShow[i * 2 + 1]
+                                  (i * 2 + 1 < widget.activities.length)
+                                      ? widget.activities[i * 2 + 1]
                                       : null;
 
                               return Row(
@@ -228,7 +236,7 @@ class _PlaceCardState extends State<PlaceCard> {
                               );
                             })
                             : [
-                              if (itemsToShow.isEmpty)
+                              if (widget.activities.isEmpty)
                                 const SizedBox.shrink()
                               else
                                 Row(
@@ -236,12 +244,12 @@ class _PlaceCardState extends State<PlaceCard> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "• ${itemsToShow[0]}",
+                                      "• ${widget.activities[0]}",
                                       style: const TextStyle(fontSize: 12),
                                     ),
-                                    if (itemsToShow[1] != null)
+                                    if (widget.activities[1] != null)
                                       Text(
-                                        "• ${itemsToShow[1]}",
+                                        "• ${widget.activities[1]}",
                                         style: const TextStyle(fontSize: 12),
                                       )
                                     else
@@ -256,7 +264,8 @@ class _PlaceCardState extends State<PlaceCard> {
               ],
             ),
             const SizedBox(height: 5),
-            TextField(
+            TextFormField(
+              initialValue: widget.note,
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   LucideIcons.notepadText,
