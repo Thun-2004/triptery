@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:triptery/constant/colors.dart';
+import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:triptery/presentation/widgets/base_ui/text.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -12,10 +14,10 @@ class PlaceCard extends StatefulWidget {
     required this.placeDescription,
     required this.placeImage,
     required this.arrivalTime,
-    required this.timeSpent, 
+    required this.timeSpent,
     required this.moneySpent,
     required this.activities,
-    required this.note, 
+    required this.note,
     this.addDeletedItem,
     this.isEdit,
   });
@@ -28,7 +30,7 @@ class PlaceCard extends StatefulWidget {
   final String arrivalTime;
   final String timeSpent;
   final int moneySpent;
-  final List<String> activities; 
+  final List<String> activities;
   final String note; // Optional, can be empty if not set
   final Function(int)? addDeletedItem;
   final bool? isEdit;
@@ -38,6 +40,7 @@ class PlaceCard extends StatefulWidget {
 }
 
 class _PlaceCardState extends State<PlaceCard> {
+  final tripController = Get.find<TripController>();
   bool isActivityExpanded = false;
   bool isChecked = false;
   // final bool isChecked = tripController.deletedItemsObs.contains(widget.index);
@@ -146,20 +149,23 @@ class _PlaceCardState extends State<PlaceCard> {
                     ],
                   ),
                 ),
-                if (widget.isEdit == true)
-                  Checkbox(
-                    isError: true,
-                    tristate: true,
-                    value: isChecked,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        isChecked = value ?? false;
-                        if (widget.addDeletedItem != null) {
-                          widget.addDeletedItem!(widget.index);
-                        }
-                      });
-                    },
-                  ),
+                Obx(() {
+                  return tripController.isEditingPlaceOrderObs.value ?
+                    Checkbox(
+                      isError: true,
+                      tristate: true,
+                      value: isChecked,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          isChecked = value ?? false;
+                          if (widget.addDeletedItem != null) {
+                            widget.addDeletedItem!(widget.index);
+                          }
+                        });
+                      },
+                    ) : const SizedBox.shrink();
+                    }
+                )
               ],
             ),
             Column(
@@ -206,35 +212,36 @@ class _PlaceCardState extends State<PlaceCard> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children:
                         isActivityExpanded
-                            ? List.generate((widget.activities.length / 2).ceil(), (
-                              i,
-                            ) {
-                              final left = widget.activities[i * 2];
-                              final right =
-                                  (i * 2 + 1 < widget.activities.length)
-                                      ? widget.activities[i * 2 + 1]
-                                      : null;
+                            ? List.generate(
+                              (widget.activities.length / 2).ceil(),
+                              (i) {
+                                final left = widget.activities[i * 2];
+                                final right =
+                                    (i * 2 + 1 < widget.activities.length)
+                                        ? widget.activities[i * 2 + 1]
+                                        : null;
 
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "• $left",
-                                    style: const TextStyle(fontSize: 12),
-                                  ),
-
-                                  if (right != null)
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
                                     Text(
-                                      "• $right",
+                                      "• $left",
                                       style: const TextStyle(fontSize: 12),
-                                    )
-                                  else
+                                    ),
+
+                                    if (right != null)
+                                      Text(
+                                        "• $right",
+                                        style: const TextStyle(fontSize: 12),
+                                      )
+                                    else
+                                      const SizedBox(width: 20),
                                     const SizedBox(width: 20),
-                                  const SizedBox(width: 20),
-                                ],
-                              );
-                            })
+                                  ],
+                                );
+                              },
+                            )
                             : [
                               if (widget.activities.isEmpty)
                                 const SizedBox.shrink()

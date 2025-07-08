@@ -1009,7 +1009,7 @@ class TripController extends GetxController {
 
   void toggleEditPlaceOrder() {
     _isEditingPlaceOrder.value = !_isEditingPlaceOrder.value;
-    print("isEditingPlaceOrder: ${_isEditingPlaceOrder.value}");
+    log("isEditingPlaceOrder: ${_isEditingPlaceOrder.value}");
   }
 
   void populatePlaceAndRouteLists() {
