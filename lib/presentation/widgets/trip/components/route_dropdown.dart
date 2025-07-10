@@ -517,15 +517,19 @@ class _RouteDropdownState extends State<RouteDropdown> {
   void initState() {
     super.initState();
     selected = 0;
-    currentChoice =
-        widget.choices.firstWhereOrNull((c) => c["isSelected"] == true) ??
-        widget.choices.first;
-    routeSegments = _getRouteSegments(currentChoice?["id"]);
-    displayedRoute = buildTransportHorizontalSequence(
-      routeSegments,
-      AppColors.black,
-      true,
-    );
+    if (widget.choices.isNotEmpty) {
+      currentChoice = widget.choices.firstWhereOrNull((c) => c["isSelected"] == true) ?? widget.choices.first;
+      routeSegments = _getRouteSegments(currentChoice?["id"]);
+      displayedRoute = buildTransportHorizontalSequence(
+        routeSegments,
+        AppColors.black,
+        true,
+      );
+    } else {
+      currentChoice = null;
+      routeSegments = [];
+      displayedRoute = const Text("Unselected");
+    }
   }
 
   List<Map<String, dynamic>> _getRouteSegments(dynamic optionId) {
@@ -615,52 +619,54 @@ class _RouteDropdownState extends State<RouteDropdown> {
         ),
         child: Column(
           children: [
-            ...List.generate(widget.choices.length, (i) {
-              final choice = widget.choices[i];
-              final segments = _getRouteSegments(choice["id"]);
+            if(widget.choices.isNotEmpty)
+              ...List.generate(widget.choices.length, (i) {
+                final choice = widget.choices[i];
+                final segments = _getRouteSegments(choice["id"]);
 
-              return Column(
-                children: [
-                  ListTile(
-                    leading: Radio<int>(
-                      value: i,
-                      groupValue: selected,
-                      onChanged: (v) => _updateSelection(i),
+                return Column(
+                  children: [
+                    ListTile(
+                      leading: Radio<int>(
+                        value: i,
+                        groupValue: selected,
+                        onChanged: (v) => _updateSelection(i),
+                      ),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          buildTransportHorizontalSequence(
+                            segments,
+                            AppColors.black,
+                            false,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              CustomText(
+                                text: "${choice["total_time"]} mins",
+                                type: TextType.heading,
+                                textSize: 12,
+                                color: AppColors.black,
+                              ),
+                              Text(
+                                "${choice["total_distance"]} km - ${choice["total_cost"]} THB",
+                                style: const TextStyle(fontSize: 10),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        buildTransportHorizontalSequence(
-                          segments,
-                          AppColors.black,
-                          false,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            CustomText(
-                              text: "${choice["total_time"]} mins",
-                              type: TextType.heading,
-                              textSize: 12,
-                              color: AppColors.black,
-                            ),
-                            Text(
-                              "${choice["total_distance"]} km - ${choice["total_cost"]} THB",
-                              style: const TextStyle(fontSize: 10),
-                            ),
-                          ],
-                        ),
-                      ],
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      padding: const EdgeInsets.symmetric(horizontal: 28),
+                      child: buildTransportVerticalSequence(segments),
                     ),
-                  ),
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    padding: const EdgeInsets.symmetric(horizontal: 28),
-                    child: buildTransportVerticalSequence(segments),
-                  ),
-                ],
-              );
-            }),
+                  ],
+                );
+              }), 
+
             ListTile(
               leading: Radio<int>(
                 value: widget.choices.length + 1,

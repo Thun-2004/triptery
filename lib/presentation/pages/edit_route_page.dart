@@ -531,10 +531,6 @@ class _EditRoutePageState extends State<EditRoutePage> {
     });
   }
 
-  void recalculateAllRoutes() {
-    tripController.recalculateAllRoutes();
-  }
-
   void addPlace(index) {
     showModalBottomSheet(
       context: context,
@@ -562,7 +558,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
       isScrollControlled: true,
       showDragHandle: true,
       backgroundColor: AppColors.white,
-      builder: (context) {
+      builder: (_) {
         return FractionallySizedBox(
           heightFactor: 0.3,
           child: TimePickerCupertino(
@@ -589,11 +585,6 @@ class _EditRoutePageState extends State<EditRoutePage> {
 
   bool _shouldShowForDay(Map<String, dynamic> trip) =>
       trip["day"] == selectedDay;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -825,6 +816,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                 final route = routes.firstWhereOrNull((r) =>
                                     r["fromPlaceId"] == trip["placeId"] &&
                                     r["toPlaceId"] == nextTrip["placeId"]);
+                                    
                                 if (route != null && route["day"] == selectedDay) {
                                   final routeOptions = tripController.findRouteOptions(route["id"]);
                                   return RouteDropdown(
@@ -852,134 +844,6 @@ class _EditRoutePageState extends State<EditRoutePage> {
                           ],
                         ),
                       );
-
-                  // return Padding(
-                  //   key: ValueKey('place-$index'),
-                  //   padding: const EdgeInsets.only(bottom: 0.0),
-                  //   child: Row(
-                  //     children: [
-                  //       Expanded(
-                  //         child: Column(
-                  //           children: [
-                  //             Container(
-                  //               margin: EdgeInsets.all(0),
-                  //               child: Column(
-                  //                 children: [
-                  //                   const SizedBox(height: 4),
-                  //                   if (_places[index].day == selectedDay &&
-                  //                       index <= _places.length - 1 &&
-                  //                       _places[index].placeId != null)
-                  //                     Row(
-                  //                       mainAxisAlignment:
-                  //                           MainAxisAlignment.end,
-                  //                       children: [
-                  //                         Icon(
-                  //                           LucideIcons.clock,
-                  //                           color: AppColors.orange_950,
-                  //                           size: 16,
-                  //                         ),
-                  //                         TextButton(
-                  //                           style: TextButton.styleFrom(
-                  //                             padding: EdgeInsets.zero,
-                  //                             tapTargetSize:
-                  //                                 MaterialTapTargetSize
-                  //                                     .shrinkWrap,
-                  //                             minimumSize: Size(0, 0),
-                  //                           ),
-                  //                           onPressed: (() {
-                  //                             showTimePicker(
-                  //                               initialTime,
-                  //                               setTimeOnChange,
-                  //                             );
-                  //                           }),
-                  //                           child: Text(
-                  //                             _places[index].arrivalTime!,
-                  //                             style: TextStyle(
-                  //                               color: AppColors.orange_950,
-                  //                             ),
-                  //                           ),
-                  //                         ),
-                  //                       ],
-                  //                     ),
-
-                  //                   if (_places[index].day == selectedDay &&
-                  //                       index <= _places.length - 1 &&
-                  //                       _places[index].placeId != null)
-                  //                     GestureDetector(
-                  //                       onTap: () => _onCardSelected(index),
-                  //                       child: Container(
-                  //                         decoration: BoxDecoration(
-                  //                           border: Border.all(
-                  //                             color:
-                  //                                 _selectedIndex == index
-                  //                                     ? Colors.blue
-                  //                                     : Colors.transparent,
-                  //                             width: 2,
-                  //                           ),
-                  //                           borderRadius: BorderRadius.circular(
-                  //                             8,
-                  //                           ),
-                  //                         ),
-                  //                         child: Obx(
-                  //                           () => PlaceCard(
-                  //                             index: index,
-                  //                             placeId: place["placeId"],
-                  //                             placeName: place["placeName"] ?? "",
-                  //                             placeDescription: place["placeDescription"] ?? "",
-                  //                             placeImage: place["placeImageUrl"] ?? "",
-                  //                             arrivalTime: trip["arrivalTime"] ?? "",
-                  //                             timeSpent: trip["timeSpent"] ?? "",
-                  //                             moneySpent: trip["moneySpent"] ?? 0,
-                  //                             activities: place["activities"] ?? [],
-                  //                             note: trip["note"] ?? "",
-                  //                             isEdit: tripController.isEditingPlaceOrderObs.value,
-                  //                           ),
-                  //                         ),
-                  //                       ),
-                  //                     ),
-
-                  //                   if (index == _places.length - 1)
-                  //                     const SizedBox(height: 10)
-                  //                   else ...[
-                  //                     Builder(
-                  //                       builder: (context) {
-                  //                         Trip? matchingRoute = _routes
-                  //                             .firstWhereOrNull(
-                  //                               (r) =>
-                  //                                   r.routeFrom ==
-                  //                                       _places[index]
-                  //                                           .placeId &&
-                  //                                   r.routeTo ==
-                  //                                       _places[index + 1]
-                  //                                           .placeId,
-                  //                             );
-
-                  //                         if (matchingRoute != null &&
-                  //                             _places[index].day ==
-                  //                                 selectedDay) {
-                  //                           return RouteDropdown(
-                  //                             key: ValueKey(
-                  //                               'route-${_places[index].placeId}-${_places[index + 1].placeId}',
-                  //                             ),
-                  //                             choices: routeOptions       
-                  //                           );
-                  //                         } else {
-                  //                           return SizedBox.shrink(); // fallback
-                  //                         }
-                  //                       },
-                  //                     ),
-                  //                   ],
-
-                                    
-                  //                 ],
-                  //               ),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // );
                 },
               );
             }),
@@ -991,9 +855,6 @@ class _EditRoutePageState extends State<EditRoutePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: (() {
           tripController.toggleEditPlaceOrder();
-          // setState(() {
-          //   _isEditing = tripController.isEditingPlaceOrder;
-          // });
         }),
 
         elevation: 4,
@@ -1018,7 +879,5 @@ class _EditRoutePageState extends State<EditRoutePage> {
     );
   }
 }
-
-
 
 //FIXME: delete from last not wotking

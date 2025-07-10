@@ -618,7 +618,7 @@ class TripController extends GetxController {
         },
       ].obs;
 
-  RxList<Map<String, dynamic>> trips_temp =
+  RxList<Map<String, dynamic>> trips_temp = 
       [
         {
           "id": 1,
@@ -757,6 +757,28 @@ class TripController extends GetxController {
           "creatorId": "user123",
           "createdAt": DateTime.now().toIso8601String(),
         },
+        {
+          "id": 4,
+          "routeId": 3,
+          "total_time": 15,
+          "total_cost": 15,
+          "total_distance": 15,
+          "isSelected": true,
+          "approved": false,
+          "creatorId": "user123",
+          "createdAt": DateTime.now().toIso8601String(),
+        },
+        {
+          "id": 5,
+          "routeId": 6,
+          "total_time": 15,
+          "total_cost": 15,
+          "total_distance": 15,
+          "isSelected": true,
+          "approved": false,
+          "creatorId": "user123",
+          "createdAt": DateTime.now().toIso8601String(),
+        },
       ].obs;
 
   RxList<Map<String, dynamic>> routeSegments_temp =
@@ -812,6 +834,66 @@ class TripController extends GetxController {
         {
           "id": 5,
           "optionId": 3,
+          "mode": TransportMode.taxi,
+          "station": null,
+          "time_taken": "00:20",
+          "distance": 20,
+          "distance_unit": "km",
+          "cost": 20,
+          "cost_unit": "THB",
+          "note": null,
+        },
+        {
+          "id": 6,
+          "optionId": 4,
+          "mode": TransportMode.taxi,
+          "station": null,
+          "time_taken": "00:20",
+          "distance": 20,
+          "distance_unit": "km",
+          "cost": 20,
+          "cost_unit": "THB",
+          "note": null,
+        },
+        {
+          "id": 7,
+          "optionId": 4,
+          "mode": TransportMode.taxi,
+          "station": null,
+          "time_taken": "00:20",
+          "distance": 20,
+          "distance_unit": "km",
+          "cost": 20,
+          "cost_unit": "THB",
+          "note": null,
+        },
+        {
+          "id": 8,
+          "optionId": 4,
+          "mode": TransportMode.taxi,
+          "station": null,
+          "time_taken": "00:20",
+          "distance": 20,
+          "distance_unit": "km",
+          "cost": 20,
+          "cost_unit": "THB",
+          "note": null,
+        },
+        {
+          "id": 9,
+          "optionId": 5,
+          "mode": TransportMode.taxi,
+          "station": null,
+          "time_taken": "00:20",
+          "distance": 20,
+          "distance_unit": "km",
+          "cost": 20,
+          "cost_unit": "THB",
+          "note": null,
+        },
+        {
+          "id": 9,
+          "optionId": 5,
           "mode": TransportMode.taxi,
           "station": null,
           "time_taken": "00:20",
@@ -1012,6 +1094,7 @@ class TripController extends GetxController {
     log("isEditingPlaceOrder: ${_isEditingPlaceOrder.value}");
   }
 
+  //done
   void populatePlaceAndRouteLists() {
     //clear previous data
     routes.clear();
@@ -1066,6 +1149,7 @@ class TripController extends GetxController {
     }
   }
 
+  //done
   List<Map<String, dynamic>> findRouteOptions(int? matchingRouteId) {
     List<Map<String, dynamic>> routeOptions =
         routeOptions_temp
@@ -1087,55 +1171,60 @@ class TripController extends GetxController {
     }
   }
 
-  void recalculateAllRoutes() {
-    final newRoutes = <Trip>[];
+  //done
+  void recalculateAllRoutes(int newIndex) {
+    int startInd = (newIndex > 0) ? newIndex - 1: 0;
+    int endInd = (newIndex < places.length - 1) ? newIndex + 1 : places.length - 1;
 
-    for (int i = 0; i < places.length - 1; i++) {
-      final fromPlace = places[i];
-      final toPlace = places[i + 1];
+    for(int i = startInd; i < endInd - 1; i++) {
+      final fromPlaceId = trips_temp[i]["placeId"];
+      final toPlaceId = trips_temp[i + 1]["placeId"];
 
-      if (fromPlace.placeId != null &&
-          toPlace.placeId != null &&
-          i < places.length - 2) {
-        newRoutes.add(
-          Trip(
-            id: "route-${places[i].placeId}-${places[i + 1].placeId}",
-            planId: fromPlace.planId,
-            day: day.value,
-            type: TripType.route,
-            routeMode: RouteMode.unselected,
-            routeFrom: fromPlace.placeId,
-            routeTo: toPlace.placeId,
-          ),
-        );
+      var matchingRoutes = routes_temp.firstWhereOrNull((route) =>
+          route["fromPlaceId"] == fromPlaceId &&
+          route["toPlaceId"] == toPlaceId);
+
+      if (matchingRoutes != null) {
+        trips_temp[i]["routeId"] = matchingRoutes["id"];
+      }else{
+        //crete new route if not found
+        routes_temp.add({
+          "id": routes_temp.length + 1,
+          "planId": trips_temp[i]["planId"],
+          "day": trips_temp[i]["day"],
+          "fromPlaceId": fromPlaceId,
+          "toPlaceId": toPlaceId,
+          "createdAt": DateTime.now().toIso8601String(),
+        });
       }
     }
-    routes.assignAll(newRoutes);
-    log("✅ current routes regenerated: ${routes.length}");
   }
 
+  //done
   void handleReorder(int oldIndex, int newIndex, int selectedIndex) {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
 
-    final Trip item = places.removeAt(oldIndex);
-    places.insert(newIndex, item);
+    final Map<String, dynamic> item = trips_temp.removeAt(oldIndex);
+    trips_temp.insert(newIndex, item);
+
     //swap place
     adjustTimeWithDurations();
 
     //recalculate routes
     selectedIndex = -1;
-    recalculateAllRoutes();
+    recalculateAllRoutes(newIndex);
     print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
   }
 
   //temp time swap
+  //done
   void adjustTimeWithDurations() {
     //sort time list
     //filled places_arrival
-    List<String> arrivalTimes =
-        places.map((place) => place.arrivalTime ?? '').toList();
+    List<dynamic> arrivalTimes =
+        trips_temp.map((trip) => trip["arrivalTime"] ?? '').toList();
     arrivalTimes.sort((a, b) {
       final format = DateFormat('hh:mm a');
       try {
@@ -1148,13 +1237,14 @@ class TripController extends GetxController {
     });
 
     //change places arrival time to the sorted time
-    for (int i = 0; i < places.length; i++) {
+    for (int i = 0; i < trips_temp.length; i++) {
       if (i < arrivalTimes.length) {
-        places[i].arrivalTime = arrivalTimes[i];
+        trips_temp[i]["arrivalTime"] = arrivalTimes[i];
       }
     }
   }
 
+  //done
   void sortPlacebyTimes(int placeIndex, String initialTime, String finalTime) {
     final format = DateFormat('hh:mm a');
     initialTime = initialTime.trim();
@@ -1176,15 +1266,15 @@ class TripController extends GetxController {
         "✅ Time difference: ${diff.inHours} hours and ${diff.inMinutes % 60} minutes",
       );
 
-      for (int i = 0; i < places.length; i++) {
+      for (int i = 0; i < trips_temp.length; i++) {
         if (i > placeIndex) {
-          String arrival = places[i].arrivalTime ?? "";
+          String arrival = trips_temp[i]["arrivalTime"] ?? "";
           DateTime current = format.parseStrict(arrival.trim());
           DateTime newTime = current.add(diff);
-          places[i].arrivalTime = format.format(newTime);
-          log(
-            "Updated place ${places[i].placeName} arrival time to ${places[i].arrivalTime}",
-          );
+          trips_temp[i]["arrivalTime"] = format.format(newTime);
+          // log(
+          //   "Updated place ${trips_temp[i].placeName} arrival time to ${trips_temp[i]["arrivalTime"]}",
+          // );
         }
       }
     } catch (e) {
@@ -1192,18 +1282,18 @@ class TripController extends GetxController {
     }
   }
 
+  //done
   void deleteAllPlaceCards() {
     for (int ind in deletedItems) {
-      if (ind < 0 || ind >= places.length) {
+      if (ind < 0 || ind >= trips_temp.length) {
         log("Index $ind is out of bounds for places list.");
         continue;
       } else {
-        places.removeAt(ind);
-        routes.removeAt(ind);
+        trips_temp.removeAt(ind);
       }
     }
     deletedItems.clear();
-    recalculateAllRoutes();
+    // recalculateAllRoutes();
   }
 
   void addDeletedPlaceCards(int selectedIndex) {
