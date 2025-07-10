@@ -1218,13 +1218,11 @@ class TripController extends GetxController {
     print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
   }
 
-  //temp time swap
   //done
   void adjustTimeWithDurations() {
     //sort time list
     //filled places_arrival
-    List<dynamic> arrivalTimes =
-        trips_temp.map((trip) => trip["arrivalTime"] ?? '').toList();
+    List<dynamic> arrivalTimes = trips_temp.map((trip) => trip["arrivalTime"] ?? '').toList();
     arrivalTimes.sort((a, b) {
       final format = DateFormat('hh:mm a');
       try {
@@ -1245,40 +1243,27 @@ class TripController extends GetxController {
   }
 
   //done
-  void sortPlacebyTimes(int placeIndex, String initialTime, String finalTime) {
-    final format = DateFormat('hh:mm a');
-    initialTime = initialTime.trim();
-    finalTime = finalTime.trim();
-
-    if (initialTime.isEmpty || finalTime.isEmpty) {
-      log(
-        "❌ Cannot parse empty time strings: initialTime='$initialTime', finalTime='$finalTime'",
-      );
-      return;
-    }
-
-    try {
-      final initial = format.parseStrict(initialTime);
-      final finalT = format.parseStrict(finalTime);
-      final diff = finalT.difference(initial);
-
-      log(
-        "✅ Time difference: ${diff.inHours} hours and ${diff.inMinutes % 60} minutes",
-      );
-
-      for (int i = 0; i < trips_temp.length; i++) {
-        if (i > placeIndex) {
-          String arrival = trips_temp[i]["arrivalTime"] ?? "";
-          DateTime current = format.parseStrict(arrival.trim());
-          DateTime newTime = current.add(diff);
-          trips_temp[i]["arrivalTime"] = format.format(newTime);
-          // log(
-          //   "Updated place ${trips_temp[i].placeName} arrival time to ${trips_temp[i]["arrivalTime"]}",
-          // );
+  void sortPlacebyTimes(int placeIndex, String finalTime) {
+    trips_temp[placeIndex]["arrivalTime"] = finalTime;
+    
+    //reorder trips_temp based on arrival time
+    for (int i = 0; i < trips_temp.length; i++) {
+      //compare arrival times
+      if (i > 0 && trips_temp[i]["arrivalTime"] != null && trips_temp[i - 1]["arrivalTime"] != null) {
+        final format = DateFormat('hh:mm a');
+        try {
+          final timeA = format.parseStrict(trips_temp[i]["arrivalTime"].trim());
+          final timeB = format.parseStrict(trips_temp[i - 1]["arrivalTime"].trim());
+          if (timeA.isBefore(timeB)) {
+            //swap places
+            final temp = trips_temp[i];
+            trips_temp[i] = trips_temp[i - 1];
+            trips_temp[i - 1] = temp;   
+          }
+        } catch (e) {
+          log("Error parsing time: $e");
         }
       }
-    } catch (e) {
-      log("❌ Error parsing time: $e");
     }
   }
 

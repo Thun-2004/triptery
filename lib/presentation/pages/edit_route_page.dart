@@ -756,7 +756,8 @@ class _EditRoutePageState extends State<EditRoutePage> {
                     setState(() {
                       final formatted = convertTo12HourWithMeridian(seleted.format(context));
                       trip["arrivalTime"] = formatted;
-                      tripController.sortPlacebyTimes(index, initialTime!, formatted);
+                      // tripController.sortPlacebyTimes(index, initialTime!, formatted);
+                      tripController.sortPlacebyTimes(index, formatted);
                     });
                   }
 
@@ -816,7 +817,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                 final route = routes.firstWhereOrNull((r) =>
                                     r["fromPlaceId"] == trip["placeId"] &&
                                     r["toPlaceId"] == nextTrip["placeId"]);
-                                    
+
                                 if (route != null && route["day"] == selectedDay) {
                                   final routeOptions = tripController.findRouteOptions(route["id"]);
                                   return RouteDropdown(

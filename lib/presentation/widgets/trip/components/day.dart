@@ -486,7 +486,8 @@ class _DayState extends State<Day> {
                         setState(() {
                           final formatted = convertTo12HourWithMeridian(selected.format(context));
                           trip["arrivalTime"] = formatted;
-                          tripController.sortPlacebyTimes(index, initialTime!, formatted);
+                          // tripController.sortPlacebyTimes(index, initialTime!, formatted);
+                          tripController.sortPlacebyTimes(index, formatted);
                         });
                       }
 
