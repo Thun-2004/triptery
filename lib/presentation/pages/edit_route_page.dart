@@ -822,6 +822,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                   final routeOptions = tripController.findRouteOptions(route["id"]);
                                   return RouteDropdown(
                                     key: ValueKey('route-${trip["placeId"]}-${nextTrip["placeId"]}'),
+                                    routeId: trip["routeId"],
                                     choices: routeOptions,
                                   );
                                 }

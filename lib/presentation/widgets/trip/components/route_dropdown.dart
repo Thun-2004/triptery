@@ -500,7 +500,8 @@ import 'package:triptery/utils/icon.dart';
 
 class RouteDropdown extends StatefulWidget {
   final List<Map<String, dynamic>> choices;
-  const RouteDropdown({super.key, required this.choices});
+  final int routeId; 
+  const RouteDropdown({super.key, required this.routeId, required this.choices});
 
   @override
   State<RouteDropdown> createState() => _RouteDropdownState();
@@ -610,7 +611,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
                       fontSize: 10,
                     ),
                   ),
-                ]
+                ],
               ],
             ),
             Icon(
@@ -704,21 +705,36 @@ class _RouteDropdownState extends State<RouteDropdown> {
             ),
             ListTile(
               leading: Radio<int>(
+                
                 value: widget.choices.length + 2,
                 groupValue: selected,
                 activeColor: AppColors.orange_900,
                 onChanged:
                     (v) => setState(() {
-                      displayedRoute = const Text("Add Notes...");
+                      displayedRoute = tripController.routes_temp
+                          .firstWhereOrNull((r) => r["id"] == widget.routeId)?["note"] != null
+                          ? Text(tripController.routes_temp
+                              .firstWhere((r) => r["id"] == widget.routeId)["note"])
+                          : const Text("Add Note..");
                       selected = v!;
                     }),
               ),
-              title: const TextField(
+              title: TextFormField(
+                initialValue: tripController.routes_temp.firstWhereOrNull((r) => r["id"] == widget.routeId)?["note"] ?? "",
                 decoration: InputDecoration(
                   hintText: 'Add Note..',
                   border: OutlineInputBorder(borderSide: BorderSide.none),
                   contentPadding: EdgeInsets.all(8),
                 ),
+                onChanged: (value) {
+                  setState(() {
+                    if(selected == widget.choices.length + 2) {
+                      tripController.setRouteNote(widget.routeId, value); 
+                      displayedRoute = Text(value.isEmpty ? "Add Note.." : value);
+                    }
+                  }); 
+                  
+                },
               ),
             ),
             const Divider(
@@ -733,6 +749,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
                 icon: const Icon(LucideIcons.chevronRight, size: 16),
                 onPressed: _openCreateTransportModal,
               ),
+              contentPadding: const EdgeInsets.only(left: 24),
             ),
           ],
         ),

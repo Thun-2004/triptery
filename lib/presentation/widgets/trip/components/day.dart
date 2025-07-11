@@ -550,6 +550,7 @@ class _DayState extends State<Day> {
                                   final routeOptions = tripController.findRouteOptions(route["id"]);
                                   return RouteDropdown(
                                     key: ValueKey('route-${trip["placeId"]}-${nextTrip["placeId"]}'),
+                                    routeId: route["id"],
                                     choices: routeOptions,
                                   );
                                 }

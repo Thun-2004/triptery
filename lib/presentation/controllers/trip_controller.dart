@@ -679,6 +679,7 @@ class TripController extends GetxController {
           "fromPlaceId": 1,
           "toPlaceId": 2,
           "createdAt": DateTime.now().toIso8601String(),
+          "note": null
         },
         {
           "id": 2,
@@ -687,6 +688,7 @@ class TripController extends GetxController {
           "fromPlaceId": 2,
           "toPlaceId": 3,
           "createdAt": DateTime.now().toIso8601String(),
+          "note": null
         },
         {
           "id": 3,
@@ -695,6 +697,7 @@ class TripController extends GetxController {
           "fromPlaceId": 2,
           "toPlaceId": 1,
           "createdAt": DateTime.now().toIso8601String(),
+          "note": null
         },
         {
           "id": 4,
@@ -703,6 +706,7 @@ class TripController extends GetxController {
           "fromPlaceId": 3,
           "toPlaceId": 2,
           "createdAt": DateTime.now().toIso8601String(),
+          "note": null
         },
         {
           "id": 5,
@@ -711,6 +715,7 @@ class TripController extends GetxController {
           "fromPlaceId": 3,
           "toPlaceId": 1,
           "createdAt": DateTime.now().toIso8601String(),
+          "note": null
         },
         {
           "id": 6,
@@ -719,6 +724,7 @@ class TripController extends GetxController {
           "fromPlaceId": 1,
           "toPlaceId": 3,
           "createdAt": DateTime.now().toIso8601String(),
+          "note": null
         },
       ].obs;
 
@@ -746,8 +752,22 @@ class TripController extends GetxController {
           "creatorId": "user123",
           "createdAt": DateTime.now().toIso8601String(),
         },
+
+        //user note 
         {
           "id": 3,
+          "routeId": 1,
+          "total_time": null,
+          "total_cost": null,
+          "total_distance": 15,
+          "isSelected": false,
+          "approved": false,
+          "creatorId": "user123",
+          "note": "This is a test route option",
+          "createdAt": DateTime.now().toIso8601String(),
+        },
+        {
+          "id": 4,
           "routeId": 2,
           "total_time": 15,
           "total_cost": 15,
@@ -758,7 +778,7 @@ class TripController extends GetxController {
           "createdAt": DateTime.now().toIso8601String(),
         },
         {
-          "id": 4,
+          "id": 5,
           "routeId": 3,
           "total_time": 15,
           "total_cost": 15,
@@ -769,7 +789,7 @@ class TripController extends GetxController {
           "createdAt": DateTime.now().toIso8601String(),
         },
         {
-          "id": 5,
+          "id": 6,
           "routeId": 6,
           "total_time": 15,
           "total_cost": 15,
@@ -1303,6 +1323,17 @@ class TripController extends GetxController {
 
   void clearSelectedPlaces() {
     selectedPlaces.clear();
+  }
+
+  void setRouteNote(int routeId, String text){
+    for (int i = 0; i < routes_temp.length; i++) {
+      if (routes_temp[i]["id"] == routeId) {
+        routes_temp[i]["note"] = text;
+        log("Route note updated for route ID $routeId: $text");
+        break;
+      }
+    }
+    routes.assignAll([...routes]);
   }
 
   void addPlaceToTripRoute(int prevPlaceIndex) {
