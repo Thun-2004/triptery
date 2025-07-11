@@ -485,6 +485,8 @@
 //   }
 // }
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -509,6 +511,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
   final tripController = Get.find<TripController>();
 
   int selected = 0;
+  bool isSelected = false;
   Map<String, dynamic>? currentChoice;
   List<Map<String, dynamic>> routeSegments = [];
   Widget displayedRoute = const SizedBox.shrink();
@@ -516,9 +519,10 @@ class _RouteDropdownState extends State<RouteDropdown> {
   @override
   void initState() {
     super.initState();
-    selected = 0;
     if (widget.choices.isNotEmpty) {
-      currentChoice = widget.choices.firstWhereOrNull((c) => c["isSelected"] == true) ?? widget.choices.first;
+      currentChoice =
+          widget.choices.firstWhereOrNull((c) => c["isSelected"] == true) ??
+          widget.choices.first;
       routeSegments = _getRouteSegments(currentChoice?["id"]);
       displayedRoute = buildTransportHorizontalSequence(
         routeSegments,
@@ -530,6 +534,12 @@ class _RouteDropdownState extends State<RouteDropdown> {
       routeSegments = [];
       displayedRoute = const Text("Unselected");
     }
+  }
+
+  void toggleExpand() {
+    setState(() {
+      isSelected = !isSelected;
+    });
   }
 
   List<Map<String, dynamic>> _getRouteSegments(dynamic optionId) {
@@ -570,12 +580,12 @@ class _RouteDropdownState extends State<RouteDropdown> {
     return DropDownArea(
       elevation: 2,
       verticalMargin: 10,
-      isExpanded: selected == -1,
-      toggleExpand: () => setState(() => selected = selected == -1 ? 0 : -1),
+      isExpanded: isSelected,
+      toggleExpand: toggleExpand,
       header: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
-          color: selected == -1 ? AppColors.orange_900 : Colors.white,
+          color: isSelected ? AppColors.orange_900 : Colors.white,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
@@ -586,25 +596,26 @@ class _RouteDropdownState extends State<RouteDropdown> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                CustomText(
-                  text: "${currentChoice?["total_time"]} mins",
-                  type: TextType.body,
-                  color: selected == -1 ? AppColors.white : AppColors.black,
-                ),
-                Text(
-                  "${currentChoice?["total_distance"]} km - ${currentChoice?["total_cost"]} THB",
-                  style: TextStyle(
-                    color: selected == -1 ? AppColors.white : AppColors.black,
-                    fontSize: 10,
+                if (selected != widget.choices.length + 1 &&
+                    selected != widget.choices.length + 2) ...[
+                  CustomText(
+                    text: "${currentChoice?["total_time"]} mins",
+                    type: TextType.body,
+                    color: isSelected ? AppColors.white : AppColors.black,
                   ),
-                ),
+                  Text(
+                    "${currentChoice?["total_distance"]} km - ${currentChoice?["total_cost"]} THB",
+                    style: TextStyle(
+                      color: isSelected ? AppColors.white : AppColors.black,
+                      fontSize: 10,
+                    ),
+                  ),
+                ]
               ],
             ),
             Icon(
-              selected == -1
-                  ? Icons.keyboard_arrow_down
-                  : Icons.keyboard_arrow_up,
-              color: selected == -1 ? AppColors.white : AppColors.black,
+              isSelected ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+              color: isSelected ? AppColors.white : AppColors.black,
             ),
           ],
         ),
@@ -619,7 +630,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
         ),
         child: Column(
           children: [
-            if(widget.choices.isNotEmpty)
+            if (widget.choices.isNotEmpty)
               ...List.generate(widget.choices.length, (i) {
                 final choice = widget.choices[i];
                 final segments = _getRouteSegments(choice["id"]);
@@ -630,6 +641,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
                       leading: Radio<int>(
                         value: i,
                         groupValue: selected,
+                        activeColor: AppColors.orange_900,
                         onChanged: (v) => _updateSelection(i),
                       ),
                       title: Row(
@@ -665,16 +677,19 @@ class _RouteDropdownState extends State<RouteDropdown> {
                     ),
                   ],
                 );
-              }), 
+              }),
 
             ListTile(
               leading: Radio<int>(
                 value: widget.choices.length + 1,
                 groupValue: selected,
+                activeColor: AppColors.orange_900,
                 onChanged:
-                    (_) => setState(
-                      () => displayedRoute = const Text("Google Maps"),
-                    ),
+                    (v) => setState(() {
+                      displayedRoute = const Text("Google Maps");
+                      selected = v!;
+                      log("Selected Google Maps : $selected");
+                    }),
               ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -691,10 +706,12 @@ class _RouteDropdownState extends State<RouteDropdown> {
               leading: Radio<int>(
                 value: widget.choices.length + 2,
                 groupValue: selected,
+                activeColor: AppColors.orange_900,
                 onChanged:
-                    (_) => setState(
-                      () => displayedRoute = const Text("Add Notes..."),
-                    ),
+                    (v) => setState(() {
+                      displayedRoute = const Text("Add Notes...");
+                      selected = v!;
+                    }),
               ),
               title: const TextField(
                 decoration: InputDecoration(

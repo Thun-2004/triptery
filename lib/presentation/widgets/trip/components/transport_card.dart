@@ -461,7 +461,7 @@ class TextDropDownState extends State<TextDropDown> {
             endIndent: 0,
             color: AppColors.gray,
           ),
-          Expanded(
+            Container(
             child: Container(
               height: 44,
               width: widget.width.toDouble() - 20,
