@@ -511,11 +511,9 @@ class _RouteDropdownState extends State<RouteDropdown> {
   final transportModeController = Get.find<TransportModeController>();
   final tripController = Get.find<TripController>();
 
-  int selected = 0;
   bool isSelected = false;
   Map<String, dynamic>? currentChoice;
   List<Map<String, dynamic>> routeSegments = [];
-  Widget displayedRoute = const SizedBox.shrink();
 
   @override
   void initState() {
@@ -525,15 +523,9 @@ class _RouteDropdownState extends State<RouteDropdown> {
           widget.choices.firstWhereOrNull((c) => c["isSelected"] == true) ??
           widget.choices.first;
       routeSegments = _getRouteSegments(currentChoice?["id"]);
-      displayedRoute = buildTransportHorizontalSequence(
-        routeSegments,
-        AppColors.black,
-        true,
-      );
     } else {
       currentChoice = null;
       routeSegments = [];
-      displayedRoute = const Text("Unselected");
     }
   }
 
@@ -551,14 +543,11 @@ class _RouteDropdownState extends State<RouteDropdown> {
 
   void _updateSelection(int index) {
     setState(() {
-      selected = index;
+      tripController.selectedIndex.value = index;
       currentChoice = widget.choices[index];
-      routeSegments = _getRouteSegments(currentChoice?["id"]);
-      displayedRoute = buildTransportHorizontalSequence(
-        routeSegments,
-        AppColors.black,
-        true,
-      );
+      // Sync TripController's selected route option
+      tripController.selectRouteOption(widget.routeId, widget.choices[index]["id"]);
+      log("Selected value: ${index}");
     });
   }
 
@@ -592,28 +581,58 @@ class _RouteDropdownState extends State<RouteDropdown> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            displayedRoute,
+            Obx(() {
+              // Get the current selected route option from TripController
+              final options = tripController.findRouteOptions(widget.routeId);
+              final choice = options.firstWhereOrNull((c) => c["isSelected"] == true) ?? (options.isNotEmpty ? options.first : null);
+              if (choice == null) {
+                return const Text("Unselected");
+              }
+              if (choice["isNote"] == false && choice["creatorId"] != "google") {
+                final segments = _getRouteSegments(choice["id"]);
+                return buildTransportHorizontalSequence(
+                  segments,
+                  AppColors.black,
+                  true,
+                );
+              } else if (choice["creatorId"] == "google") {
+                return const Text("Google Maps");
+              } else if (choice["isNote"] == true) {
+                return Text(
+                  tripController.routes_temp
+                          .firstWhereOrNull((r) => r["id"] == widget.routeId)?["note"] ??
+                      "Add Note..",
+                );
+              } else {
+                return const Text("Unselected");
+              }
+            }),
             Spacer(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                if (selected != widget.choices.length + 1 &&
-                    selected != widget.choices.length + 2) ...[
-                  CustomText(
-                    text: "${currentChoice?["total_time"]} mins",
-                    type: TextType.body,
-                    color: isSelected ? AppColors.white : AppColors.black,
-                  ),
-                  Text(
-                    "${currentChoice?["total_distance"]} km - ${currentChoice?["total_cost"]} THB",
-                    style: TextStyle(
+            Obx(() {
+              final options = tripController.findRouteOptions(widget.routeId);
+              final choice = options.firstWhereOrNull((c) => c["isSelected"] == true) ?? (options.isNotEmpty ? options.first : null);
+              if (choice == null) return const SizedBox.shrink();
+              if (choice["isNote"] == false && choice["creatorId"] != "google") {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    CustomText(
+                      text: "${choice["total_time"]} mins",
+                      type: TextType.body,
                       color: isSelected ? AppColors.white : AppColors.black,
-                      fontSize: 10,
                     ),
-                  ),
-                ],
-              ],
-            ),
+                    Text(
+                      "${choice["total_distance"]} km - ${choice["total_cost"]} THB",
+                      style: TextStyle(
+                        color: isSelected ? AppColors.white : AppColors.black,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return const SizedBox.shrink();
+            }),
             Icon(
               isSelected ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
               color: isSelected ? AppColors.white : AppColors.black,
@@ -631,112 +650,88 @@ class _RouteDropdownState extends State<RouteDropdown> {
         ),
         child: Column(
           children: [
-            if (widget.choices.isNotEmpty)
-              ...List.generate(widget.choices.length, (i) {
-                final choice = widget.choices[i];
-                final segments = _getRouteSegments(choice["id"]);
-
-                return Column(
-                  children: [
-                    ListTile(
-                      leading: Radio<int>(
-                        value: i,
-                        groupValue: selected,
-                        activeColor: AppColors.orange_900,
-                        onChanged: (v) => _updateSelection(i),
+            // Wrap the route options in Obx for reactivity
+            Obx(() {
+              final options = tripController.findRouteOptions(widget.routeId);
+              if (options.isEmpty) return const SizedBox.shrink();
+              return Column(
+                children: List.generate(options.length, (i) {
+                  final choice = options[i];
+                  final segments = _getRouteSegments(choice["id"]);
+                  return Column(
+                    children: [
+                      ListTile(
+                        leading: Radio<int>(
+                          value: i,
+                          groupValue: tripController.selectedIndex.value,
+                          activeColor: AppColors.orange_900,
+                          onChanged: (v) => _updateSelection(i),
+                        ),
+                        title: (choice["isNote"] == false && choice["creatorId"] != "google")
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  buildTransportHorizontalSequence(
+                                    segments,
+                                    AppColors.black,
+                                    false,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      CustomText(
+                                        text: "${choice["total_time"]} mins",
+                                        type: TextType.heading,
+                                        textSize: 12,
+                                        color: AppColors.black,
+                                      ),
+                                      Text(
+                                        "${choice["total_distance"]} km - ${choice["total_cost"]} THB",
+                                        style: const TextStyle(fontSize: 10),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              )
+                            : (choice["creatorId"] == "google")
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: const [
+                                      Text(
+                                        "Google Maps",
+                                        style: TextStyle(fontWeight: FontWeight.w500),
+                                      ),
+                                      Icon(LucideIcons.squareArrowOutUpRight, size: 16),
+                                    ],
+                                  )
+                                : (choice["isNote"] == true)
+                                    ? TextFormField(
+                                        initialValue: tripController.routes_temp
+                                                .firstWhereOrNull((r) => r["id"] == widget.routeId)?["note"] ??
+                                            "",
+                                        decoration: const InputDecoration(
+                                          hintText: 'Add Note..',
+                                          border: OutlineInputBorder(borderSide: BorderSide.none),
+                                          contentPadding: EdgeInsets.all(8),
+                                        ),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            tripController.setRouteNote(widget.routeId, value);
+                                          });
+                                        },
+                                      )
+                                    : const SizedBox.shrink(),
                       ),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          buildTransportHorizontalSequence(
-                            segments,
-                            AppColors.black,
-                            false,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              CustomText(
-                                text: "${choice["total_time"]} mins",
-                                type: TextType.heading,
-                                textSize: 12,
-                                color: AppColors.black,
-                              ),
-                              Text(
-                                "${choice["total_distance"]} km - ${choice["total_cost"]} THB",
-                                style: const TextStyle(fontSize: 10),
-                              ),
-                            ],
-                          ),
-                        ],
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        padding: const EdgeInsets.symmetric(horizontal: 28),
+                        child: buildTransportVerticalSequence(segments),
                       ),
-                    ),
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      padding: const EdgeInsets.symmetric(horizontal: 28),
-                      child: buildTransportVerticalSequence(segments),
-                    ),
-                  ],
-                );
-              }),
-
-            ListTile(
-              leading: Radio<int>(
-                value: widget.choices.length + 1,
-                groupValue: selected,
-                activeColor: AppColors.orange_900,
-                onChanged:
-                    (v) => setState(() {
-                      displayedRoute = const Text("Google Maps");
-                      selected = v!;
-                      log("Selected Google Maps : $selected");
-                    }),
-              ),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Google Maps",
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  const Icon(LucideIcons.squareArrowOutUpRight, size: 16),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: Radio<int>(
-                
-                value: widget.choices.length + 2,
-                groupValue: selected,
-                activeColor: AppColors.orange_900,
-                onChanged:
-                    (v) => setState(() {
-                      displayedRoute = tripController.routes_temp
-                          .firstWhereOrNull((r) => r["id"] == widget.routeId)?["note"] != null
-                          ? Text(tripController.routes_temp
-                              .firstWhere((r) => r["id"] == widget.routeId)["note"])
-                          : const Text("Add Note..");
-                      selected = v!;
-                    }),
-              ),
-              title: TextFormField(
-                initialValue: tripController.routes_temp.firstWhereOrNull((r) => r["id"] == widget.routeId)?["note"] ?? "",
-                decoration: InputDecoration(
-                  hintText: 'Add Note..',
-                  border: OutlineInputBorder(borderSide: BorderSide.none),
-                  contentPadding: EdgeInsets.all(8),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    if(selected == widget.choices.length + 2) {
-                      tripController.setRouteNote(widget.routeId, value); 
-                      displayedRoute = Text(value.isEmpty ? "Add Note.." : value);
-                    }
-                  }); 
-                  
-                },
-              ),
-            ),
+                    ],
+                  );
+                }),
+              );
+            }),
             const Divider(
               height: 3,
               color: AppColors.gray,

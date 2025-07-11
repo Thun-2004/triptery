@@ -819,7 +819,11 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                     r["toPlaceId"] == nextTrip["placeId"]);
 
                                 if (route != null && route["day"] == selectedDay) {
-                                  final routeOptions = tripController.findRouteOptions(route["id"]);
+                                  List<Map<String, dynamic>> routeOptions = tripController.findRouteOptions(route["id"]);
+                                  if (routeOptions.isEmpty) {
+                                    tripController.populateRouteOptionDefaultValues(route["id"]);
+                                    routeOptions = tripController.findRouteOptions(route["id"]);
+                                  }
                                   return RouteDropdown(
                                     key: ValueKey('route-${trip["placeId"]}-${nextTrip["placeId"]}'),
                                     routeId: trip["routeId"],

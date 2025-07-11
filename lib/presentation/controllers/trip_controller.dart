@@ -555,6 +555,8 @@ class TripController extends GetxController {
   final Rx<bool> _isEditingPlaceOrder = Rx<bool>(false);
   Rx<bool> get isEditingPlaceOrderObs => _isEditingPlaceOrder;
 
+  Rx<int> selectedIndex = (-1).obs; // Reactive selected index
+
   // int day = 0;
   Rx<int> day = 0.obs; // Reactive day variable
 
@@ -736,6 +738,8 @@ class TripController extends GetxController {
           "total_time": 20,
           "total_cost": 20,
           "total_distance": 20,
+          "isNote": false, 
+          "note": null,
           "isSelected": true,
           "approved": false,
           "creatorId": "user123",
@@ -747,6 +751,8 @@ class TripController extends GetxController {
           "total_time": 15,
           "total_cost": 15,
           "total_distance": 15,
+          "isNote": false, 
+          "note": null,
           "isSelected": false,
           "approved": false,
           "creatorId": "user123",
@@ -759,30 +765,35 @@ class TripController extends GetxController {
           "routeId": 1,
           "total_time": null,
           "total_cost": null,
-          "total_distance": 15,
+          "total_distance": null,
+          "isNote": true, 
+          "note": "User note for route 1",
           "isSelected": false,
           "approved": false,
           "creatorId": "user123",
-          "note": "This is a test route option",
           "createdAt": DateTime.now().toIso8601String(),
         },
         {
           "id": 4,
-          "routeId": 2,
-          "total_time": 15,
-          "total_cost": 15,
-          "total_distance": 15,
-          "isSelected": true,
+          "routeId": 1,
+          "total_time": null,
+          "total_cost": null,
+          "total_distance": null,
+          "isNote": false,
+          "note": null,
+          "isSelected": false,
           "approved": false,
-          "creatorId": "user123",
+          "creatorId": "google",
           "createdAt": DateTime.now().toIso8601String(),
         },
         {
           "id": 5,
-          "routeId": 3,
+          "routeId": 2,
           "total_time": 15,
           "total_cost": 15,
           "total_distance": 15,
+          "isNote": false,
+          "note": null,
           "isSelected": true,
           "approved": false,
           "creatorId": "user123",
@@ -790,10 +801,77 @@ class TripController extends GetxController {
         },
         {
           "id": 6,
+          "routeId": 2,
+          "total_time": 0,
+          "total_cost": 0,
+          "total_distance": 0,
+          "isNote": true, 
+          "note": "User note for route 3",
+          "isSelected": true,
+          "approved": false,
+          "creatorId": "user123",
+          "createdAt": DateTime.now().toIso8601String(),
+        },
+        {
+          "id": 7,
+          "routeId": 2,
+          "total_time": 0,
+          "total_cost": 0,
+          "total_distance": 0,
+          "isNote": false, 
+          "note": null,
+          "isSelected": true,
+          "approved": false,
+          "creatorId": "google",
+          "createdAt": DateTime.now().toIso8601String(),
+        },
+        {
+          "id": 8,
+          "routeId": 3,
+          "total_time": 15,
+          "total_cost": 15,
+          "total_distance": 15,
+          "isNote": false, 
+          "note": null,
+          "isSelected": true,
+          "approved": false,
+          "creatorId": "user123",
+          "createdAt": DateTime.now().toIso8601String(),
+        },
+        {
+          "id": 9,
+          "routeId": 3,
+          "total_time": 0,
+          "total_cost": 0,
+          "total_distance": 0,
+          "isNote": true,
+          "note": "User note for route 3",
+          "isSelected": false,
+          "approved": false,
+          "creatorId": "user123",
+          "createdAt": DateTime.now().toIso8601String(),
+        },
+        {
+          "id": 10,
+          "routeId": 3,
+          "total_time": 0,
+          "total_cost": 0,
+          "total_distance": 0,
+          "isNote": false,
+          "note": null,
+          "isSelected": false,
+          "approved": false,
+          "creatorId": "google",
+          "createdAt": DateTime.now().toIso8601String(),
+        },
+        {
+          "id": 11,
           "routeId": 6,
           "total_time": 15,
           "total_cost": 15,
           "total_distance": 15,
+          "isNote": false,
+          "note": null,
           "isSelected": true,
           "approved": false,
           "creatorId": "user123",
@@ -829,7 +907,7 @@ class TripController extends GetxController {
         },
         {
           "id": 3,
-          "optionId": 1,
+          "optionId": 2,
           "mode": TransportMode.walk,
           "station": null,
           "time_taken": "00:20",
@@ -841,7 +919,7 @@ class TripController extends GetxController {
         },
         {
           "id": 4,
-          "optionId": 2,
+          "optionId": 5,
           "mode": TransportMode.skyTrain,
           "station": "Ladprao",
           "time_taken": "00:20",
@@ -853,7 +931,7 @@ class TripController extends GetxController {
         },
         {
           "id": 5,
-          "optionId": 3,
+          "optionId": 5,
           "mode": TransportMode.taxi,
           "station": null,
           "time_taken": "00:20",
@@ -865,7 +943,7 @@ class TripController extends GetxController {
         },
         {
           "id": 6,
-          "optionId": 4,
+          "optionId": 8,
           "mode": TransportMode.taxi,
           "station": null,
           "time_taken": "00:20",
@@ -877,7 +955,7 @@ class TripController extends GetxController {
         },
         {
           "id": 7,
-          "optionId": 4,
+          "optionId": 8,
           "mode": TransportMode.taxi,
           "station": null,
           "time_taken": "00:20",
@@ -889,7 +967,7 @@ class TripController extends GetxController {
         },
         {
           "id": 8,
-          "optionId": 4,
+          "optionId": 8,
           "mode": TransportMode.taxi,
           "station": null,
           "time_taken": "00:20",
@@ -901,7 +979,7 @@ class TripController extends GetxController {
         },
         {
           "id": 9,
-          "optionId": 5,
+          "optionId": 10,
           "mode": TransportMode.taxi,
           "station": null,
           "time_taken": "00:20",
@@ -913,7 +991,7 @@ class TripController extends GetxController {
         },
         {
           "id": 9,
-          "optionId": 5,
+          "optionId": 11,
           "mode": TransportMode.taxi,
           "station": null,
           "time_taken": "00:20",
@@ -1166,6 +1244,58 @@ class TripController extends GetxController {
       log(
         "TripService: Route $i - From: ${routes[i].routeFrom}, To: ${routes[i].routeTo}, Mode: ${routes[i].routeMode}",
       );
+    }
+  }
+
+  void populateRouteOptionDefaultValues(int routeId) {
+    routeOptions_temp.addAll([
+      {
+        "id": routeOptions_temp.length + 1,
+        "routeId": routeId,
+        "total_time": 0,
+        "total_cost": 0,
+        "total_distance": 0,
+        "isNote": false,
+        "note": null,
+        "isSelected": false,
+        "approved": false,
+        "creatorId": "google",
+        "createdAt": DateTime.now().toIso8601String(),
+      },
+      {
+        "id": routeOptions_temp.length + 2,
+        "routeId": routeId,
+        "total_time": 0,
+        "total_cost": 0,
+        "total_distance": 0,
+        "isNote": true, 
+        "note": null,
+        "isSelected": false,
+        "approved": false,
+        "creatorId": "user123",
+        "createdAt": DateTime.now().toIso8601String(),
+      },
+    ]);
+  }
+
+  void selectRouteOption(int routeId, int optionId) {
+    for (var option in routeOptions_temp) {
+      if (option["routeId"] == routeId) {
+        option["isSelected"] = false;
+      }
+    }
+
+    // Select the specified option
+    var selectedOption = routeOptions_temp.firstWhere(
+      (option) => option["id"] == optionId && option["routeId"] == routeId,
+      orElse: () => {},
+    );
+
+    if (selectedOption.isNotEmpty) {
+      selectedOption["isSelected"] = true;
+      log("Selected option ID: $optionId for route ID: $routeId");
+    } else {
+      log("No matching option found for ID: $optionId and route ID: $routeId");
     }
   }
 
