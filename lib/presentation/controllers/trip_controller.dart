@@ -560,26 +560,20 @@ class TripController extends GetxController {
   // int day = 0;
   Rx<int> day = 0.obs; // Reactive day variable
 
-  RxList<Trip> places = <Trip>[].obs;
-  List<Trip> get getPlaces =>
-      places.whereType<Trip>().toList(); // Getter for places
-
-  RxList<Trip> routes = <Trip>[].obs;
-  List<Trip> get getRoutes => routes.whereType<Trip>().toList();
-
   RxList<int> deletedItems = <int>[].obs;
   RxList<int> get deletedItemsObs => deletedItems;
 
-  RxList<Place> selectedPlaces = <Place>[].obs;
-  RxList<Place> get addedItemsObs => selectedPlaces;
+  RxList<Map<String, dynamic>> selectedPlaces = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> get addedItemsObs => selectedPlaces;
 
-  RxList<Place> recommendedPlaces = <Place>[].obs;
-  RxList<Place> get recommendedPlacesObs => recommendedPlaces;
+  RxList<Map<String, dynamic>> recommendedPlaces = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> get recommendedPlacesObs => recommendedPlaces;
 
-  RxList<Place> bookmarkedPlaces = <Place>[].obs;
-  RxList<Place> get bookmarkedPlacesObs => bookmarkedPlaces;
+  RxList<Map<String, dynamic>> bookmarkedPlaces = <Map<String, dynamic>>[].obs;
+  RxList<Map<String, dynamic>> get bookmarkedPlacesObs => bookmarkedPlaces;
 
   RxList<Place> allPlaces = mockPlaces.obs;
+
   RxList<Map<String, dynamic>> places_temp =
       [
         {
@@ -614,6 +608,40 @@ class TripController extends GetxController {
           "id": 4,
           "placeId": 4,
           "placeName": "Central Pattaya",
+          "placeImageUrl":
+              "https://i.pinimg.com/736x/62/6d/50/626d50fba92b0607bf5416c48f4641d2.jpg",
+          "activities": null,
+        },
+
+        //temp
+        {
+          "id": 5,
+          "placeId": 5,
+          "placeName": "Place 1 in Phuket",
+          "placeImageUrl":
+              "https://i.pinimg.com/736x/62/6d/50/626d50fba92b0607bf5416c48f4641d2.jpg",
+          "activities": null,
+        },
+        {
+          "id": 6,
+          "placeId": 6,
+          "placeName": "Chiang Mai Old Town",
+          "placeImageUrl":
+              "https://i.pinimg.com/736x/62/6d/50/626d50fba92b0607bf5416c48f4641d2.jpg",
+          "activities": null,
+        },
+        {
+          "id": 7,
+          "placeId": 7,
+          "placeName": "Ayutthaya Historical Park",
+          "placeImageUrl":
+              "https://i.pinimg.com/736x/62/6d/50/626d50fba92b0607bf5416c48f4641d2.jpg",
+          "activities": null,
+        },
+        {
+          "id": 8,
+          "placeId": 8,
+          "placeName": "Wat Arun",
           "placeImageUrl":
               "https://i.pinimg.com/736x/62/6d/50/626d50fba92b0607bf5416c48f4641d2.jpg",
           "activities": null,
@@ -1003,127 +1031,6 @@ class TripController extends GetxController {
         },
       ].obs;
 
-  List<Map<String, String>> routeChoices = [
-    {
-      // 1- 2
-      //dest : placeId
-      "Dest1": "1",
-      "Dest2": "2",
-      "mode": "Car -> Train -> Bus",
-      "time": "21mins",
-      "price": "100THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "1",
-      "Dest2": "2",
-      "mode": "Bus -> Train",
-      "time": "16mins",
-      "price": "140THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "1",
-      "Dest2": "2",
-      "mode": "Train -> Walk",
-      "time": "22mins",
-      "price": "130THB",
-    },
-    //2 -> 1
-    {
-      //dest : placeId
-      "Dest1": "2",
-      "Dest2": "1",
-      "mode": "Bus -> Train",
-      "time": "30mins",
-      "price": "140THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "2",
-      "Dest2": "1",
-      "mode": "Train -> Walk",
-      "time": "2mins",
-      "price": "130THB",
-    },
-
-    // 2 - 3
-    {
-      //dest : placeId
-      "Dest1": "2",
-      "Dest2": "3",
-      "mode": "Walk -> Train",
-      "time": "40mins",
-      "price": "130THB",
-    },
-    // 3 - 2
-    {
-      //dest : placeId
-      "Dest1": "3",
-      "Dest2": "2",
-      "mode": "Train -> Walk",
-      "time": "2mins",
-      "price": "130THB",
-    },
-    // 3 - 1
-    {
-      //dest : placeId
-      "Dest1": "3",
-      "Dest2": "1",
-      "mode": "Train -> Bus",
-      "time": "25mins",
-      "price": "130THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "1",
-      "Dest2": "3",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "1",
-      "Dest2": "5",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "5",
-      "Dest2": "2",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "2",
-      "Dest2": "5",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "5",
-      "Dest2": "3",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-    {
-      //dest : placeId
-      "Dest1": "3",
-      "Dest2": "5",
-      "mode": "Walk -> Bus",
-      "time": "2mins",
-      "price": "10THB",
-    },
-  ];
-
   TripController({this.getTripByDayId, this.getTripByPlanId});
 
   @override
@@ -1141,7 +1048,6 @@ class TripController extends GetxController {
       if (getTripByDayId != null) {
         final result = await getTripByDayId!.execute(1, 1);
         trips.value.add(result);
-        populatePlaceAndRouteLists();
       }
     } catch (e) {
       log("Error fetching trips by day: $e");
@@ -1158,7 +1064,6 @@ class TripController extends GetxController {
       if (getTripByPlanId != null) {
         final result = await getTripByPlanId!.execute(planId);
         trips.value = result;
-        populatePlaceAndRouteLists();
       }
     } catch (e) {
       log("Error fetching trips: $e");
@@ -1170,7 +1075,7 @@ class TripController extends GetxController {
   Future<void> fetchRecommendedPlaces() async {
     if (recommendedPlaces.isEmpty && allPlaces.isNotEmpty) {
       recommendedPlaces.value =
-          allPlaces.where((place) => int.parse(place.id) < 8).toList();
+          places_temp.where((place) => place["id"] > 4 && place["id"] < 7).toList();
       log("Recommended places initialized: ${recommendedPlaces.length}");
     }
   }
@@ -1178,7 +1083,7 @@ class TripController extends GetxController {
   Future<void> fetchBookmarkedPlaces() async {
     if (allPlaces.isNotEmpty) {
       bookmarkedPlaces.value =
-          allPlaces.where((place) => int.parse(place.id) > 7).toList();
+          places_temp.where((place) => place["id"] > 6).toList();
       log("Recommended places initialized: ${bookmarkedPlaces.length}");
     }
   }
@@ -1192,61 +1097,6 @@ class TripController extends GetxController {
     log("isEditingPlaceOrder: ${_isEditingPlaceOrder.value}");
   }
 
-  //done
-  void populatePlaceAndRouteLists() {
-    //clear previous data
-    routes.clear();
-    places.clear();
-
-    if (trips.isNotEmpty) {
-      for (Trip trip in trips.whereType<Trip>().toList()) {
-        places.add(
-          Trip(
-            id: trip.id,
-            planId: trip.planId,
-            day: trip.day,
-            type: trip.type,
-            placeId: trip.placeId,
-            placeName: trip.placeName,
-            placeDescription: trip.placeDescription,
-            placeImageUrl: trip.placeImageUrl,
-            arrivalTime: trip.arrivalTime,
-            note: trip.note,
-          ),
-        );
-        log("TripService: Added place ${trip.placeName} with id ${trip.id}");
-
-        if (trip.routeFrom != null && trip.routeTo != null) {
-          routes.add(
-            Trip(
-              id: trip.id,
-              planId: trip.planId,
-              day: trip.day,
-              type: trip.type,
-              routeMode: trip.routeMode,
-              routeFrom: trip.routeFrom,
-              routeTo: trip.routeTo,
-              routeTotalTime: trip.routeTotalTime,
-              routeTotalCost: trip.routeTotalCost,
-              routeTotalDistance: trip.routeTotalDistance,
-              routeDistance: trip.routeDistance,
-              routeNote: trip.routeNote,
-            ),
-          );
-          log(
-            "TripService: Added route from ${trip.routeFrom} to ${trip.routeTo} with mode ${trip.routeMode}",
-          );
-        }
-      }
-    }
-
-    for (int i = 0; i < routes.length; i++) {
-      log(
-        "TripService: Route $i - From: ${routes[i].routeFrom}, To: ${routes[i].routeTo}, Mode: ${routes[i].routeMode}",
-      );
-    }
-  }
-
   void populateRouteOptionDefaultValues(int routeId) {
     routeOptions_temp.addAll([
       {
@@ -1257,7 +1107,7 @@ class TripController extends GetxController {
         "total_distance": 0,
         "isNote": false,
         "note": null,
-        "isSelected": false,
+        "isSelected": true,
         "approved": false,
         "creatorId": "google",
         "createdAt": DateTime.now().toIso8601String(),
@@ -1324,7 +1174,7 @@ class TripController extends GetxController {
   //done
   void recalculateAllRoutes(int newIndex) {
     int startInd = (newIndex > 0) ? newIndex - 1: 0;
-    int endInd = (newIndex < places.length - 1) ? newIndex + 1 : places.length - 1;
+    int endInd = (newIndex < trips_temp.length - 1) ? newIndex + 1 : trips_temp.length - 1;
 
     for(int i = startInd; i < endInd - 1; i++) {
       final fromPlaceId = trips_temp[i]["placeId"];
@@ -1365,7 +1215,6 @@ class TripController extends GetxController {
     //recalculate routes
     selectedIndex = -1;
     recalculateAllRoutes(newIndex);
-    print('Updated route: ${routes[0].routeMode} , ${routes[1].routeMode}');
   }
 
   //done
@@ -1442,13 +1291,13 @@ class TripController extends GetxController {
 
   void addPlaceToSelected(int placeId) {
     selectedPlaces.add(
-      allPlaces.firstWhere((place) => int.parse(place.id) == placeId),
+      places_temp.firstWhere((place) => place["id"] == placeId),
     );
     log("Added place with ID $placeId to selected places.");
   }
 
   void removePlaceFromSelected(int placeId) {
-    selectedPlaces.removeWhere((place) => place.id == placeId.toString());
+    selectedPlaces.removeWhere((place) => place["id"] == placeId);
   }
 
   void clearSelectedPlaces() {
@@ -1463,73 +1312,87 @@ class TripController extends GetxController {
         break;
       }
     }
-    routes.assignAll([...routes]);
+    routes_temp.assignAll([...routes_temp]);
   }
 
-  void addPlaceToTripRoute(int prevPlaceIndex) {
-    log('day index: ${day.value}');
-    for (Place place in selectedPlaces) {
-      Trip _place = Trip(
-        id: place.id,
-        planId: "1",
-        day: 1,
-        // day:day.value,
-        type: TripType.dest,
-        placeId: place.id,
-        placeName: place.name,
-        placeDescription: place.description,
-        placeImageUrl: place.imageUrl,
-        arrivalTime: incrementHour(places[prevPlaceIndex].arrivalTime!),
-      );
-      Trip _route = Trip(
-        id: place.id,
-        planId: "1",
-        day: 1,
-        //day:day.value,
-        type: TripType.dest,
-        routeMode: RouteMode.unselected,
-        routeFrom: places[prevPlaceIndex].placeId.toString(),
-        routeTo: place.id.toString(),
-        routeTotalTime: null,
-        routeTotalCost: null,
-        routeTotalDistance: null,
-        routeDistance: null,
-        routeNote: null,
-        note: "Added to trip",
-      );
+  //new
+    void addPlaceToTripRoute(int prevPlaceIndex) {
+      log('Adding places after index: $prevPlaceIndex');
 
-      Trip _route2 = Trip(
-        id: place.id,
-        planId: "1",
-        day: 1,
-        //day:day.value,
-        type: TripType.dest,
-        routeMode: RouteMode.unselected,
-        routeFrom: place.id.toString(),
-        routeTo: places[prevPlaceIndex + 1].placeId.toString(),
-        routeTotalTime: null,
-        routeTotalCost: null,
-        routeTotalDistance: null,
-        routeDistance: null,
-        routeNote: null,
-        note: "Added to trip",
-      );
+      for (var place in selectedPlaces) {
+        int newId = trips_temp.length + 1;
 
-      places.insert(prevPlaceIndex + 1, _place);
-      routes.insert(prevPlaceIndex + 1, _route);
+        // Get previous place arrival time
+        String prevArrival = trips_temp[prevPlaceIndex]["arrivalTime"];
+        final format = DateFormat('hh:mm a');
+        DateTime prevTime = format.parseStrict(prevArrival);
+        DateTime newTime = prevTime.add(Duration(hours: 1));
+        String newArrivalTime = format.format(newTime);
 
-      //card after = time of added places + 1
-      if (prevPlaceIndex > 0 && prevPlaceIndex < places.length - 1) {
-        routes.insert(prevPlaceIndex + 2, _route2);
-        for (int i = prevPlaceIndex + 2; i < places.length; i++) {
-          places[i].arrivalTime = incrementHour(places[i].arrivalTime!);
+        // Create new trip
+        Map<String, dynamic> newTrip = {
+          "id": newId,
+          "userId": "user123",
+          "planId": trips_temp[prevPlaceIndex]["planId"],
+          "day": trips_temp[prevPlaceIndex]["day"],
+          "placeId": place["placeId"],
+          "routeId": null, // will set below
+          "arrivalTime": newArrivalTime,
+          "timeSpent": "00:30",
+          "moneySpent": 0,
+          "note": "Added to trip",
+        };
+
+        // Insert new trip after prevPlaceIndex
+        trips_temp.insert(prevPlaceIndex + 1, newTrip);
+
+        // Create route from previous place to new place
+        Map<String, dynamic> newRoute = {
+          "id": routes_temp.length + 1,
+          "planId": trips_temp[prevPlaceIndex]["planId"],
+          "day": trips_temp[prevPlaceIndex]["day"],
+          "fromPlaceId": trips_temp[prevPlaceIndex]["placeId"],
+          "toPlaceId": place["placeId"],
+          "createdAt": DateTime.now().toIso8601String(),
+          "note": null,
+        };
+        routes_temp.add(newRoute);
+
+        // Update trip routeId
+        newTrip["routeId"] = newRoute["id"];
+
+        // If there is a next place after inserted place, create route from new place to next place
+        if (prevPlaceIndex + 2 < trips_temp.length) {
+          Map<String, dynamic> nextTrip = trips_temp[prevPlaceIndex + 2];
+          Map<String, dynamic> routeToNext = {
+            "id": routes_temp.length + 1,
+            "planId": newTrip["planId"],
+            "day": newTrip["day"],
+            "fromPlaceId": place["placeId"],
+            "toPlaceId": nextTrip["placeId"],
+            "createdAt": DateTime.now().toIso8601String(),
+            "note": null,
+          };
+          routes_temp.add(routeToNext);
+          nextTrip["routeId"] = routeToNext["id"];
         }
+
+        // Adjust arrival time of subsequent trips
+        for (int i = prevPlaceIndex + 2; i < trips_temp.length; i++) {
+          String arrival = trips_temp[i]["arrivalTime"];
+          DateTime time = format.parseStrict(arrival);
+          time = time.add(Duration(hours: 1));
+          trips_temp[i]["arrivalTime"] = format.format(time);
+        }
+
+        prevPlaceIndex++; // update prevPlaceIndex for next inserted place
       }
+
+      selectedPlaces.clear();
+      trips_temp.assignAll([...trips_temp]);
+      routes_temp.assignAll([...routes_temp]);
+      log("✅ Added places to trip route. Total trips: ${trips_temp.length}, routes: ${routes_temp.length}");
     }
-    selectedPlaces.clear();
-    places.assignAll([...places]);
-    routes.assignAll([...routes]);
-  }
 
   //FIXME: create day flow(add button -> add new route -> if no route/trip exists = add button)
 }

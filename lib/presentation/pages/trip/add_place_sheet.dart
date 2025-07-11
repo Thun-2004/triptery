@@ -69,11 +69,10 @@ class AddPlaceSheetState extends State<AddPlaceSheet> {
                     ),
                     onPressed: () {
                       tripController.addPlaceToTripRoute(widget.prevPlaceId);
-                      Future.delayed(Duration(milliseconds: 300), () {
-                        tripController.places
-                            .refresh(); // Force refresh after pop
-                        tripController.routes.refresh();
-                      });
+                      // Future.delayed(Duration(milliseconds: 300), () {
+                      //   tripController.places.refresh(); // Force refresh after pop
+                      //   tripController.routes.refresh();
+                      // });
                       Navigator.pop(context);
                     },
                     child: const CustomText(
@@ -147,9 +146,9 @@ class AddPlaceSheetState extends State<AddPlaceSheet> {
                         children: [
                           ...tripController.selectedPlaces.map(
                             (place) => AddPlaceCard(
-                              placeId: int.parse(place.id),
-                              placeName: place.name,
-                              placeImage: place.imageUrl,
+                              placeId: place["placeId"],
+                              placeName: place["placeName"],
+                              placeImage: place["placeImageUrl"],
                               // isAdded: true,
                             ),
                           ),
@@ -171,9 +170,9 @@ class AddPlaceSheetState extends State<AddPlaceSheet> {
                           children: [
                             ...tripController.recommendedPlaces.map(
                               (place) => AddPlaceCard(
-                                placeId: int.parse(place.id),
-                                placeName: place.name,
-                                placeImage: place.imageUrl,
+                                placeId: place["placeId"],
+                                placeName: place["placeName"],
+                                placeImage: place["placeImageUrl"],
                               ),
                             ),
                           ],
@@ -194,9 +193,9 @@ class AddPlaceSheetState extends State<AddPlaceSheet> {
                         children: [
                           ...tripController.bookmarkedPlaces.map(
                             (place) => AddPlaceCard(
-                              placeId: int.parse(place.id),
-                              placeName: place.name,
-                              placeImage: place.imageUrl,
+                              placeId: place["placeId"],
+                              placeName: place["placeName"],
+                              placeImage: place["placeImageUrl"],
                             ),
                           ),
                         ],

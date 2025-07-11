@@ -38,18 +38,18 @@ class AddPlaceCardState extends State<AddPlaceCard> {
   Widget build(BuildContext context) {
     return Obx(() {
       isAdded = tripController.selectedPlaces.any(
-        (place) => int.parse(place.id) == widget.placeId,
+        (place) => place["id"] == widget.placeId,
       );
 
       currentOrder =
           tripController.selectedPlaces.indexWhere(
-            (place) => int.parse(place.id) == widget.placeId,
+            (place) => place["id"] == widget.placeId,
           ) + 1;
 
       return GestureDetector(
         onTap: ((){
           Place place = tripController.allPlaces.firstWhere(
-            (place) => int.parse(place.id) == widget.placeId,
+            (place) => place.id == widget.placeId,
           );
           
           Navigator.push(
