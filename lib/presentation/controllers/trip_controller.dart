@@ -766,7 +766,7 @@ class TripController extends GetxController {
           "total_time": 20,
           "total_cost": 20,
           "total_distance": 20,
-          "isNote": false, 
+          "isNote": false,
           "note": null,
           "isSelected": true,
           "approved": false,
@@ -1196,6 +1196,7 @@ class TripController extends GetxController {
           "toPlaceId": toPlaceId,
           "createdAt": DateTime.now().toIso8601String(),
         });
+        trips_temp[i]["routeId"] = routes_temp.last["id"];
       }
     }
   }
@@ -1316,83 +1317,92 @@ class TripController extends GetxController {
   }
 
   //new
-    void addPlaceToTripRoute(int prevPlaceIndex) {
-      log('Adding places after index: $prevPlaceIndex');
+  void addPlaceToTripRoute(int prevPlaceIndex) {
+    log('Adding places after index: $prevPlaceIndex');
 
-      for (var place in selectedPlaces) {
-        int newId = trips_temp.length + 1;
+    for (var place in selectedPlaces) {
+      int newId = trips_temp.length + 1;
 
-        // Get previous place arrival time
-        String prevArrival = trips_temp[prevPlaceIndex]["arrivalTime"];
-        final format = DateFormat('hh:mm a');
-        DateTime prevTime = format.parseStrict(prevArrival);
-        DateTime newTime = prevTime.add(Duration(hours: 1));
-        String newArrivalTime = format.format(newTime);
+      // Get previous place arrival time
+      String prevArrival = trips_temp[prevPlaceIndex]["arrivalTime"];
+      final format = DateFormat('hh:mm a');
+      DateTime prevTime = format.parseStrict(prevArrival);
+      DateTime newTime = prevTime.add(Duration(hours: 1));
+      String newArrivalTime = format.format(newTime);
 
-        // Create new trip
-        Map<String, dynamic> newTrip = {
-          "id": newId,
-          "userId": "user123",
-          "planId": trips_temp[prevPlaceIndex]["planId"],
-          "day": trips_temp[prevPlaceIndex]["day"],
-          "placeId": place["placeId"],
-          "routeId": null, // will set below
-          "arrivalTime": newArrivalTime,
-          "timeSpent": "00:30",
-          "moneySpent": 0,
-          "note": "Added to trip",
-        };
+      // Create new trip
+      Map<String, dynamic> newTrip = {
+        "id": newId,
+        "userId": "user123",
+        "planId": trips_temp[prevPlaceIndex]["planId"],
+        "day": trips_temp[prevPlaceIndex]["day"],
+        "placeId": place["placeId"],
+        "routeId": null,
+        "arrivalTime": newArrivalTime,
+        "timeSpent": "00:30",
+        "moneySpent": 0,
+        "note": "Added to trip",
+      };
 
-        // Insert new trip after prevPlaceIndex
-        trips_temp.insert(prevPlaceIndex + 1, newTrip);
+      // Create route from previous place to new place
+      Map<String, dynamic> newRoute = {
+        "id": routes_temp.length + 1,
+        "planId": trips_temp[prevPlaceIndex]["planId"],
+        "day": trips_temp[prevPlaceIndex]["day"],
+        "fromPlaceId": trips_temp[prevPlaceIndex]["placeId"],
+        "toPlaceId": place["placeId"],
+        "createdAt": DateTime.now().toIso8601String(),
+        "note": null,
+      };
+      routes_temp.add(newRoute);
 
-        // Create route from previous place to new place
-        Map<String, dynamic> newRoute = {
+      // Update trip routeId of prev trip
+      trips_temp[prevPlaceIndex]["routeId"] = newRoute["id"];
+
+      // Insert new trip after prevPlaceIndex
+      trips_temp.insert(prevPlaceIndex + 1, newTrip);
+
+      // If there is a next place after inserted place, create route from new place to next place
+      if (prevPlaceIndex + 2 < trips_temp.length && trips_temp[prevPlaceIndex + 2]["placeId"] != null) {
+        Map<String, dynamic> nextTrip = trips_temp[prevPlaceIndex + 2];
+        Map<String, dynamic> routeToNext = {
           "id": routes_temp.length + 1,
-          "planId": trips_temp[prevPlaceIndex]["planId"],
-          "day": trips_temp[prevPlaceIndex]["day"],
-          "fromPlaceId": trips_temp[prevPlaceIndex]["placeId"],
-          "toPlaceId": place["placeId"],
+          "planId": newTrip["planId"],
+          "day": newTrip["day"],
+          "fromPlaceId": place["placeId"],
+          "toPlaceId": nextTrip["placeId"],
           "createdAt": DateTime.now().toIso8601String(),
           "note": null,
         };
-        routes_temp.add(newRoute);
+        routes_temp.add(routeToNext);
 
-        // Update trip routeId
-        newTrip["routeId"] = newRoute["id"];
+        // newTrip["routeId"] = routeToNext["id"];
+        trips_temp[prevPlaceIndex+1]["routeId"] = routeToNext["id"];
 
-        // If there is a next place after inserted place, create route from new place to next place
-        if (prevPlaceIndex + 2 < trips_temp.length) {
-          Map<String, dynamic> nextTrip = trips_temp[prevPlaceIndex + 2];
-          Map<String, dynamic> routeToNext = {
-            "id": routes_temp.length + 1,
-            "planId": newTrip["planId"],
-            "day": newTrip["day"],
-            "fromPlaceId": place["placeId"],
-            "toPlaceId": nextTrip["placeId"],
-            "createdAt": DateTime.now().toIso8601String(),
-            "note": null,
-          };
-          routes_temp.add(routeToNext);
-          nextTrip["routeId"] = routeToNext["id"];
+        for (int i = 0; i < routes_temp.length; i++) {
+          log("log: routes_temp[$i]: ${routes_temp[i]}"); 
         }
-
-        // Adjust arrival time of subsequent trips
-        for (int i = prevPlaceIndex + 2; i < trips_temp.length; i++) {
-          String arrival = trips_temp[i]["arrivalTime"];
-          DateTime time = format.parseStrict(arrival);
-          time = time.add(Duration(hours: 1));
-          trips_temp[i]["arrivalTime"] = format.format(time);
+        for (int i = 0; i < trips_temp.length; i++) {
+          log("log: trips_temp[$i]: ${trips_temp[i]}"); 
         }
-
-        prevPlaceIndex++; // update prevPlaceIndex for next inserted place
       }
 
-      selectedPlaces.clear();
-      trips_temp.assignAll([...trips_temp]);
-      routes_temp.assignAll([...routes_temp]);
-      log("✅ Added places to trip route. Total trips: ${trips_temp.length}, routes: ${routes_temp.length}");
+      // Adjust arrival time of subsequent trips
+      for (int i = prevPlaceIndex + 2; i < trips_temp.length; i++) {
+        String arrival = trips_temp[i]["arrivalTime"];
+        DateTime time = format.parseStrict(arrival);
+        time = time.add(Duration(hours: 1));
+        trips_temp[i]["arrivalTime"] = format.format(time);
+      }
+      prevPlaceIndex++; // update prevPlaceIndex for next inserted place
     }
+
+    selectedPlaces.clear();
+    trips_temp.assignAll([...trips_temp]);
+    routes_temp.assignAll([...routes_temp]);
+    log("✅ Added places to trip route. Total trips: ${trips_temp.length}, routes: ${routes_temp.length}");
+    
+  }
 
   //FIXME: create day flow(add button -> add new route -> if no route/trip exists = add button)
 }
