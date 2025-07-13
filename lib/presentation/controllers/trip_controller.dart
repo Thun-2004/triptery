@@ -1275,8 +1275,16 @@ class TripController extends GetxController {
         continue;
       } else {
         trips_temp.removeAt(ind);
+        recalculateAllRoutes(ind);
       }
     }
+    for (int i = 0; i < routes_temp.length; i++) {
+      log("log: routes_temp[$i]: ${routes_temp[i]}"); 
+    }
+    for (int i = 0; i < trips_temp.length; i++) {
+      log("log: trips_temp[$i]: ${trips_temp[i]}"); 
+    }
+
     deletedItems.clear();
     // recalculateAllRoutes();
   }
@@ -1378,13 +1386,6 @@ class TripController extends GetxController {
 
         // newTrip["routeId"] = routeToNext["id"];
         trips_temp[prevPlaceIndex+1]["routeId"] = routeToNext["id"];
-
-        for (int i = 0; i < routes_temp.length; i++) {
-          log("log: routes_temp[$i]: ${routes_temp[i]}"); 
-        }
-        for (int i = 0; i < trips_temp.length; i++) {
-          log("log: trips_temp[$i]: ${trips_temp[i]}"); 
-        }
       }
 
       // Adjust arrival time of subsequent trips

@@ -794,6 +794,8 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: PlaceCard(
+                                        //generate a unique key for each place card
+                                        key: ValueKey('place-card-${trip["placeId"]}-$index'),
                                         index: index,
                                         placeId: place["placeId"],
                                         placeName: place["placeName"] ?? "",
