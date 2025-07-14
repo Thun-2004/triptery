@@ -2,11 +2,13 @@ import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:triptery/constant/transport_modes.dart';
 import 'package:triptery/utils/datetime.dart';
-import 'package:uuid/uuid.dart';
+// import 'package:uuid/uuid.dart';
+import 'package:triptery/presentation/controllers/trip_controller.dart';
 
 class TransportModeController extends GetxController {
   RxList<Map<String, dynamic>> tempModes = <Map<String, dynamic>>[].obs;
-  final _uuid = Uuid(); 
+  final TripController tripController = Get.find<TripController>();
+  int tempModeId = 0; // Used to generate unique IDs for modes
   //FIXME: Use a unique ID for every key 
 
   TransportModeController() {
@@ -17,11 +19,12 @@ class TransportModeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    tempModeId = tripController.routeSegments_temp.length + 1; 
   }
 
   void addMode(TransportMode mode) {
     tempModes.add({
-      "id": const Uuid().v4(), 
+      "id": tempModeId++, 
       "mode": mode,
       "station": null,
       "time_taken": "00:00",
