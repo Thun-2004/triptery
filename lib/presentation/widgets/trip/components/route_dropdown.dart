@@ -557,9 +557,9 @@ class _RouteDropdownState extends State<RouteDropdown> {
       backgroundColor: Colors.white,
       showDragHandle: true,
       builder:
-          (_) => const FractionallySizedBox(
+          (_) => FractionallySizedBox(
             heightFactor: 0.7,
-            child: CreateTransportWindow(),
+            child: CreateTransportWindow(routeId: widget.routeId),
           ),
     );
   }
@@ -741,7 +741,7 @@ class _RouteDropdownState extends State<RouteDropdown> {
               title: const Text("Create your own route"),
               trailing: IconButton(
                 icon: const Icon(LucideIcons.chevronRight, size: 16),
-                onPressed: _openCreateTransportModal,
+                onPressed: _openCreateTransportModal
               ),
               contentPadding: const EdgeInsets.only(left: 24),
             ),

@@ -15,7 +15,9 @@ import 'package:triptery/utils/icon.dart';
 //NOTE: save to cache when user not focus then to db
 
 class CreateTransportWindow extends StatefulWidget {
-  const CreateTransportWindow({super.key});
+  final int routeId;
+
+  const CreateTransportWindow({super.key, required this.routeId});
 
   @override
   State<CreateTransportWindow> createState() => _CreateTransportWindowState();
@@ -70,7 +72,10 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                           style: TextButton.styleFrom(
                             overlayColor: AppColors.lightGray,
                           ),
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            transportModeController.addRouteSegmenttoRoute(widget.routeId);
+                            Navigator.pop(context); 
+                          },
                           child: const CustomText(
                             text: 'Done',
                             type: TextType.subHeading,

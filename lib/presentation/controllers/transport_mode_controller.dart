@@ -19,7 +19,7 @@ class TransportModeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    tempModeId = tripController.routeSegments_temp.length + 1; 
+    tempModeId = tripController.routeSegments_temp.length + 1;
   }
 
   void addMode(TransportMode mode) {
@@ -34,6 +34,45 @@ class TransportModeController extends GetxController {
       "cost_unit": "THB",
       "note": "",
     });
+  }
+
+  void addRouteSegmenttoRoute(int routeId){
+    //not sure using int is good
+    num totaltime = calcTotalTime();
+    num totalDistance = calcTotalDistance();
+    num totalCost = calcTotalCost();
+
+    Map<String, dynamic> newRouteOption = {
+      "id": tripController.routeOptions_temp.length + 1,
+      "routeId": routeId,
+      "total_time": totaltime,
+      "total_cost": totalCost,
+      "total_distance": totalDistance,
+      "isNote": false,
+      "note": null,
+      "isSelected": false,
+      "approved": false,
+      "creatorId": "user123",
+      "createdAt": DateTime.now().toIso8601String()
+    };
+
+    tripController.routeOptions_temp.insert(0, newRouteOption);
+
+    for (var mode in tempModes) {
+      Map<String, dynamic> newRouteSegment = {
+        "id": tripController.routeSegments_temp.length + 1,
+        "optionId": newRouteOption["id"],
+        "mode": mode["mode"],
+        "station": mode["station"],
+        "time_taken": mode["time_taken"],
+        "distance": mode["distance"],
+        "distance_unit": mode["distance_unit"],
+        "cost": mode["cost"],
+        "cost_unit": mode["cost_unit"],
+        "note": mode["note"],
+      };
+      tripController.routeSegments_temp.add(newRouteSegment);
+    }
   }
 
   void clearModes() {
@@ -137,7 +176,6 @@ class TransportModeController extends GetxController {
     tempModes.refresh();
     log("Cost set to: ${tempModes[modeIndex]["distance_unit"]}");
   }
-
   void setCostUnit(int modeIndex, String unit) {
     if (tempModes.isNotEmpty) {
       tempModes[modeIndex]["cost_unit"] = unit;
