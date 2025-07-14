@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/utils.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/constant/colors.dart';
 import 'package:triptery/constant/transport_modes.dart';
@@ -11,6 +10,7 @@ import 'package:triptery/presentation/widgets/tag.dart';
 import 'package:triptery/presentation/widgets/trip/components/transport_card.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:triptery/utils/icon.dart';
+
 
 //NOTE: save to cache when user not focus then to db
 
@@ -234,19 +234,12 @@ class _CreateTransportWindowState extends State<CreateTransportWindow> {
                                 ),
                               ),
                               endChild: Padding(
-                                padding:
-                                    index ==
-                                            transportModeController
-                                                    .tempModes
-                                                    .length -
-                                                1
+                                padding: index == transportModeController.tempModes.length - 1
                                         ? EdgeInsets.only(bottom: 0)
                                         : EdgeInsets.only(bottom: 16),
                                 child: TransportCard(
                                   key: ValueKey(
-                                    transportModeController
-                                            .tempModes[index]["id"] ??
-                                        index,
+                                    transportModeController.tempModes[index]["id"] ?? index,
                                   ),
                                   index: index,
                                   mode:

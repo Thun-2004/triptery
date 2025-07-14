@@ -1097,7 +1097,7 @@ class TripController extends GetxController {
     log("isEditingPlaceOrder: ${_isEditingPlaceOrder.value}");
   }
 
-  void populateRouteOptionDefaultValues(int routeId) {
+  void populateRouteOptionDefaultValues(int routeId){
     routeOptions_temp.addAll([
       {
         "id": routeOptions_temp.length + 1,
