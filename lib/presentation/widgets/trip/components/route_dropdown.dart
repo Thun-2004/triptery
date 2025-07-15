@@ -568,7 +568,6 @@ class _RouteDropdownState extends State<RouteDropdown> {
   Widget build(BuildContext context) {
     return DropDownArea(
       elevation: 2,
-      verticalMargin: 10,
       isExpanded: isSelected,
       toggleExpand: toggleExpand,
       header: Container(
@@ -667,14 +666,14 @@ class _RouteDropdownState extends State<RouteDropdown> {
                           onChanged: (v) => _updateSelection(i),
                         ),
                         title: (choice["isNote"] == false && choice["creatorId"] != "google")
-                            ? Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            ? Row(                                 
                                 children: [
                                   buildTransportHorizontalSequence(
                                     segments,
                                     AppColors.black,
                                     false,
                                   ),
+                                  Spacer(), 
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
@@ -689,7 +688,21 @@ class _RouteDropdownState extends State<RouteDropdown> {
                                         style: const TextStyle(fontSize: 10),
                                       ),
                                     ],
-                                  )
+                                  ),
+                                  const SizedBox(width: 6),   
+
+                                  if(tripController.isEditingPlaceOrderObs.value)
+                                    GestureDetector(
+                                      onTap: () {
+                                        tripController.deleteRouteOption(i);
+                                      },
+                                      child: Icon(
+                                        LucideIcons.trash2,
+                                        color: AppColors.darkBlue,
+                                        size: 16,
+                                      ),
+                                    )                      
+                                  
                                 ],
                               )
                             : (choice["creatorId"] == "google")

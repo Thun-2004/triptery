@@ -6,4 +6,6 @@ import 'package:triptery/domain/entities/trip/plan_review.dart';
 abstract class PlanRepository {
   Plan getPlanById(int planId);
   List<PlanReview> getPlanReviews(int planId);
+  void addDay(int planId); 
+  void deleteDay(int planId, int dayId);
 }

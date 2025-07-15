@@ -641,8 +641,7 @@ class _EditRoutePageState extends State<EditRoutePage> {
                   child: SizedBox(
                     height: 40,
                     child: Obx(() {
-                      PlanController planController =
-                          Get.find<PlanController>();
+                      PlanController planController = Get.find<PlanController>();
 
                       if (planController.plan.value == null) {
                         return const Center(child: CircularProgressIndicator());
@@ -658,14 +657,37 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.only(right: 10),
-                                    child: DayButton(
-                                      text: 'Day $day',
-                                      onPressed: () {
-                                        _selectDay(day);
-                                      },
-                                      index: day,
-                                      selectedDay: selectedDay,
-                                    ),
+                                    child: Stack(
+                                      clipBehavior: Clip.none,
+                                      children: [
+                                        GestureDetector(
+                                          onLongPress: (){
+                                            tripController.toggleEditDay(); 
+                                          },
+                                          child: DayButton(
+                                            text: 'Day $day',
+                                            onPressed: () {
+                                              _selectDay(day);
+                                            },
+                                            index: day,
+                                            selectedDay: selectedDay,
+                                          )
+                                        ), 
+
+                                        if (tripController.isEditingDay.value)
+                                          Positioned(
+                                            top: -10, 
+                                            right: -5,
+                                            child: CircleAvatar(
+                                              radius: 10,
+                                              backgroundColor: AppColors.red,
+                                              foregroundColor: Colors.white,
+                                              child: Icon(LucideIcons.minus, size: 14),
+                                            ), 
+                                          ),
+                                        
+                                    ]
+                                    )
                                   ),
                                 ],
                               );
@@ -794,7 +816,6 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: PlaceCard(
-                                        //generate a unique key for each place card
                                         key: ValueKey('place-card-${trip["placeId"]}-$index'),
                                         index: index,
                                         placeId: place["placeId"],
@@ -837,15 +858,19 @@ class _EditRoutePageState extends State<EditRoutePage> {
                                 return SizedBox.shrink();
                               }),
                               Obx(() {
-                                if (tripController.isEditingPlaceOrderObs.value && index < trips.length - 1 &&
+                                if (tripController.isEditingPlaceOrderObs.value && index <= trips.length - 1 &&
                                     trips[index]["day"] == selectedDay) {
-                                  return AddButton(
-                                    text: "+ Add Place",
-                                    textSize: 14,
-                                    textColor: AppColors.orange_950,
-                                    width: double.infinity,
-                                    height: 30,
-                                    onPressed: () => addPlace(index),
+                                  return Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                                      margin: const EdgeInsets.symmetric(vertical: 8),
+                                      child: AddButton(
+                                        text: "+ Add Place",
+                                        textSize: 14,
+                                        textColor: AppColors.orange_950,
+                                        width: double.infinity,
+                                        height: 30,
+                                        onPressed: () => addPlace(index),
+                                      )
                                   );
                                 } else {
                                   return const SizedBox.shrink();

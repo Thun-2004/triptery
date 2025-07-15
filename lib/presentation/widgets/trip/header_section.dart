@@ -29,21 +29,6 @@ class _HeaderSectionState extends State<HeaderSection> {
   bool isClicked = false;
   bool isLiked = false;
 
-  void _openBottomModal() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      showDragHandle: true,
-      builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.9,
-          child: TripFlowControlSheet(),
-        );
-      },
-    );
-  }
-
   void openReviewPage() {
     log("open review page");
     Get.to(() => ReviewsPage());
@@ -145,12 +130,11 @@ class _HeaderSectionState extends State<HeaderSection> {
                         children: [
                           IconButton(
                             icon: const Icon(
-                              LucideIcons.pencil,
+                              LucideIcons.bookmark,
                               color: AppColors.white,
                             ),
                             onPressed: () {
-                              // widget.tripController.toggleEditTripInfo();
-                              _openBottomModal();
+                              //FIXME: add bookmark functionality
                             },
                           ),
 
@@ -340,6 +324,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                     ),
                                     onTap: openReviewPage,
                                   ),
+                                  const SizedBox(width: 4),
                                   Tag(
                                     text:
                                         plan != null
@@ -354,6 +339,7 @@ class _HeaderSectionState extends State<HeaderSection> {
                                     icon: LucideIcons.heart,
                                     iconColor: AppColors.black,
                                   ),
+                                  const SizedBox(width: 4),
                                   Tag(
                                     text:
                                         plan != null

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:triptery/presentation/controllers/trip_controller.dart';
 import 'package:triptery/presentation/pages/edit_route_page.dart';
+import 'package:triptery/presentation/widgets/trip/components/menu_button.dart';
 import 'package:triptery/presentation/widgets/trip/header_section.dart';
 import 'package:triptery/presentation/widgets/trip/trip_body.dart';
 import 'package:triptery/presentation/widgets/trip/components/map.dart';
@@ -60,34 +61,34 @@ class _TripPageState extends State<TripPage> {
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(
-        // onPressed: () => setState(() => tripController.toggleEditPlaceOrder()),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => EditRoutePage()),
-          );
-        },
+      floatingActionButton: FloatingMenu(),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Navigator.push(
+      //       context,
+      //       MaterialPageRoute(builder: (context) => EditRoutePage()),
+      //     );
+      //   },
 
-        elevation: 4,
-        shape: const CircleBorder(),
-        child: Container(
-          width: 56,
-          height: 56,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                const Color(0xFFFEB755), // Light orange
-                const Color(0xFFFE7D57), // Darker orange
-              ],
-            ),
-          ),
-          child: Icon(LucideIcons.pencilLine, color: Colors.white, size: 28),
-        ),
-      ),
+      //   elevation: 4,
+      //   shape: const CircleBorder(),
+      //   child: Container(
+      //     width: 56,
+      //     height: 56,
+      //     decoration: BoxDecoration(
+      //       shape: BoxShape.circle,
+      //       gradient: LinearGradient(
+      //         begin: Alignment.topLeft,
+      //         end: Alignment.bottomRight,
+      //         colors: [
+      //           const Color(0xFFFEB755), // Light orange
+      //           const Color(0xFFFE7D57), // Darker orange
+      //         ],
+      //       ),
+      //     ),
+      //     child: Icon(LucideIcons.pencilLine, color: Colors.white, size: 28),
+      //   ),
+      // ),
     );
   }
 }

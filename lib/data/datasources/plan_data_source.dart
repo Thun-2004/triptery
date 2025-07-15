@@ -4,6 +4,27 @@ import 'package:http/http.dart' as http;
 class PlanDataSource {
   final supabase = Supabase.instance.client;
 
+  Map<String, dynamic> mock_response = {
+      "id": "1",
+      "name": "Chill Beach at Samui",
+      "ownerId": "1",
+      "ownerName": "Levi",
+      "ownerProfilePictureUrl": "assets/images/user.jpg",
+      "coverImageUrl":
+          "/Users/benn/Library/Developer/CoreSimulator/Devices/F307C51E-8567-4F8F-903B-D11B2BA3042A/data/Containers/Data/Application/25AB1F52-042E-40F1-A379-B972645D7D81/tmp/image_picker_8C428579-973A-413D-9C02-03684ABC4BE7-15014-000000783C29426F.jpg",
+      "totalCopied": 50,
+      "totalLikes": 20,
+      "dayStart": "2025-07-01T00:00:00.000",
+      "dayEnd": "2025-07-05T00:00:00.000",
+      "dayCount": 2,
+      "location": "Pattaya, Thailand",
+      "note": "A fun trip to Pattaya with friends.",
+      "visibility": "public",
+      "budget": "cheap",
+      "party": "friends",
+      "createdAt": "2025-02-01T00:00:00.000",
+    };
+
   Map<String, Object> getPlanbyId() {
     // final response = await http.get(
     //   Uri.parse('$baseUrl/movie/popular?api_key=$apiKey')
@@ -21,7 +42,7 @@ class PlanDataSource {
       "ownerName": "Levi",
       "ownerProfilePictureUrl": "assets/images/user.jpg",
       "coverImageUrl":
-          "/Users/benn/Library/Developer/CoreSimulator/Devices/F307C51E-8567-4F8F-903B-D11B2BA3042A/data/Containers/Data/Application/4EB0BA70-EE83-421C-BB3A-32C2B5B79601/tmp/image_picker_53F037D3-6D64-4EA7-8A35-797028704402-44389-00001274D000DBAD.jpg",
+          "/Users/benn/Library/Developer/CoreSimulator/Devices/F307C51E-8567-4F8F-903B-D11B2BA3042A/data/Containers/Data/Application/25AB1F52-042E-40F1-A379-B972645D7D81/tmp/image_picker_8C428579-973A-413D-9C02-03684ABC4BE7-15014-000000783C29426F.jpg",
       "totalCopied": 50,
       "totalLikes": 20,
       "dayStart": "2025-07-01T00:00:00.000",
@@ -61,5 +82,11 @@ class PlanDataSource {
       },
     ];
     return mock_response;
+  }
+
+  void updatePlan(Map<String, Object> plan) {
+    // This method would typically update the plan in the database
+    // For now, we just print the updated plan
+    print("Updated Plan: $plan");
   }
 }

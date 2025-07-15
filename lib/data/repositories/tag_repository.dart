@@ -12,7 +12,7 @@ class TagRepositoryImpl implements TagRepository {
   List<Tag> getAllTags() {
     final result = tagDataSource.getTags();
     final tags = result.map((tag) => TagModel.fromJson(tag).toEntity()).toList(); 
-    return tags; 
+    return tags;
   }
 
   @override

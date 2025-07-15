@@ -26,5 +26,18 @@ class PlanRepositoryImpl implements PlanRepository {
     final planReviews = result.map((review) => PlanReviewModel.fromJson(review).toEntity()).toList();
     return planReviews;
   }
+
+  @override
+  void addDay(int planId) {
+    // final result = planDataSource.getPlanbyId();
+    // result['dayCount'] += 1; 
+    // final updatedPlan = PlanModel.fromJson(result).toEntity();
+    // planDataSource.updatePlan(updatedPlan); 
+  }
+
+  @override
+  void deleteDay(int planId, int dayId) { 
+  }
+
 }
 
